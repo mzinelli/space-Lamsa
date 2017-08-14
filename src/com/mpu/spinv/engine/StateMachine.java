@@ -41,7 +41,7 @@ public class StateMachine {
 			states.put(key, state);
 
 			// If no state has been added yet, make it active.
-			if (actState.equalsIgnoreCase("")) {
+			if (actState.equals("")) {
 				actState = key;
 				this.state = state;
 			}

@@ -5,14 +5,27 @@ import java.awt.Graphics;
 import javax.swing.JPanel;
 
 import com.mpu.spinv.engine.StateMachine;
+import com.mpu.spinv.engine.model.Animation;
+import com.mpu.spinv.engine.model.Sprite;
+import com.mpu.spinv.engine.model.SpriteSheet;
 import com.mpu.spinv.utils.Constants;
 
 public class Core extends JPanel implements Runnable {
 
+	// Engine wise objects
 	private StateMachine stateMachine;
-
-	private boolean running = false;
+	
 	private Thread thread;
+	private boolean running = false;
+	
+	// Game Elements
+	SpriteSheet spriteSheet = new SpriteSheet(Core.class.getResource("/resources/img/player.png"));
+	private Animation animation;
+	private Sprite[] sprites = {
+			new Sprite(spriteSheet.getSprite(0, 0, 32, 32)),
+			new Sprite(spriteSheet.getSprite(32, 0, 32, 32)),
+			new Sprite(spriteSheet.getSprite(64, 0, 32, 32))
+	};
 
 	public Core() {
 		initUI();
@@ -26,6 +39,11 @@ public class Core extends JPanel implements Runnable {
 
 	private void initGame() {
 		stateMachine = new StateMachine();
+		
+		
+		animation = new Animation(sprites, 30, true, true);
+		animation.start();
+		
 
 		if (!running || thread == null) {
 			running = true;
@@ -36,6 +54,7 @@ public class Core extends JPanel implements Runnable {
 
 	private void update() {
 		stateMachine.update();
+		animation.update();
 	}
 
 	@Override
@@ -44,6 +63,8 @@ public class Core extends JPanel implements Runnable {
 
 		// Clears the screen before drawing.
 		g.clearRect(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
+		
+		g.drawImage(animation.getSprite(), 0, 0, null);
 		
 		stateMachine.draw(g);
 	}

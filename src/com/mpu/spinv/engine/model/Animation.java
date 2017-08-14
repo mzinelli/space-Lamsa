@@ -117,10 +117,11 @@ public class Animation {
 		if (!stopped) {
 			ticksPassed++;
 			if (ticksPassed > updateRate) {
+				ticksPassed = 0;
 				currentFrame += direction;
 
 				// Check if the animation has ended.
-				if (currentFrame > frames.length || currentFrame < 0) {
+				if (currentFrame >= frames.length || currentFrame < 0) {
 					if (loop)
 						restart();
 					else
