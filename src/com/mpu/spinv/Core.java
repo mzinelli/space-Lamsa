@@ -10,6 +10,7 @@ import com.mpu.spinv.engine.model.Sprite;
 import com.mpu.spinv.engine.model.SpriteSheet;
 import com.mpu.spinv.utils.Constants;
 
+@SuppressWarnings("serial")
 public class Core extends JPanel implements Runnable {
 
 	// Engine wise objects
@@ -41,7 +42,7 @@ public class Core extends JPanel implements Runnable {
 		stateMachine = new StateMachine();
 		
 		
-		animation = new Animation(sprites, 30, true, true);
+		animation = new Animation(sprites, 15, Animation.ALTERNATIVE_LOOP, true);
 		animation.start();
 		
 

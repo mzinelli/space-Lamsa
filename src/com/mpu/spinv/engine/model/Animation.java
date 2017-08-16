@@ -10,6 +10,25 @@ import java.awt.image.BufferedImage;
  */
 public class Animation {
 
+	// ---------------- Constants ----------------
+
+	/**
+	 * The animation should start from the beginning when it ends.
+	 */
+	public static final int NORMAL_LOOP = 0;
+
+	/**
+	 * The animation should reverse it's play direction once it reaches an endpoint.
+	 */
+	public static final int ALTERNATIVE_LOOP = 1;
+
+	/**
+	 * The animation should not loop.
+	 */
+	public static final int NO_LOOP = 2;
+
+	// --------------------------------
+
 	/**
 	 * A vector containing all the sprites for the animation.
 	 */
@@ -21,8 +40,8 @@ public class Animation {
 	private int updateRate;
 
 	/**
-	 * Ticks passed since the last frame update. Used for comparinsom between
-	 * this and {@link Animation#updateRate} to update the animation frame.
+	 * Ticks passed since the last frame update. Used for comparison between this
+	 * and {@link Animation#updateRate} to update the animation frame.
 	 */
 	private int ticksPassed;
 
@@ -39,10 +58,9 @@ public class Animation {
 	private int direction;
 
 	/**
-	 * Flag to mark wether the animation should start over when it finishes or
-	 * not.
+	 * Flag to mark whether the animation should start over when it finishes or not.
 	 */
-	private boolean loop;
+	private int loopType;
 
 	/**
 	 * Flag to mark if the animation has stopped/finished.
@@ -56,18 +74,17 @@ public class Animation {
 	 *            A vector of sprites, to serve as the animation frames.
 	 * @param updateRate
 	 *            A number corresponding to the number of times the game should
-	 *            update/tick before the animation sprite image is
-	 *            updated/changed.
+	 *            update/tick before the animation sprite image is updated/changed.
 	 * @param loop
 	 *            True if the animation should start over after finished, false
 	 *            otherwise.
 	 * @param forward
 	 *            True if the animation should play normally, false if reversed.
 	 */
-	public Animation(Sprite[] frames, int updateRate, boolean loop, boolean forward) {
+	public Animation(Sprite[] frames, int updateRate, int loopType, boolean forward) {
 		this.frames = frames;
 		this.updateRate = updateRate;
-		this.loop = loop;
+		this.loopType = loopType;
 		this.ticksPassed = 0;
 		this.direction = forward ? 1 : -1;
 		this.currentFrame = forward ? 0 : frames.length - 1;
@@ -122,13 +139,35 @@ public class Animation {
 
 				// Check if the animation has ended.
 				if (currentFrame >= frames.length || currentFrame < 0) {
-					if (loop)
+					if (loopType == Animation.NORMAL_LOOP)
 						restart();
-					else
+					else if (loopType == Animation.ALTERNATIVE_LOOP) {
+						direction = -direction;
+						currentFrame += direction*2;
+					} else if (loopType == Animation.NO_LOOP)
 						stopped = true;
 				}
 			}
 		}
+	}
+
+	// Getters and Setters
+
+	public int getUpdateRate() {
+		return updateRate;
+	}
+
+	public void setUpdateRate(int updateRate) {
+		this.updateRate = updateRate;
+	}
+
+	public void setLoopType(int loopType) {
+		if (loopType != Animation.NORMAL_LOOP || loopType != Animation.ALTERNATIVE_LOOP
+				|| loopType != Animation.NO_LOOP) {
+			System.out.println("Erro: Tipo de loop não suportado. Use as constantes da classe Animation.");
+			System.exit(0);
+		}
+		this.loopType = loopType;
 	}
 
 	public BufferedImage getSprite() {
