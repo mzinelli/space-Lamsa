@@ -58,7 +58,7 @@ public class Animation {
 	private int direction;
 
 	/**
-	 * Flag to mark whether the animation should start over when it finishes or not.
+	 * A flag to determine the type of loop the animation will be using.
 	 */
 	private int loopType;
 
@@ -76,8 +76,9 @@ public class Animation {
 	 *            A number corresponding to the number of times the game should
 	 *            update/tick before the animation sprite image is updated/changed.
 	 * @param loop
-	 *            True if the animation should start over after finished, false
-	 *            otherwise.
+	 *            {@link Animation#NORMAL_LOOP} for playing the animation from beginning when it ends.
+	 *            {@link Animation#ALTERNATIVE_LOOP} for playing the animation forward or backwards every time it reaches an endpoint.
+	 *            {@link Animation#NO_LOOP} for no looping at all.
 	 * @param forward
 	 *            True if the animation should play normally, false if reversed.
 	 */
