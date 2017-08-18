@@ -1,17 +1,17 @@
 package com.mpu.spinv.engine.model;
 
 import java.awt.Graphics;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class State {
 
-	private List<GameObject> gameObjects;
-	
+	private final Map<String, GameObject> gameObjects;
+
 	private boolean saveResources;
-	
+
 	public State(boolean saveResources) {
-		gameObjects = new ArrayList<GameObject>();
+		gameObjects = new HashMap<String, GameObject>();
 		this.saveResources = saveResources;
 	}
 
@@ -19,41 +19,60 @@ public class State {
 	 * Main update method.
 	 */
 	public void update() {
-		gameObjects.forEach(obj -> obj.update());
+		for (GameObject go : gameObjects.values())
+			go.update();
 	}
 
 	/**
 	 * Draws every game object, if visible, on screen.
+	 * 
 	 * @param g
 	 */
 	public void draw(Graphics g) {
-		gameObjects.forEach(obj -> obj.draw(g));
+		for (GameObject go : gameObjects.values())
+			go.draw(g);
 	}
 
 	/**
-	 * This method will be called just before playing the actual state on screen. It
-	 * will load all resources needed by the state.
+	 * This method will be called just before playing the actual state on
+	 * screen. It will load all resources needed by the state.
+	 * 
+	 * Must be extended in each state in order to function correctly.
 	 */
 	public void loadResources() {
-		
+
 	}
-	
+
 	/**
 	 * Kills the resources loaded by {@link State#loadResources()}, if allowed.
 	 */
 	public void killResources() {
-		for (int i = gameObjects.size()-1; i >= 0; i--)
-			gameObjects.remove(i);
+		if (!saveResources)
+			for (String key : gameObjects.keySet())
+				gameObjects.remove(key);
 	}
-	
+
 	/**
 	 * Adds a GameObject into the {@link State#gameObjects}.
-	 * @param obj A {@link GameObject} to be added.
+	 * 
+	 * @param obj
+	 *            A {@link GameObject} to be added.
 	 */
-	protected void addResource(GameObject obj) {
-		gameObjects.add(obj);
+	protected void addResource(String key, GameObject obj) {
+		gameObjects.put(key, obj);
 	}
-	
+
+	/**
+	 * Removes a {@link GameObject} from the state resources list.
+	 * 
+	 * @param key
+	 *            the identifier of the object to remove.
+	 * @return the removed object.
+	 */
+	protected GameObject removeResource(String key) {
+		return gameObjects.remove(key);
+	}
+
 	// Getters and Setters
 
 	public boolean isSaveResources() {
