@@ -18,7 +18,8 @@ public class Animation {
 	public static final int NORMAL_LOOP = 0;
 
 	/**
-	 * The animation should reverse it's play direction once it reaches an endpoint.
+	 * The animation should reverse it's play direction once it reaches an
+	 * endpoint.
 	 */
 	public static final int ALTERNATIVE_LOOP = 1;
 
@@ -27,7 +28,7 @@ public class Animation {
 	 */
 	public static final int NO_LOOP = 2;
 
-	// --------------------------------
+	// -------------------------------------------
 
 	/**
 	 * A vector containing all the sprites for the animation.
@@ -40,8 +41,8 @@ public class Animation {
 	private int updateRate;
 
 	/**
-	 * Ticks passed since the last frame update. Used for comparison between this
-	 * and {@link Animation#updateRate} to update the animation frame.
+	 * Ticks passed since the last frame update. Used for comparison between
+	 * this and {@link Animation#updateRate} to update the animation frame.
 	 */
 	private int ticksPassed;
 
@@ -74,10 +75,15 @@ public class Animation {
 	 *            A vector of sprites, to serve as the animation frames.
 	 * @param updateRate
 	 *            A number corresponding to the number of times the game should
-	 *            update/tick before the animation sprite image is updated/changed.
+	 *            update/tick before the animation sprite image is
+	 *            updated/changed.
 	 * @param loop
-	 *            {@link Animation#NORMAL_LOOP} for playing the animation from beginning when it ends.
-	 *            {@link Animation#ALTERNATIVE_LOOP} for playing the animation forward or backwards every time it reaches an endpoint.
+	 *            {@link Animation#NORMAL_LOOP} for playing the animation from
+	 *            beginning when it ends.
+	 * 
+	 *            {@link Animation#ALTERNATIVE_LOOP} for playing the animation
+	 *            forward or backwards every time it reaches an endpoint.
+	 * 
 	 *            {@link Animation#NO_LOOP} for no looping at all.
 	 * @param forward
 	 *            True if the animation should play normally, false if reversed.
@@ -144,7 +150,7 @@ public class Animation {
 						restart();
 					else if (loopType == Animation.ALTERNATIVE_LOOP) {
 						direction = -direction;
-						currentFrame += direction*2;
+						currentFrame += direction * 2;
 					} else if (loopType == Animation.NO_LOOP)
 						stopped = true;
 				}
@@ -165,7 +171,7 @@ public class Animation {
 	public void setLoopType(int loopType) {
 		if (loopType != Animation.NORMAL_LOOP || loopType != Animation.ALTERNATIVE_LOOP
 				|| loopType != Animation.NO_LOOP) {
-			System.out.println("Erro: Tipo de loop não suportado. Use as constantes da classe Animation.");
+			System.out.println("Erro: Tipo de loop nï¿½o suportado. Use as constantes da classe Animation.");
 			System.exit(0);
 		}
 		this.loopType = loopType;
