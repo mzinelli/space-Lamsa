@@ -40,7 +40,16 @@ public class State {
 	 * Must be extended in each state in order to function correctly.
 	 */
 	public void loadResources() {
+	}
 
+	/**
+	 * Called immediately after {@link State#loadResources()}. Calls the
+	 * {@link GameObject#init()} method of every registered game object of the
+	 * state.
+	 */
+	public void initResources() {
+		for (GameObject go : gameObjects.values())
+			go.init();
 	}
 
 	/**
