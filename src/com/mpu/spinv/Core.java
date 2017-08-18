@@ -12,7 +12,7 @@ public class Core extends JPanel implements Runnable {
 
 	// Engine wise objects
 	private StateMachine stateMachine;
-	
+
 	private Thread thread;
 	private boolean running = false;
 
@@ -21,11 +21,17 @@ public class Core extends JPanel implements Runnable {
 		initGame();
 	}
 
+	/**
+	 * Initiates the UI elements and sets up the JPanel.
+	 */
 	private void initUI() {
 		setFocusable(true);
 		setDoubleBuffered(true);
 	}
 
+	/**
+	 * Initiates and sets up the game objects.
+	 */
 	private void initGame() {
 		stateMachine = new StateMachine();
 
@@ -46,7 +52,7 @@ public class Core extends JPanel implements Runnable {
 
 		// Clears the screen before drawing.
 		g.clearRect(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
-		
+
 		stateMachine.draw(g);
 	}
 
