@@ -1,6 +1,8 @@
 package com.mpu.spinv.engine.model;
 
 import java.awt.Graphics;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * GameObject.java
@@ -21,15 +23,31 @@ public class GameObject {
 	protected int dx, dy;
 
 	/**
+	 * A list of the object's animations.
+	 */
+	private final Map<String, Animation> animations;
+
+	/**
+	 * The key identifier of the active animation.
+	 */
+	private String actAnimation;
+
+	/**
+	 * The active animation. Currently playing if {@link GameObject#visible} is
+	 * true.
+	 */
+	private Animation animation;
+
+	/**
 	 * GameObject's size.
 	 */
-	protected int width, height;
+	private int width, height;
 
 	/**
 	 * Attribute used for checking. Mainly for drawing or not the object
 	 * accordingly to it's visibility status.
 	 */
-	protected boolean visible;
+	private boolean visible;
 
 	/**
 	 * GameObject's constructor.
@@ -49,17 +67,111 @@ public class GameObject {
 		// Default params
 		this.dx = 0;
 		this.dy = 0;
+		this.animations = new HashMap<String, Animation>();
+		this.animation = null;
+		this.actAnimation = "";
 	}
 
-	// public GameObject(int x, int y, Sprite sprite, boolean visible) {}
+	public GameObject(int x, int y, Animation animation, boolean visible) {
+		this.x = x;
+		this.y = y;
+		this.visible = visible;
+
+		// Default params
+		this.dx = 0;
+		this.dy = 0;
+		this.animations = new HashMap<String, Animation>();
+
+		// Setting the default animation
+		this.actAnimation = "default";
+		addAnimation(this.actAnimation, animation);
+	}
+
+	public void init() {
+
+	}
 
 	public void update() {
 		x += dx;
 		y += dy;
+
+		if (animation != null)
+			animation.update();
 	}
 
 	public void draw(Graphics g) {
+		if (visible && animation != null)
+			g.drawImage(animation.getSprite(), x, y, null);
+	}
 
+	/**
+	 * Adds an animation into the GameObject's animations list.
+	 * 
+	 * @param key
+	 *            the identifier of the animation to add.
+	 * @param animation
+	 *            the animation object to be added.
+	 */
+	public void addAnimation(String key, Animation animation) {
+		animations.put(key, animation);
+		if (this.animation == null)
+			this.animation = animation;
+	}
+
+	/**
+	 * Set the active and playing animation to a new one.
+	 * 
+	 * @param key
+	 *            the identifier of the animation to be set.
+	 */
+	public void setAnimation(String key) {
+		if (animations.containsKey(key)) {
+			actAnimation = key;
+			animation = animations.get(key);
+		}
+	}
+
+	/**
+	 * Removes an animation from the GameObject's animation list and returns the
+	 * removed animation object.
+	 * 
+	 * @param key
+	 *            the key identifier of the animation to be removed.
+	 * @return the removed animation object.
+	 */
+	public Animation removeAnimation(String key) {
+		Animation animation = null;
+		if (animations.containsKey(key)) {
+			animation = animations.get(key);
+			animations.remove(key);
+			if (actAnimation.equals(key)) {
+				this.animation = null;
+				this.actAnimation = "";
+			}
+		}
+		return animation;
+	}
+
+	// Getters and Setters
+
+	public String getAnimationKey() {
+		return actAnimation;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public boolean isVisible() {
+		return visible;
+	}
+
+	public void setVisible(boolean visible) {
+		this.visible = visible;
 	}
 
 }
