@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.mpu.spinv.engine.model.State;
+import com.mpu.spinv.game.states.GameplayState;
 
 public class StateMachine {
 
@@ -16,6 +17,8 @@ public class StateMachine {
 		states = new HashMap<String, State>();
 		actState = "";
 		state = null;
+		
+		addState("gameplay", new GameplayState());
 	}
 
 	public void update() {
@@ -42,8 +45,7 @@ public class StateMachine {
 
 			// If no state has been added yet, make it active.
 			if (actState.equals("")) {
-				actState = key;
-				this.state = state;
+				setActiveState(key);
 			}
 		}
 	}
@@ -77,6 +79,8 @@ public class StateMachine {
 		if (states.containsKey(key)) {
 			actState = key;
 			state = states.get(key);
+			state.loadResources();
+			state.initResources();
 		}
 	}
 
