@@ -1,18 +1,19 @@
 package com.mpu.spinv.engine;
 
 import java.awt.Graphics;
-import java.util.Hashtable;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.mpu.spinv.engine.model.State;
 
 public class StateMachine {
 
-	private Hashtable<String, State> states;
+	private final Map<String, State> states;
 	private State state;
 	private String actState;
 
 	public StateMachine() {
-		states = new Hashtable<String, State>();
+		states = new HashMap<String, State>();
 		actState = "";
 		state = null;
 	}
@@ -28,8 +29,7 @@ public class StateMachine {
 	}
 
 	/**
-	 * Adds a {@link State} object into the {@link StateMachine#states}
-	 * Hashtable.
+	 * Adds a {@link State} object into the {@link StateMachine#states} Hashmap.
 	 * 
 	 * @param key
 	 *            The key identifier of the {@link State} to be added.
@@ -49,19 +49,22 @@ public class StateMachine {
 	}
 
 	/**
-	 * Removes a {@link State} from the Hashtable.
+	 * Removes a {@link State} from the Hashmap.
 	 * 
 	 * @param key
 	 *            The key identifier of the {@link State} to be removed.
 	 */
-	public void removeState(String key) {
+	public State removeState(String key) {
+		State state = null;
 		if (states.containsKey(key)) {
+			state = states.get(key);
 			states.remove(key);
 			if (actState.equals(key)) {
-				state = null;
-				actState = "";
+				this.state = null;
+				this.actState = "";
 			}
 		}
+		return state;
 	}
 
 	/**
