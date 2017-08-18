@@ -1,5 +1,6 @@
 package com.mpu.spinv.game.states;
 
+import com.mpu.spinv.engine.StateMachine;
 import com.mpu.spinv.engine.model.SpriteSheet;
 import com.mpu.spinv.engine.model.State;
 import com.mpu.spinv.game.actors.Player;
@@ -27,7 +28,9 @@ public class GameplayState extends State {
 
 	@Override
 	public void loadResources() {
-		addResource("player", new Player(spriteSheet));
+		StateMachine.spriteSheet = spriteSheet;
+		
+		addResource("player", new Player());
 	}
 
 }

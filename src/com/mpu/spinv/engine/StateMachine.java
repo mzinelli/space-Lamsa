@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.mpu.spinv.engine.model.SpriteSheet;
 import com.mpu.spinv.engine.model.State;
 import com.mpu.spinv.game.states.GameplayState;
 
@@ -12,6 +13,8 @@ public class StateMachine {
 	private final Map<String, State> states;
 	private State state;
 	private String actState;
+	
+	public static SpriteSheet spriteSheet;
 
 	public StateMachine() {
 		states = new HashMap<String, State>();
