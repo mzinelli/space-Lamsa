@@ -81,21 +81,24 @@ public class GameObject {
 		this.dx = 0;
 		this.dy = 0;
 		this.animations = new HashMap<String, Animation>();
+		this.animation = null;
+		this.actAnimation = "";
 
 		// Setting the default animation
-		this.actAnimation = "default";
-		addAnimation(this.actAnimation, animation);
+		addAnimation("default", animation);
 	}
 
+	/**
+	 * This method will be called every time a state has been loaded.
+	 */
 	public void init() {
-
 	}
 
 	public void update() {
 		x += dx;
 		y += dy;
 
-		if (animation != null)
+		if (!actAnimation.equals(""))
 			animation.update();
 	}
 
@@ -114,8 +117,10 @@ public class GameObject {
 	 */
 	public void addAnimation(String key, Animation animation) {
 		animations.put(key, animation);
-		if (this.animation == null)
+		if (this.actAnimation.equals("")) {
+			this.actAnimation = key;
 			this.animation = animation;
+		}
 	}
 
 	/**
@@ -150,6 +155,38 @@ public class GameObject {
 			}
 		}
 		return animation;
+	}
+	
+	/**
+	 * Starts playing the active animation.
+	 */
+	public void startAnimation() {
+		if (animation != null)
+			animation.start();
+	}
+	
+	/**
+	 * Pauses the active animation.
+	 */
+	public void pauseAnimation() {
+		if (animation != null)
+			animation.pause();
+	}
+	
+	/**
+	 * Restarts the active animation.
+	 */
+	public void restartAnimation() {
+		if (animation != null)
+			animation.restart();
+	}
+	
+	/**
+	 * Resets the active animation.
+	 */
+	public void resetAnimation() {
+		if (animation != null)
+			animation.reset();
 	}
 
 	// Getters and Setters
