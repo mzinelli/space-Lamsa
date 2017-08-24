@@ -23,15 +23,17 @@ public class Player extends GameObject {
 	// -------------------------------------------
 
 	public Player() {
-		super(INITIAL_X, INITIAL_Y, new Animation(new Sprite[] {
-				new Sprite(StateMachine.spriteSheet.getSprite(0, 0, 32, 32)),
-				new Sprite(StateMachine.spriteSheet.getSprite(32, 0, 32, 32)),
-				new Sprite(StateMachine.spriteSheet.getSprite(64, 0, 32, 32))
-		}, 20, Animation.ALTERNATIVE_LOOP, true), INITIAL_VISIBILITY);
+		super(INITIAL_X, INITIAL_Y, INITIAL_VISIBILITY);
+		init();
 	}
-	
+
 	@Override
 	public void init() {
+		setStaticSprite(new Sprite(StateMachine.spriteSheet.getSprite(0, 941, 111, 75)));
+	}
+
+	@Override
+	public void load() {
 		startAnimation();
 	}
 

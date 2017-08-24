@@ -8,6 +8,8 @@ public class State {
 
 	private final Map<String, GameObject> gameObjects;
 
+	private String spriteSheetUrl;
+
 	private boolean saveResources;
 
 	public State(boolean saveResources) {
@@ -44,12 +46,12 @@ public class State {
 
 	/**
 	 * Called immediately after {@link State#loadResources()}. Calls the
-	 * {@link GameObject#init()} method of every registered game object of the
+	 * {@link GameObject#load()} method of every registered game object of the
 	 * state.
 	 */
 	public void initResources() {
 		for (GameObject go : gameObjects.values())
-			go.init();
+			go.load();
 	}
 
 	/**
@@ -90,6 +92,14 @@ public class State {
 
 	public void setSaveResources(boolean saveResources) {
 		this.saveResources = saveResources;
+	}
+
+	public String getSpriteSheetUrl() {
+		return spriteSheetUrl;
+	}
+
+	public void setSpriteSheetUrl(String spriteSheetUrl) {
+		this.spriteSheetUrl = spriteSheetUrl;
 	}
 
 }

@@ -1,7 +1,7 @@
 package com.mpu.spinv.game.states;
 
-import com.mpu.spinv.engine.StateMachine;
-import com.mpu.spinv.engine.model.SpriteSheet;
+import java.awt.Graphics;
+
 import com.mpu.spinv.engine.model.State;
 import com.mpu.spinv.game.actors.Player;
 
@@ -17,19 +17,17 @@ public class GameplayState extends State {
 
 	private final static boolean SAVE_RESOURCES = true;
 
-	private SpriteSheet spriteSheet;
+	public final String SPRITESHEET_URL = "/resources/img/spritesheet.png";
 
 	// -------------------------------------------
 
 	public GameplayState() {
 		super(SAVE_RESOURCES);
-		spriteSheet = new SpriteSheet(GameplayState.class.getResource("/resources/img/player.png"));
+		setSpriteSheetUrl(SPRITESHEET_URL);
 	}
 
 	@Override
 	public void loadResources() {
-		StateMachine.spriteSheet = spriteSheet;
-		
 		addResource("player", new Player());
 	}
 
