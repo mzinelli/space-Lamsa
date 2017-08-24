@@ -15,6 +15,13 @@ import javax.imageio.ImageIO;
 public class SpriteSheet {
 
 	private BufferedImage spriteSheet;
+	
+	/**
+	 * Null constructor.
+	 */
+	public SpriteSheet() {
+		spriteSheet = null;
+	}
 
 	/**
 	 * The SpriteSheet's constructor.

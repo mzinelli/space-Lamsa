@@ -13,14 +13,16 @@ public class StateMachine {
 	private final Map<String, State> states;
 	private State state;
 	private String actState;
-	
+
 	public static SpriteSheet spriteSheet;
 
 	public StateMachine() {
 		states = new HashMap<String, State>();
 		actState = "";
 		state = null;
-		
+
+		spriteSheet = new SpriteSheet();
+
 		addState("gameplay", new GameplayState());
 	}
 
@@ -82,6 +84,10 @@ public class StateMachine {
 		if (states.containsKey(key)) {
 			actState = key;
 			state = states.get(key);
+
+			// Sets the active spritesheet.
+			spriteSheet.setSpriteSheetImage(StateMachine.class.getResource(state.getSpriteSheetUrl()));
+
 			state.loadResources();
 			state.initResources();
 		}
