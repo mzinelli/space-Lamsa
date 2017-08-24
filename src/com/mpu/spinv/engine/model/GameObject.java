@@ -39,9 +39,10 @@ public class GameObject {
 	private Animation animation;
 
 	/**
-	 * GameObject's size.
+	 * In case there is no need for the object to have an animation, use a
+	 * static sprite to draw instead.
 	 */
-	private int width, height;
+	private Sprite staticSprite;
 
 	/**
 	 * Attribute used for checking. Mainly for drawing or not the object
@@ -70,6 +71,22 @@ public class GameObject {
 		this.animations = new HashMap<String, Animation>();
 		this.animation = null;
 		this.actAnimation = "";
+		this.staticSprite = null;
+	}
+
+	public GameObject(int x, int y, Sprite staticSprite, boolean visible) {
+		this.x = x;
+		this.y = y;
+		this.visible = visible;
+
+		this.staticSprite = staticSprite;
+
+		// Default params
+		this.dx = 0;
+		this.dy = 0;
+		this.animations = new HashMap<String, Animation>();
+		this.animation = null;
+		this.actAnimation = "";
 	}
 
 	public GameObject(int x, int y, Animation animation, boolean visible) {
@@ -83,15 +100,29 @@ public class GameObject {
 		this.animations = new HashMap<String, Animation>();
 		this.animation = null;
 		this.actAnimation = "";
+		this.staticSprite = null;
 
 		// Setting the default animation
 		addAnimation("default", animation);
 	}
 
 	/**
-	 * This method will be called every time a state has been loaded.
+	 * This method will be called the first time the object is initiated. Unlike
+	 * {@link GameObject#load()} that is called every time the state in which
+	 * the GameObject is placed.
+	 * 
+	 * It is recommended that you add a calling to {@link GameObject#init()} at
+	 * the end of the constructor for the class that extends from
+	 * {@link GameObject}
 	 */
 	public void init() {
+	}
+
+	/**
+	 * This method will be called every time the state in which this object is
+	 * placed is initiated or loaded.
+	 */
+	public void load() {
 	}
 
 	public void update() {
@@ -103,8 +134,8 @@ public class GameObject {
 	}
 
 	public void draw(Graphics g) {
-		if (visible && animation != null)
-			g.drawImage(animation.getSprite(), x, y, null);
+		if (visible && (animation != null || staticSprite != null))
+			g.drawImage((staticSprite == null ? animation.getSprite() : staticSprite.getSprite()), x, y, null);
 	}
 
 	/**
@@ -116,10 +147,12 @@ public class GameObject {
 	 *            the animation object to be added.
 	 */
 	public void addAnimation(String key, Animation animation) {
-		animations.put(key, animation);
-		if (this.actAnimation.equals("")) {
-			this.actAnimation = key;
-			this.animation = animation;
+		if (!key.equals("")) {
+			animations.put(key, animation);
+			if (this.actAnimation.equals("")) {
+				this.actAnimation = key;
+				this.animation = animation;
+			}
 		}
 	}
 
@@ -133,6 +166,9 @@ public class GameObject {
 		if (animations.containsKey(key)) {
 			actAnimation = key;
 			animation = animations.get(key);
+		} else if (key.equals("")) {
+			actAnimation = key;
+			animation = null;
 		}
 	}
 
@@ -156,7 +192,7 @@ public class GameObject {
 		}
 		return animation;
 	}
-	
+
 	/**
 	 * Starts playing the active animation.
 	 */
@@ -164,7 +200,7 @@ public class GameObject {
 		if (animation != null)
 			animation.start();
 	}
-	
+
 	/**
 	 * Pauses the active animation.
 	 */
@@ -172,7 +208,7 @@ public class GameObject {
 		if (animation != null)
 			animation.pause();
 	}
-	
+
 	/**
 	 * Restarts the active animation.
 	 */
@@ -180,7 +216,7 @@ public class GameObject {
 		if (animation != null)
 			animation.restart();
 	}
-	
+
 	/**
 	 * Resets the active animation.
 	 */
@@ -195,20 +231,20 @@ public class GameObject {
 		return actAnimation;
 	}
 
-	public int getWidth() {
-		return width;
-	}
-
-	public int getHeight() {
-		return height;
-	}
-
 	public boolean isVisible() {
 		return visible;
 	}
 
 	public void setVisible(boolean visible) {
 		this.visible = visible;
+	}
+
+	public Sprite getStaticSprite() {
+		return staticSprite;
+	}
+
+	public void setStaticSprite(Sprite staticSprite) {
+		this.staticSprite = staticSprite;
 	}
 
 }
