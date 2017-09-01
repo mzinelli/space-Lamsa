@@ -1,7 +1,6 @@
-package com.mpu.spinv.game.actors;
+package com.mpu.spinv.game.states.gameplaystate;
 
 import com.mpu.spinv.engine.StateMachine;
-import com.mpu.spinv.engine.model.Animation;
 import com.mpu.spinv.engine.model.GameObject;
 import com.mpu.spinv.engine.model.Sprite;
 

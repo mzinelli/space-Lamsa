@@ -1,9 +1,7 @@
 package com.mpu.spinv.game.states;
 
-import java.awt.Graphics;
-
 import com.mpu.spinv.engine.model.State;
-import com.mpu.spinv.game.actors.Player;
+import com.mpu.spinv.game.states.gameplaystate.Player;
 
 /**
  * GameplayState.java
