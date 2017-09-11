@@ -107,18 +107,6 @@ public class GameObject {
 	}
 
 	/**
-	 * This method will be called the first time the object is initiated. Unlike
-	 * {@link GameObject#load()} that is called every time the state in which
-	 * the GameObject is placed.
-	 * 
-	 * It is recommended that you add a calling to {@link GameObject#init()} at
-	 * the end of the constructor for the class that extends from
-	 * {@link GameObject}
-	 */
-	public void init() {
-	}
-
-	/**
 	 * This method will be called every time the state in which this object is
 	 * placed is initiated or loaded.
 	 */

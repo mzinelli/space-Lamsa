@@ -23,11 +23,7 @@ public class Player extends GameObject {
 
 	public Player() {
 		super(INITIAL_X, INITIAL_Y, INITIAL_VISIBILITY);
-		init();
-	}
-
-	@Override
-	public void init() {
+		
 		setStaticSprite(new Sprite(StateMachine.spriteSheet.getSprite(0, 941, 111, 75)));
 	}
 
