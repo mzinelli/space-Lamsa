@@ -1,6 +1,7 @@
 package com.mpu.spinv.engine;
 
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,6 +35,18 @@ public class StateMachine {
 	public void draw(Graphics g) {
 		if (state != null)
 			state.draw(g);
+	}
+	
+	public void keyPressed(KeyEvent e) {
+		
+	}
+	
+	public void keyReleased(KeyEvent e) {
+		
+	}
+	
+	public void keyTyped(KeyEvent e) {
+		
 	}
 
 	/**

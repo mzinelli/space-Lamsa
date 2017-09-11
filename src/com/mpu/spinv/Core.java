@@ -4,6 +4,7 @@ import java.awt.Graphics;
 
 import javax.swing.JPanel;
 
+import com.mpu.spinv.engine.ControlsManager;
 import com.mpu.spinv.engine.StateMachine;
 import com.mpu.spinv.utils.Constants;
 
@@ -12,6 +13,7 @@ public class Core extends JPanel implements Runnable {
 
 	// Engine wise objects
 	private StateMachine stateMachine;
+	private ControlsManager controlsManager;
 
 	private Thread thread;
 	private boolean running = false;
@@ -34,6 +36,7 @@ public class Core extends JPanel implements Runnable {
 	 */
 	private void initGame() {
 		stateMachine = new StateMachine();
+		controlsManager = new ControlsManager(stateMachine);
 
 		if (!running || thread == null) {
 			running = true;
