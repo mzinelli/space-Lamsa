@@ -1,6 +1,7 @@
 package com.mpu.spinv.game.states;
 
 import com.mpu.spinv.engine.model.State;
+import com.mpu.spinv.game.states.gameplaystate.Background;
 import com.mpu.spinv.game.states.gameplaystate.Player;
 
 /**
@@ -26,6 +27,7 @@ public class GameplayState extends State {
 
 	@Override
 	public void loadResources() {
+		addResource("background", new Background());
 		addResource("player", new Player());
 	}
 
