@@ -36,18 +36,6 @@ public class StateMachine {
 		if (state != null)
 			state.draw(g);
 	}
-	
-	public void keyPressed(KeyEvent e) {
-		
-	}
-	
-	public void keyReleased(KeyEvent e) {
-		
-	}
-	
-	public void keyTyped(KeyEvent e) {
-		
-	}
 
 	/**
 	 * Adds a {@link State} object into the {@link StateMachine#states} Hashmap.
@@ -102,7 +90,6 @@ public class StateMachine {
 			spriteSheet.setSpriteSheetImage(StateMachine.class.getResource(state.getSpriteSheetUrl()));
 
 			state.loadResources();
-			state.initResources();
 		}
 	}
 
@@ -130,6 +117,23 @@ public class StateMachine {
 			return states.get(key);
 		else
 			return null;
+	}
+	
+	// Controls Handling Methods
+	
+	public void keyPressed(KeyEvent e) {
+		if (state != null)
+			state.keyPressed(e);
+	}
+	
+	public void keyReleased(KeyEvent e) {
+		if (state != null)
+			state.keyReleased(e);
+	}
+	
+	public void keyTyped(KeyEvent e) {
+		if (state != null)
+			state.keyTyped(e);
 	}
 
 }

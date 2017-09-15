@@ -3,6 +3,12 @@ package com.mpu.spinv.engine;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+/**
+ * GameplayState.java
+ * 
+ * @author Brendon Pagano
+ * @date 2017-11-09
+ */
 public class ControlsManager implements KeyListener {
 
 	/**
