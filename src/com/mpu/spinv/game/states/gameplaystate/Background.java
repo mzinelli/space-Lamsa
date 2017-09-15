@@ -9,10 +9,10 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import com.mpu.spinv.engine.model.GameObject;
+import com.mpu.spinv.engine.model.GameEntity;
 import com.mpu.spinv.utils.Constants;
 
-public class Background extends GameObject {
+public class Background extends GameEntity {
 	
 	// ---------------- Constants ----------------
 	

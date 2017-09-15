@@ -19,6 +19,9 @@ public class GameplayState extends State {
 	public final String SPRITESHEET_URL = "/resources/img/spritesheet.png";
 
 	// -------------------------------------------
+	
+	private Player player;
+	private Background background;
 
 	public GameplayState() {
 		super(SAVE_RESOURCES);
@@ -27,8 +30,11 @@ public class GameplayState extends State {
 
 	@Override
 	public void loadResources() {
-		addResource("background", new Background());
-		addResource("player", new Player());
+		player = new Player();
+		background = new Background();
+		
+		addResource("background", background);
+		addResource("player", player);
 	}
 
 }
