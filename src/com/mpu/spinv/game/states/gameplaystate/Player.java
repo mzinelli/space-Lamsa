@@ -6,6 +6,7 @@ import com.mpu.spinv.engine.StateMachine;
 import com.mpu.spinv.engine.model.GameEntity;
 import com.mpu.spinv.engine.model.Sprite;
 import com.mpu.spinv.engine.triggers.KeyTrigger;
+import com.mpu.spinv.utils.Constants;
 
 /**
  * Player.java
@@ -16,21 +17,30 @@ import com.mpu.spinv.engine.triggers.KeyTrigger;
 public class Player extends GameEntity {
 
 	// ---------------- Constants ----------------
-
-	private static final int INITIAL_X = 0;
-	private static final int INITIAL_Y = 0;
+	
+	private static final int WIDTH = 70;
+	private static final int HEIGHT = 53;
+	
+	private static final int INITIAL_X = Constants.WINDOW_WIDTH / 2 - WIDTH / 2;
+	private static final int INITIAL_Y = Constants.WINDOW_HEIGHT - HEIGHT - 40;
 
 	private final int VELOCITY = 5;
 
 	private static final boolean INITIAL_VISIBILITY = true;
 
 	// -------------------------------------------
+	
+	private Sprite sprite;
 
 	public Player() {
 		super(INITIAL_X, INITIAL_Y, INITIAL_VISIBILITY);
+		
+		sprite = new Sprite(StateMachine.spriteSheet.getSprite(224, 832, 99, 75));
 
 		// Setting the player image.
-		setStaticSprite(new Sprite(StateMachine.spriteSheet.getSprite(224, 832, 99, 75)));
+		setStaticSprite(sprite);		
+		resizeSprite(WIDTH, HEIGHT);
+		
 		setScreenBound(true);
 
 		/**
