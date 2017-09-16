@@ -1,6 +1,9 @@
 package com.mpu.spinv.game.states.gameplaystate;
 
+import java.awt.Graphics;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.mpu.spinv.engine.StateMachine;
 import com.mpu.spinv.engine.model.GameEntity;
@@ -30,12 +33,21 @@ public class Player extends GameEntity {
 
 	// -------------------------------------------
 	
+	/**
+	 * The player sprite.
+	 */
 	private Sprite sprite;
+	
+	/**
+	 * A list of the shots on screen.
+	 */
+	private List<Shot> shots;
 
 	public Player() {
 		super(INITIAL_X, INITIAL_Y, INITIAL_VISIBILITY);
 		
 		sprite = new Sprite(StateMachine.spriteSheet.getSprite(224, 832, 99, 75));
+		shots = new ArrayList<Shot>();
 
 		// Setting the player image.
 		setStaticSprite(sprite);		
@@ -78,6 +90,61 @@ public class Player extends GameEntity {
 			else if (t == KeyTrigger.KEY_RELEASED)
 				dx = 0;
 		}));
+		
+		// Shoot
+		on(new KeyTrigger(KeyEvent.VK_SPACE, t -> {
+			if (t == KeyTrigger.KEY_RELEASED) {
+				shots.add(new Shot(x + getWidth() / 2, y));
+			}
+		}));
+	}
+	
+	@Override
+	public void update() {
+		super.update();
+		for (int i = shots.size()-1; i >= 0; i--) {
+			Shot shot = shots.get(i);
+			
+			if (shot.getY() + shot.getHeight() < 0)
+				shots.remove(i);
+			
+			shot.update();
+		}
+	}
+	
+	@Override
+	public void draw(Graphics g) {
+		shots.forEach(shot -> shot.draw(g));
+		super.draw(g);
+	}
+	
+	private class Shot extends GameEntity {
+		
+		// ---------------- Constants ----------------
+		
+		private static final int SHOT_VELOCITY = 9;
+		private static final boolean INITIAL_VISIBILITY = true;
+		
+		private static final int SHOT_WIDTH = 9;
+		private static final int SHOT_HEIGHT = 54;
+		
+		// -------------------------------------------
+
+		/**
+		 * The shot's sprite.
+		 */
+		private Sprite sprite;
+		
+		public Shot(int x, int y) {
+			super(x - SHOT_WIDTH /2, y, INITIAL_VISIBILITY);
+			
+			sprite = new Sprite(StateMachine.spriteSheet.getSprite(858, 230, SHOT_WIDTH, SHOT_HEIGHT));
+			
+			setStaticSprite(sprite);
+			
+			dy = -SHOT_VELOCITY;
+		}
+		
 	}
 
 }
