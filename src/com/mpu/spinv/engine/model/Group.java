@@ -12,30 +12,62 @@ import java.util.List;
  * @date 2017-09-14
  */
 public class Group implements GameObject {
-
-	private List<GameEntity> gameEntities;
 	
-	// Rectangular shape information to make collision checks
-	private int x, y,
-				width, height;
+	// ---------------- Constants ----------------
+	
+	/**
+	 * Every element of the Group will be displayed horizontally.
+	 */
+	public static final int LAYOUT_HORIZONTAL = 0;
+	
+	/**
+	 * Every element of the Group will be displayed vertically.
+	 */
+	public static final int LAYOUT_VERTICAL = 1;
+	
+	// -------------------------------------------
 
-	public Group() {
-		gameEntities = new ArrayList<GameEntity>();
+	/**
+	 * The list of GameEntity's that the Group contains.
+	 */
+	private List<GameEntity> gameEntities;
+
+	/**
+	 * Coordinates of the pivot element of the Group.
+	 */
+	private int x, y;
+
+	/**
+	 * The width and height of the Group.
+	 */
+	private int width, height;
+
+	/**
+	 * The margin applied to every {@link GameEntity} of the Group.
+	 */
+	private int spacingHorizontal, spacingVertical;
+	
+	/**
+	 * The layout to display the group.
+	 */
+	private int layout;
+
+	public Group(int x, int y, int layout) {
+		this.x = x;
+		this.y = y;
+		this.layout = layout;
+		
+		// Default params
+		this.gameEntities = new ArrayList<GameEntity>();
+		this.spacingHorizontal = 0;
+		this.spacingVertical = 0;
+		width = 0;
+		height = 0;
 	}
 
 	public void update() {
 		gameEntities.forEach(go -> {
 			go.update();
-			
-			// Updates the rectangular shape for collision detection of group.
-			if (go.x < x)
-				x = go.x;
-			if (go.x + go.getWidth() > width)
-				width = go.x + go.getWidth();
-			if (go.y < y)
-				y = go.y;
-			if (go.y + go.getHeight() > height)
-				height = go.y + go.getHeight();
 		});
 	}
 
@@ -70,23 +102,25 @@ public class Group implements GameObject {
 	}
 
 	/**
-	 * Return true if any of the GameEntities has key triggers attached to it.
-	 */
-	@Override
-	public boolean hasKeyTriggers() {
-		for (int i = 0; i < gameEntities.size(); i++)
-			if (gameEntities.get(i).hasKeyTriggers())
-				return true;
-		return false;
-	}
-
-	/**
 	 * Adds a GameEntity into the list.
 	 * 
 	 * @param go
 	 *            the GameEntity to be added.
 	 */
 	public void add(GameEntity go) {
+		// Configurates the coordinates of the element to add.
+		if (gameEntities.size() == 0) {
+			go.x = x + spacingHorizontal;
+			go.y = y + spacingVertical;
+		} else {
+			GameEntity lastElem = gameEntities.get(gameEntities.size()-1);
+			go.x = lastElem.x + (layout == Group.LAYOUT_HORIZONTAL ? lastElem.getWidth() : 0) + spacingHorizontal;
+			go.y = lastElem.y + (layout == Group.LAYOUT_VERTICAL ? lastElem.getHeight() : 0) + spacingVertical;
+		}
+		
+		width += go.getWidth() + spacingHorizontal;
+		height += go.getHeight() + spacingVertical;
+		
 		gameEntities.add(go);
 	}
 
@@ -95,7 +129,7 @@ public class Group implements GameObject {
 	 * 
 	 * @param i
 	 *            the index number to extract the GameEntity
-	 * @return the removed GameObject, or null in case of an error.
+	 * @return the removed GameEntity, or null in case of an error.
 	 */
 	public GameEntity removeAt(int i) {
 		if (i < 0 || i > gameEntities.size() - 1)
@@ -110,14 +144,108 @@ public class Group implements GameObject {
 	public void clear() {
 		gameEntities.clear();
 	}
+	
+	private void resetCoordinates() {
+		width = 0;
+		height = 0;
+		for (int i = 0; i < gameEntities.size(); i++) {
+			if (i == 0) {
+				gameEntities.get(i).x = x + spacingHorizontal;
+				gameEntities.get(i).y = y + spacingVertical;
+			} else {
+				GameEntity lastElem = gameEntities.get(i-1);
+				gameEntities.get(i).x = lastElem.x + (layout == Group.LAYOUT_HORIZONTAL ? lastElem.getWidth() : 0) + spacingHorizontal;
+				gameEntities.get(i).y = lastElem.y + (layout == Group.LAYOUT_VERTICAL ? lastElem.getHeight() : 0) + spacingVertical;
+			}
+			
+			width += gameEntities.get(i).getWidth() + spacingHorizontal;
+			height += gameEntities.get(i).getHeight() + spacingVertical;
+		}
+	}
+
+	// Getters and Setters
+
+	public int getX() {
+		return x;
+	}
+
+	public void setX(int x) {
+		this.x = x;
+		resetCoordinates();
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public void setY(int y) {
+		this.y = y;
+		resetCoordinates();
+	}
+
+	/**
+	 * A shorthand for setting up all the elements spacing.
+	 * 
+	 * @param top
+	 *            the margin from the top.
+	 * @param right
+	 *            the margin from the right.
+	 * @param bottom
+	 *            the margin from the bottom.
+	 * @param left
+	 *            the margin from the left.
+	 */
+	public void setSpacing(int horizontal, int vertical) {
+		this.spacingHorizontal = horizontal;
+		this.spacingVertical = vertical;
+		
+		resetCoordinates();
+	}
+
+	public int getSpacingHorizontal() {
+		return spacingHorizontal;
+	}
+
+	public void setSpacingHorizontal(int spacingHorizontal) {
+		this.spacingHorizontal = spacingHorizontal;
+		resetCoordinates();
+	}
+
+	public int getSpacingVertical() {
+		return spacingVertical;
+	}
+
+	public void setSpacingVertical(int spacingVertical) {
+		this.spacingVertical = spacingVertical;
+		resetCoordinates();
+	}
 
 	/**
 	 * Retrieves the list of gameEntities.
 	 * 
 	 * @return the list of all the added GameEntity's of the group.
 	 */
-	public List<GameEntity> getGameObjects() {
+	public List<GameEntity> getGameEntities() {
 		return gameEntities;
+	}
+
+	/**
+	 * Return true if any of the GameEntities has key triggers attached to it.
+	 */
+	@Override
+	public boolean hasKeyTriggers() {
+		for (int i = 0; i < gameEntities.size(); i++)
+			if (gameEntities.get(i).hasKeyTriggers())
+				return true;
+		return false;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public int getHeight() {
+		return height;
 	}
 
 }
