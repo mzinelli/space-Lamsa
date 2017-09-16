@@ -326,4 +326,12 @@ public class GameEntity implements GameObject {
 		return height;
 	}
 
+	public int getX() {
+		return x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
 }
