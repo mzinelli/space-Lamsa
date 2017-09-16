@@ -2,6 +2,8 @@ package com.mpu.spinv.engine.model;
 
 import java.awt.image.BufferedImage;
 
+import org.imgscalr.Scalr;
+
 /**
  * Sprite.java
  * 
@@ -28,6 +30,19 @@ public class Sprite {
 	 */
 	public Sprite(BufferedImage sprite) {
 		setSprite(sprite);
+	}
+
+	/**
+	 * Resizes the sprite to a given width and height.
+	 * 
+	 * @param width
+	 *            width that the sprite must be resized to.
+	 * @param height
+	 *            height that the sprite must be resized to.
+	 */
+	public void resizeSprite(int width, int height) {
+		BufferedImage resized = Scalr.resize(sprite, width, height);
+		sprite = resized;
 	}
 
 	// Getters and Setters

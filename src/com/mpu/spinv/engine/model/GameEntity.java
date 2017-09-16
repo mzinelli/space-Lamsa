@@ -252,6 +252,12 @@ public class GameEntity implements GameObject {
 		if (animation != null)
 			animation.reset();
 	}
+	
+	public void resizeSprite(int width, int height) {
+		this.width = width;
+		this.height = height;
+		staticSprite.resizeSprite(width, height);
+	}
 
 	// Controls Handling Methods
 
