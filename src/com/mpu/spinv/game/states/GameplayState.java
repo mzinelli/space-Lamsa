@@ -2,6 +2,7 @@ package com.mpu.spinv.game.states;
 
 import com.mpu.spinv.engine.model.State;
 import com.mpu.spinv.game.states.gameplaystate.Background;
+import com.mpu.spinv.game.states.gameplaystate.LifeBar;
 import com.mpu.spinv.game.states.gameplaystate.Player;
 
 /**
@@ -20,8 +21,9 @@ public class GameplayState extends State {
 
 	// -------------------------------------------
 	
-	private Player player;
 	private Background background;
+	private Player player;
+	private LifeBar lifebar;
 
 	public GameplayState() {
 		super(SAVE_RESOURCES);
@@ -30,11 +32,13 @@ public class GameplayState extends State {
 
 	@Override
 	public void loadResources() {
-		player = new Player();
 		background = new Background();
-		
-		addResource("background", background);
-		addResource("player", player);
+		player = new Player();
+		lifebar = new LifeBar();
+
+		addResource(background);
+		addResource(player);
+		addResource(lifebar);
 	}
 
 }
