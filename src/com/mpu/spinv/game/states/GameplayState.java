@@ -5,6 +5,7 @@ import com.mpu.spinv.game.states.gameplaystate.AlienGroup;
 import com.mpu.spinv.game.states.gameplaystate.Background;
 import com.mpu.spinv.game.states.gameplaystate.LifeBar;
 import com.mpu.spinv.game.states.gameplaystate.Player;
+import com.mpu.spinv.game.states.gameplaystate.Score;
 
 /**
  * GameplayState.java
@@ -23,8 +24,11 @@ public class GameplayState extends State {
 	// -------------------------------------------
 	
 	private Background background;
-	private Player player;
+	
 	private LifeBar lifebar;
+	private Score score;
+	
+	private Player player;
 	private AlienGroup alienGroup;
 
 	public GameplayState() {
@@ -35,14 +39,16 @@ public class GameplayState extends State {
 	@Override
 	public void loadResources() {
 		background = new Background();
+		lifebar = new LifeBar();
+		score = new Score();
 		player = new Player();
 		alienGroup = new AlienGroup();
-		lifebar = new LifeBar();
 
 		addResource(background);
 		addResource(player);
 		addResource(alienGroup);
 		addResource(lifebar);
+		addResource(score);
 	}
 
 }
