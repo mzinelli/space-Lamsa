@@ -1,6 +1,7 @@
 package com.mpu.spinv.game.states;
 
 import com.mpu.spinv.engine.model.State;
+import com.mpu.spinv.game.states.gameplaystate.AlienGroup;
 import com.mpu.spinv.game.states.gameplaystate.Background;
 import com.mpu.spinv.game.states.gameplaystate.LifeBar;
 import com.mpu.spinv.game.states.gameplaystate.Player;
@@ -24,6 +25,7 @@ public class GameplayState extends State {
 	private Background background;
 	private Player player;
 	private LifeBar lifebar;
+	private AlienGroup alienGroup;
 
 	public GameplayState() {
 		super(SAVE_RESOURCES);
@@ -34,10 +36,12 @@ public class GameplayState extends State {
 	public void loadResources() {
 		background = new Background();
 		player = new Player();
+		alienGroup = new AlienGroup();
 		lifebar = new LifeBar();
 
 		addResource(background);
 		addResource(player);
+		addResource(alienGroup);
 		addResource(lifebar);
 	}
 
