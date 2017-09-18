@@ -8,5 +8,7 @@ public class Constants {
 	public static final int WINDOW_HEIGHT = 600;
 	
 	public static final int DELAY = 17;
+	
+	public static boolean SHOW_ENTITIES_BORDERS = true;
 
 }

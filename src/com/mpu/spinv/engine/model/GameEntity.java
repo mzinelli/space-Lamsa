@@ -1,5 +1,6 @@
 package com.mpu.spinv.engine.model;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -158,8 +159,13 @@ public class GameEntity implements GameObject {
 	}
 
 	public void draw(Graphics g) {
-		if (visible && (animation != null || staticSprite != null))
+		if (visible && (animation != null || staticSprite != null)) {
 			g.drawImage((staticSprite == null ? animation.getSprite() : staticSprite.getSprite()), x, y, null);
+			if (Constants.SHOW_ENTITIES_BORDERS) {
+				g.setColor(Color.GREEN);
+				g.drawRect(x, y, width, height);
+			}
+		}
 	}
 
 	public void on(KeyTrigger trigger) {
