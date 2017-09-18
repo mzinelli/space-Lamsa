@@ -5,6 +5,8 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mpu.spinv.utils.Constants;
+
 /**
  * Group.java
  * 
@@ -118,8 +120,11 @@ public class Group implements GameObject {
 			go.y = lastElem.y + (layout == Group.LAYOUT_VERTICAL ? lastElem.getHeight() : 0) + spacingVertical;
 		}
 		
-		width += go.getWidth() + spacingHorizontal;
-		height += go.getHeight() + spacingVertical;
+		if (layout == Group.LAYOUT_HORIZONTAL || width == 0)
+			width += go.getWidth() + spacingHorizontal;
+		
+		if (layout == Group.LAYOUT_VERTICAL || height == 0)
+			height += go.getHeight() + spacingVertical;
 		
 		gameEntities.add(go);
 	}
@@ -145,6 +150,28 @@ public class Group implements GameObject {
 		gameEntities.clear();
 	}
 	
+	/**
+	 * Center the Group on screen horizontally. 
+	 */
+	public void centerHorizontalAxis() {
+		x = Constants.WINDOW_WIDTH / 2 - width / 2 - 4;
+		resetCoordinates();
+	}
+	
+	/**
+	 * Center the Group on screen vertically.
+	 */
+	public void centerVerticalAxis() {
+		y = Constants.WINDOW_HEIGHT / 2 - height / 2 - 30;
+		resetCoordinates();
+	}
+	
+	public void centerBothAxis() {
+		x = Constants.WINDOW_WIDTH / 2 - width / 2 - 4;
+		y = Constants.WINDOW_HEIGHT / 2 - height / 2 - 30;
+		resetCoordinates();
+	}
+	
 	private void resetCoordinates() {
 		width = 0;
 		height = 0;
@@ -158,9 +185,17 @@ public class Group implements GameObject {
 				gameEntities.get(i).y = lastElem.y + (layout == Group.LAYOUT_VERTICAL ? lastElem.getHeight() : 0) + spacingVertical;
 			}
 			
-			width += gameEntities.get(i).getWidth() + spacingHorizontal;
-			height += gameEntities.get(i).getHeight() + spacingVertical;
+			if (layout == Group.LAYOUT_HORIZONTAL)
+				width += gameEntities.get(i).getWidth() + spacingHorizontal;
+			else if (layout == Group.LAYOUT_VERTICAL)
+				height += gameEntities.get(i).getHeight() + spacingVertical;
 		}
+		
+		if (width == 0 && !(layout == Group.LAYOUT_HORIZONTAL) && gameEntities.size() > 0)
+			width = gameEntities.get(0).getWidth();
+		
+		if (height == 0 && !(layout == Group.LAYOUT_VERTICAL) && gameEntities.size() > 0)
+			height = gameEntities.get(0).getHeight();
 	}
 
 	// Getters and Setters
