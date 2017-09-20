@@ -12,15 +12,15 @@ import com.mpu.spinv.game.states.GameplayState;
 public class StateMachine {
 
 	private final Map<String, State> states;
-	private State state;
-	private String actState;
+	public static State activeState;
+	private String actStateId;
 
 	public static SpriteSheet spriteSheet;
 
 	public StateMachine() {
 		states = new HashMap<String, State>();
-		actState = "";
-		state = null;
+		actStateId = "";
+		activeState = null;
 
 		spriteSheet = new SpriteSheet();
 
@@ -28,13 +28,13 @@ public class StateMachine {
 	}
 
 	public void update() {
-		if (state != null)
-			state.update();
+		if (activeState != null)
+			activeState.update();
 	}
 
 	public void draw(Graphics g) {
-		if (state != null)
-			state.draw(g);
+		if (activeState != null)
+			activeState.draw(g);
 	}
 
 	/**
@@ -50,7 +50,7 @@ public class StateMachine {
 			states.put(key, state);
 
 			// If no state has been added yet, make it active.
-			if (actState.equals("")) {
+			if (actStateId.equals("")) {
 				setActiveState(key);
 			}
 		}
@@ -67,9 +67,9 @@ public class StateMachine {
 		if (states.containsKey(key)) {
 			state = states.get(key);
 			states.remove(key);
-			if (actState.equals(key)) {
-				this.state = null;
-				this.actState = "";
+			if (actStateId.equals(key)) {
+				activeState = null;
+				this.actStateId = "";
 			}
 		}
 		return state;
@@ -83,13 +83,13 @@ public class StateMachine {
 	 */
 	public void setActiveState(String key) {
 		if (states.containsKey(key)) {
-			actState = key;
-			state = states.get(key);
+			actStateId = key;
+			activeState = states.get(key);
 
 			// Sets the active spritesheet.
-			spriteSheet.setSpriteSheetImage(StateMachine.class.getResource(state.getSpriteSheetUrl()));
+			spriteSheet.setSpriteSheetImage(StateMachine.class.getResource(activeState.getSpriteSheetUrl()));
 
-			state.loadResources();
+			activeState.loadResources();
 		}
 	}
 
@@ -99,8 +99,8 @@ public class StateMachine {
 	 * @return The active {@link State} object.
 	 */
 	public State getActiveState() {
-		if (!actState.equalsIgnoreCase(""))
-			return state;
+		if (!actStateId.equalsIgnoreCase(""))
+			return activeState;
 		else
 			return null;
 	}
@@ -122,18 +122,18 @@ public class StateMachine {
 	// Controls Handling Methods
 	
 	public void keyPressed(KeyEvent e) {
-		if (state != null)
-			state.keyPressed(e);
+		if (activeState != null)
+			activeState.keyPressed(e);
 	}
 	
 	public void keyReleased(KeyEvent e) {
-		if (state != null)
-			state.keyReleased(e);
+		if (activeState != null)
+			activeState.keyReleased(e);
 	}
 	
 	public void keyTyped(KeyEvent e) {
-		if (state != null)
-			state.keyTyped(e);
+		if (activeState != null)
+			activeState.keyTyped(e);
 	}
 
 }

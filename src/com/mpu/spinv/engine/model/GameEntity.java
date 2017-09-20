@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.mpu.spinv.engine.ControlsManager;
 import com.mpu.spinv.engine.triggers.KeyTrigger;
 import com.mpu.spinv.utils.Constants;
 
@@ -28,7 +29,7 @@ public class GameEntity implements GameObject {
 	 * The direction to update x and y axis.
 	 */
 	protected int dx, dy;
-	
+
 	/**
 	 * The width and height of the game object.
 	 */
@@ -60,6 +61,27 @@ public class GameEntity implements GameObject {
 	 * sprite to draw instead.
 	 */
 	private Sprite staticSprite;
+
+	/**
+	 * A flag to determine if the game entity should pass through the state
+	 * collision detection or not.
+	 */
+	private boolean detectCollision;
+
+	/**
+	 * This will be true as long as the object is collided with another one.
+	 */
+	private boolean collided;
+
+	/**
+	 * If true, the object will not move to a place where it will become collided.
+	 */
+	private boolean cantMoveCollided;
+
+	/**
+	 * An event to be fired once the object has collided.
+	 */
+	private Event onCollisionEvent;
 
 	/**
 	 * If true, the object cannot be moved out of the screen.
@@ -97,6 +119,7 @@ public class GameEntity implements GameObject {
 		this.animation = null;
 		this.actAnimation = "";
 		this.staticSprite = null;
+		this.onCollisionEvent = null;
 	}
 
 	public GameEntity(int x, int y, Sprite staticSprite, boolean visible) {
@@ -115,13 +138,14 @@ public class GameEntity implements GameObject {
 		this.keyTriggers = new ArrayList<KeyTrigger>();
 		this.animation = null;
 		this.actAnimation = "";
+		this.onCollisionEvent = null;
 	}
 
 	public GameEntity(int x, int y, Animation animation, boolean visible) {
 		this.x = x;
 		this.y = y;
 		this.visible = visible;
-		
+
 		this.width = animation.getSprite().getWidth();
 		this.height = animation.getSprite().getHeight();
 
@@ -133,21 +157,25 @@ public class GameEntity implements GameObject {
 		this.animation = null;
 		this.actAnimation = "";
 		this.staticSprite = null;
+		this.onCollisionEvent = null;
 
 		// Setting the default animation
 		addAnimation("default", animation);
 	}
 
 	public void update() {
+		if (collided && cantMoveCollided)
+			return;
+
 		x += dx;
 		y += dy;
-		
+
 		if (screenBound) {
 			if (x < 0)
 				x = 0;
 			else if (x + width > Constants.WINDOW_WIDTH - 4)
 				x = Constants.WINDOW_WIDTH - width - 4;
-			
+
 			if (y < 0)
 				y = 0;
 			else if (y + height > Constants.WINDOW_HEIGHT - 30)
@@ -168,8 +196,26 @@ public class GameEntity implements GameObject {
 		}
 	}
 
+	/**
+	 * Binds a key press or released to an event.
+	 * 
+	 * Then, when this key is activated by the {@link ControlsManager} class, the
+	 * event is fired.
+	 * 
+	 * @param trigger
+	 *            The key and the resulting event to be fired.
+	 */
 	public void on(KeyTrigger trigger) {
 		keyTriggers.add(trigger);
+	}
+
+	public void onCollision(Event event) {
+		onCollisionEvent = event;
+	}
+	
+	@Override
+	public boolean checkCollision(GameObject go) {
+		return false;
 	}
 
 	/**
@@ -258,7 +304,7 @@ public class GameEntity implements GameObject {
 		if (animation != null)
 			animation.reset();
 	}
-	
+
 	public void resizeSprite(int width, int height) {
 		this.width = width;
 		this.height = height;
@@ -338,6 +384,32 @@ public class GameEntity implements GameObject {
 
 	public int getY() {
 		return y;
+	}
+
+	public boolean isDetectCollision() {
+		return detectCollision;
+	}
+
+	public void setDetectCollision(boolean detectCollision) {
+		this.detectCollision = detectCollision;
+	}
+
+	public boolean isCantMoveCollided() {
+		return cantMoveCollided;
+	}
+
+	public void setCantMoveCollided(boolean cantMoveCollided) {
+		this.cantMoveCollided = cantMoveCollided;
+	}
+
+	public boolean isCollided() {
+		return collided;
+	}
+
+	public void setCollided(boolean collided) {
+		this.collided = collided;
+		if (collided)
+			onCollisionEvent.run();
 	}
 
 }

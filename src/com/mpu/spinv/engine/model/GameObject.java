@@ -21,6 +21,8 @@ public interface GameObject {
 	public void keyReleased(KeyEvent e);
 	public void keyTyped(KeyEvent e);
 	
+	public boolean checkCollision(GameObject go);
+	
 	public int getX();
 	public int getY();
 	
