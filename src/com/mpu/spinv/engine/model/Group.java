@@ -14,7 +14,7 @@ import com.mpu.spinv.utils.Constants;
  * @author Brendon Pagano
  * @date 2017-09-14
  */
-public class Group implements GameObject {
+public class Group extends GameObject {
 
 	// ---------------- Constants ----------------
 
@@ -42,16 +42,6 @@ public class Group implements GameObject {
 	private List<GameEntity> gameEntities;
 
 	/**
-	 * Coordinates of the pivot element of the Group.
-	 */
-	private int x, y;
-
-	/**
-	 * The width and height of the Group.
-	 */
-	private int width, height;
-
-	/**
 	 * The margin applied to every {@link GameEntity} of the Group.
 	 */
 	private int spacingHorizontal, spacingVertical;
@@ -72,21 +62,33 @@ public class Group implements GameObject {
 	private int gridCols;
 
 	public Group(int x, int y, int layout) {
-		this.x = x;
-		this.y = y;
+		super(x, y, 0, 0, true);
+
 		this.layout = layout;
 
 		// Default params
 		this.gameEntities = new ArrayList<GameEntity>();
 		this.spacingHorizontal = 0;
 		this.spacingVertical = 0;
-		this.width = 0;
-		this.height = 0;
 		this.gridRows = 0;
 		this.gridCols = 0;
 	}
 
 	public void update() {
+		int previousX = x, previousY = y;
+
+		super.update();
+
+		if (previousX != x || previousY != y) {
+			int diffX = x - previousX;
+			int diffY = y - previousY;
+			
+			gameEntities.forEach(go -> {
+				go.setX(go.getX() + diffX);
+				go.setY(go.getY() + diffY);
+			});
+		}
+		
 		gameEntities.forEach(go -> {
 			go.update();
 		});
@@ -102,9 +104,15 @@ public class Group implements GameObject {
 			g.drawRect(x, y, width, height);
 		}
 	}
-	
+
+	/**
+	 * Return true if any of the GameEntities has key triggers attached to it.
+	 */
 	@Override
-	public boolean checkCollision(GameObject go) {
+	public boolean hasKeyTriggers() {
+		for (int i = 0; i < gameEntities.size(); i++)
+			if (gameEntities.get(i).hasKeyTriggers())
+				return true;
 		return false;
 	}
 
@@ -112,7 +120,7 @@ public class Group implements GameObject {
 	public void keyPressed(KeyEvent e) {
 		gameEntities.forEach(g -> {
 			if (g.hasKeyTriggers())
-				keyPressed(e);
+				g.keyPressed(e);
 		});
 	}
 
@@ -120,7 +128,7 @@ public class Group implements GameObject {
 	public void keyReleased(KeyEvent e) {
 		gameEntities.forEach(g -> {
 			if (g.hasKeyTriggers())
-				keyReleased(e);
+				g.keyReleased(e);
 		});
 	}
 
@@ -128,7 +136,7 @@ public class Group implements GameObject {
 	public void keyTyped(KeyEvent e) {
 		gameEntities.forEach(g -> {
 			if (g.hasKeyTriggers())
-				keyTyped(e);
+				g.keyTyped(e);
 		});
 	}
 
@@ -279,17 +287,9 @@ public class Group implements GameObject {
 
 	// Getters and Setters
 
-	public int getX() {
-		return x;
-	}
-
 	public void setX(int x) {
 		this.x = x;
 		resetCoordinates();
-	}
-
-	public int getY() {
-		return y;
 	}
 
 	public void setY(int y) {
@@ -341,25 +341,6 @@ public class Group implements GameObject {
 	 */
 	public List<GameEntity> getGameEntities() {
 		return gameEntities;
-	}
-
-	/**
-	 * Return true if any of the GameEntities has key triggers attached to it.
-	 */
-	@Override
-	public boolean hasKeyTriggers() {
-		for (int i = 0; i < gameEntities.size(); i++)
-			if (gameEntities.get(i).hasKeyTriggers())
-				return true;
-		return false;
-	}
-
-	public int getWidth() {
-		return width;
-	}
-
-	public int getHeight() {
-		return height;
 	}
 
 	public int getGridRows() {
