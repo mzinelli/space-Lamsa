@@ -44,11 +44,11 @@ public class GameplayState extends State {
 		player = new Player();
 		alienGroup = new AlienGroup();
 
-		addResource(background);
-		addResource(player);
-		addResource(alienGroup);
-		addResource(lifebar);
-		addResource(score);
+		addResource("background", background);
+		addResource("player", player);
+		addResource("alien-group", alienGroup);
+		addResource("lifebar", lifebar);
+		addResource("score", score);
 	}
 
 }

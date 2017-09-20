@@ -3,18 +3,19 @@ package com.mpu.spinv.engine.model;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.List;
+
+import com.mpu.spinv.utils.AdvList;
 
 public class State {
 
-	private final List<GameObject> gameObjects;
+	private final AdvList<GameObject> gameObjects;
 
 	private String spriteSheetUrl;
 
 	private boolean saveResources;
 
 	public State(boolean saveResources) {
-		gameObjects = new ArrayList<GameObject>();
+		gameObjects = new AdvList<GameObject>();
 		this.saveResources = saveResources;
 	}
 
@@ -22,7 +23,7 @@ public class State {
 	 * Main update method.
 	 */
 	public void update() {
-		gameObjects.forEach(go -> go.update());
+		gameObjects.forEach((k, v) -> v.update());
 	}
 
 	/**
@@ -31,8 +32,8 @@ public class State {
 	 * @param g
 	 */
 	public void draw(Graphics g) {
-		gameObjects.forEach(go -> {
-			go.draw(g);
+		gameObjects.forEach((k, v) -> {
+			v.draw(g);
 		});
 	}
 
@@ -50,30 +51,29 @@ public class State {
 	 */
 	public void killResources() {
 		if (!saveResources)
-			for (int i = gameObjects.size() - 1; i >= 0; i--)
-				gameObjects.remove(i);
+			gameObjects.clear();
 	}
 
 	// Controls Handling Methods.
 
 	public void keyPressed(KeyEvent e) {
-		gameObjects.forEach(go -> {
-			if (go.hasKeyTriggers())
-				go.keyPressed(e);
+		gameObjects.forEach((k, v) -> {
+			if (v.hasKeyTriggers())
+				v.keyPressed(e);
 		});
 	}
 
 	public void keyReleased(KeyEvent e) {
-		gameObjects.forEach(go -> {
-			if (go.hasKeyTriggers())
-				go.keyReleased(e);
+		gameObjects.forEach((k, v) -> {
+			if (v.hasKeyTriggers())
+				v.keyReleased(e);
 		});
 	}
 
 	public void keyTyped(KeyEvent e) {
-		gameObjects.forEach(go -> {
-			if (go.hasKeyTriggers())
-				go.keyTyped(e);
+		gameObjects.forEach((k, v) -> {
+			if (v.hasKeyTriggers())
+				v.keyTyped(e);
 		});
 	}
 
@@ -83,8 +83,8 @@ public class State {
 	 * @param obj
 	 *            A {@link GameEntity} to be added.
 	 */
-	protected void addResource(GameObject obj) {
-		gameObjects.add(obj);
+	protected void addResource(String key, GameObject obj) {
+		gameObjects.add(key, obj);
 	}
 
 	/**
@@ -93,8 +93,8 @@ public class State {
 	 * @param obj
 	 *            the reference of the object to remove.
 	 */
-	protected void removeResource(GameObject obj) {
-		gameObjects.remove(obj);
+	protected void removeResource(String key) {
+		gameObjects.remove(key);
 	}
 
 	// Getters and Setters

@@ -102,6 +102,11 @@ public class Group implements GameObject {
 			g.drawRect(x, y, width, height);
 		}
 	}
+	
+	@Override
+	public boolean checkCollision(GameObject go) {
+		return false;
+	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {

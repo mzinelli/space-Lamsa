@@ -2,6 +2,7 @@ package com.mpu.spinv.utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
 
 /**
  * AdvList.java
@@ -12,12 +13,12 @@ import java.util.List;
 public class AdvList<T> {
 
 	/**
-	 * The list containing the ids of the values.
+	 * The list containing the keys to the values.
 	 */
-	private List<String> idsList;
+	private List<String> keyList;
 
 	/**
-	 * The list containing the values of the ids.
+	 * The list containing the values of the keys.
 	 */
 	private List<T> valuesList;
 
@@ -29,7 +30,7 @@ public class AdvList<T> {
 	private boolean overwriteValues;
 
 	public AdvList() {
-		idsList = new ArrayList<String>();
+		keyList = new ArrayList<String>();
 		valuesList = new ArrayList<T>();
 		size = 0;
 
@@ -40,14 +41,14 @@ public class AdvList<T> {
 	/**
 	 * Adds an element to the list.
 	 * 
-	 * @param id
+	 * @param key
 	 *            The identifier of the element to be added.
 	 * @param value
 	 *            The object to add to the list.
 	 */
-	public void add(String id, T value) {
-		if (overwriteValues || !idExists(id)) {
-			idsList.add(id);
+	public void add(String key, T value) {
+		if (overwriteValues || !containsKey(key)) {
+			keyList.add(key);
 			valuesList.add(value);
 			size++;
 		}
@@ -56,18 +57,18 @@ public class AdvList<T> {
 	/**
 	 * Removes a object from the list.
 	 * 
-	 * @param id
+	 * @param key
 	 *            The identifier of the object to remove from the list.
 	 * @return The object removed, null otherwise.
 	 */
-	public T remove(String id) {
+	public T remove(String key) {
 		T removed = null;
 
-		for (int i = 0; i < idsList.size(); i++) {
-			if (id.equals(idsList.get(i))) {
+		for (int i = 0; i < keyList.size(); i++) {
+			if (key.equals(keyList.get(i))) {
 				removed = valuesList.get(i);
 				valuesList.remove(i);
-				idsList.remove(i);
+				keyList.remove(i);
 				size--;
 			}
 		}
@@ -79,20 +80,26 @@ public class AdvList<T> {
 	 * Clears the list.
 	 */
 	public void clear() {
-		idsList.clear();
+		keyList.clear();
 		valuesList.clear();
+	}
+	
+	public void forEach(BiConsumer<String, T> consumer) {
+		for (int i = 0; i < size; i++) {
+			consumer.accept(keyList.get(i), valuesList.get(i));
+		}
 	}
 
 	/**
-	 * Checks if an id exists in the list.
+	 * Checks if a key exists in the list.
 	 * 
-	 * @param id
+	 * @param key
 	 *            the id to be evaluated.
 	 * @return true if the id is exists within the list, false otherwise.
 	 */
-	private boolean idExists(String id) {
-		for (int i = 0; i < idsList.size(); i++)
-			if (id.equals(idsList.get(i)))
+	public boolean containsKey(String key) {
+		for (int i = 0; i < keyList.size(); i++)
+			if (key.equals(keyList.get(i)))
 				return true;
 
 		return false;
@@ -104,17 +111,23 @@ public class AdvList<T> {
 		return size;
 	}
 	
-	public T get(String id) {
+	public T get(String key) {
 		T toGet = null;
 		
-		for (int i = 0; i < idsList.size(); i++) {
-			if (id.equals(idsList.get(i))) {
+		for (int i = 0; i < keyList.size(); i++) {
+			if (key.equals(keyList.get(i))) {
 				toGet = valuesList.get(i);
 				break;
 			}
 		}
 		
 		return toGet;
+	}
+	
+	public T get(int i) {
+		if (i >= 0 && i < size)
+			return valuesList.get(i);
+		return null;
 	}
 
 	public boolean isOverwriteValues() {

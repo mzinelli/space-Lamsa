@@ -2,23 +2,22 @@ package com.mpu.spinv.engine;
 
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
-import java.util.HashMap;
-import java.util.Map;
 
 import com.mpu.spinv.engine.model.SpriteSheet;
 import com.mpu.spinv.engine.model.State;
 import com.mpu.spinv.game.states.GameplayState;
+import com.mpu.spinv.utils.AdvList;
 
 public class StateMachine {
 
-	private final Map<String, State> states;
+	private final AdvList<State> states;
 	public static State activeState;
 	private String actStateId;
 
 	public static SpriteSheet spriteSheet;
 
 	public StateMachine() {
-		states = new HashMap<String, State>();
+		states = new AdvList<State>();
 		actStateId = "";
 		activeState = null;
 
@@ -38,7 +37,7 @@ public class StateMachine {
 	}
 
 	/**
-	 * Adds a {@link State} object into the {@link StateMachine#states} Hashmap.
+	 * Adds a {@link State} object into the {@link StateMachine#states} list.
 	 * 
 	 * @param key
 	 *            The key identifier of the {@link State} to be added.
@@ -47,7 +46,7 @@ public class StateMachine {
 	 */
 	public void addState(String key, State state) {
 		if (!states.containsKey(key)) {
-			states.put(key, state);
+			states.add(key, state);
 
 			// If no state has been added yet, make it active.
 			if (actStateId.equals("")) {
@@ -57,7 +56,7 @@ public class StateMachine {
 	}
 
 	/**
-	 * Removes a {@link State} from the Hashmap.
+	 * Removes a {@link State} from the list.
 	 * 
 	 * @param key
 	 *            The key identifier of the {@link State} to be removed.
@@ -118,19 +117,19 @@ public class StateMachine {
 		else
 			return null;
 	}
-	
+
 	// Controls Handling Methods
-	
+
 	public void keyPressed(KeyEvent e) {
 		if (activeState != null)
 			activeState.keyPressed(e);
 	}
-	
+
 	public void keyReleased(KeyEvent e) {
 		if (activeState != null)
 			activeState.keyReleased(e);
 	}
-	
+
 	public void keyTyped(KeyEvent e) {
 		if (activeState != null)
 			activeState.keyTyped(e);
