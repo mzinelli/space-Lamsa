@@ -12,7 +12,7 @@ import com.mpu.spinv.engine.triggers.KeyTrigger;
 import com.mpu.spinv.utils.Constants;
 
 /**
- * GameObject.java
+ * GameEntity.java
  * 
  * @author Brendon Pagano
  * @date 2017-08-08
