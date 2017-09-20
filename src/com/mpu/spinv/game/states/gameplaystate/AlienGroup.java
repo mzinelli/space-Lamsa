@@ -26,8 +26,6 @@ public class AlienGroup extends Group {
 		super(X, Y, Group.LAYOUT_GRID);
 		
 		setGridSize(2, 5);
-		setSpacingHorizontal(10);
-		setSpacingVertical(10);
 		
 		for (int i = 0; i < TOTAL_ALIENS; i++)
 			add(new Alien());

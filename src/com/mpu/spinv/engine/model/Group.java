@@ -224,6 +224,8 @@ public class Group implements GameObject {
 
 		int highestWidth = 0, highestHeight = 0;
 		int pivotX = x, pivotY = y;
+		
+		int highestColWidth = 0;
 
 		width = 0;
 		height = 0;
@@ -261,10 +263,19 @@ public class Group implements GameObject {
 				height += actHeight + spacingVertical;
 			else if (layout == Group.LAYOUT_GRID) {
 				width += actWidth + spacingHorizontal;
-				if (i % gridCols == 0)
+				if (i % gridCols == 0) {
 					height += highestHeight + spacingVertical;
+					if (highestColWidth == 0)
+						highestColWidth = width;
+					else
+						highestColWidth = (width > highestColWidth) ? width : highestColWidth;
+					width = 0;
+				}
 			}
 		}
+		
+		if (isGrid)
+			width = highestColWidth;
 
 		if (width == 0 && !(layout == Group.LAYOUT_HORIZONTAL))
 			width = highestWidth;
