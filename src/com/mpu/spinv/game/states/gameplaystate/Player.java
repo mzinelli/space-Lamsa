@@ -8,7 +8,7 @@ import java.util.List;
 import com.mpu.spinv.engine.StateMachine;
 import com.mpu.spinv.engine.model.GameEntity;
 import com.mpu.spinv.engine.model.Sprite;
-import com.mpu.spinv.engine.triggers.KeyTrigger;
+import com.mpu.spinv.engine.triggers.KeyTriggerEvent;
 import com.mpu.spinv.utils.Constants;
 
 /**
@@ -60,40 +60,40 @@ public class Player extends GameEntity {
 		 */
 
 		// Moving up
-		on(new KeyTrigger(KeyEvent.VK_UP, t -> {
-			if (t == KeyTrigger.KEY_PRESSED)
+		on(new KeyTriggerEvent(KeyEvent.VK_UP, (k, t) -> {
+			if (t == KeyTriggerEvent.KEY_PRESSED)
 				dy = -VELOCITY;
-			else if (t == KeyTrigger.KEY_RELEASED)
+			else if (t == KeyTriggerEvent.KEY_RELEASED)
 				dy = 0;
 		}));
 
 		// Moving down
-		on(new KeyTrigger(KeyEvent.VK_DOWN, t -> {
-			if (t == KeyTrigger.KEY_PRESSED)
+		on(new KeyTriggerEvent(KeyEvent.VK_DOWN, (k, t) -> {
+			if (t == KeyTriggerEvent.KEY_PRESSED)
 				dy = VELOCITY;
-			else if (t == KeyTrigger.KEY_RELEASED)
+			else if (t == KeyTriggerEvent.KEY_RELEASED)
 				dy = 0;
 		}));
 
 		// Moving right
-		on(new KeyTrigger(KeyEvent.VK_RIGHT, t -> {
-			if (t == KeyTrigger.KEY_PRESSED)
+		on(new KeyTriggerEvent(KeyEvent.VK_RIGHT, (k, t) -> {
+			if (t == KeyTriggerEvent.KEY_PRESSED)
 				dx = VELOCITY;
-			else if (t == KeyTrigger.KEY_RELEASED)
+			else if (t == KeyTriggerEvent.KEY_RELEASED)
 				dx = 0;
 		}));
 
 		// Moving left
-		on(new KeyTrigger(KeyEvent.VK_LEFT, t -> {
-			if (t == KeyTrigger.KEY_PRESSED)
+		on(new KeyTriggerEvent(KeyEvent.VK_LEFT, (k, t) -> {
+			if (t == KeyTriggerEvent.KEY_PRESSED)
 				dx = -VELOCITY;
-			else if (t == KeyTrigger.KEY_RELEASED)
+			else if (t == KeyTriggerEvent.KEY_RELEASED)
 				dx = 0;
 		}));
 		
 		// Shoot
-		on(new KeyTrigger(KeyEvent.VK_SPACE, t -> {
-			if (t == KeyTrigger.KEY_RELEASED) {
+		on(new KeyTriggerEvent(KeyEvent.VK_SPACE, (k, t) -> {
+			if (t == KeyTriggerEvent.KEY_RELEASED) {
 				shots.add(new Shot(x + getWidth() / 2, y));
 			}
 		}));

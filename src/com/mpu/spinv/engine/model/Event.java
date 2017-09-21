@@ -6,13 +6,11 @@ package com.mpu.spinv.engine.model;
  * @author Brendon Pagano
  * @date 2017-09-20
  */
-public interface Event {
+public interface Event<T> {
 	
 	/**
 	 * The method to be run once the event has been called.
 	 */
-	public void run();
+	public void run(T t, int info);
 
 }
-
-

@@ -2,15 +2,15 @@ package com.mpu.spinv.engine.triggers;
 
 import java.awt.event.KeyEvent;
 
-import com.mpu.spinv.engine.model.KeyTriggerEvent;
+import com.mpu.spinv.engine.model.Event;
 
 /**
- * KeyTrigger.java
+ * KeyTriggerEvent.java
  * 
  * @author Brendon Pagano
  * @date 2017-09-14
  */
-public class KeyTrigger {
+public class KeyTriggerEvent {
 
 	// ---------------- Constants ----------------
 
@@ -40,20 +40,20 @@ public class KeyTrigger {
 	/**
 	 * The event to be run once the trigger condition has been satisfied.
 	 */
-	private KeyTriggerEvent event;
+	private Event<KeyEvent> event;
 
 	/**
 	 * A object that will run a given event when the determined key is pressed.
 	 * 
 	 * @param event
 	 */
-	public KeyTrigger(int keyCode, KeyTriggerEvent event) {
+	public KeyTriggerEvent(int keyCode, Event<KeyEvent> event) {
 		this.keyCode = keyCode;
 		this.event = event;
 	}
 
 	/**
-	 * Called everytime a key is pressed. If all the conditions are met, the linked
+	 * Called every time a key is pressed. If all the conditions are met, the linked
 	 * event is executed.
 	 * 
 	 * @param e
@@ -64,7 +64,7 @@ public class KeyTrigger {
 	 */
 	public void update(KeyEvent e, int triggerType) {
 		if (keyCode == e.getKeyCode())
-			event.run(triggerType);
+			event.run(e, triggerType);
 	}
 
 	// Getters and Setters
@@ -77,12 +77,8 @@ public class KeyTrigger {
 		this.keyCode = keyCode;
 	}
 
-	public KeyTriggerEvent getEvent() {
+	public Event<KeyEvent> getEvent() {
 		return event;
-	}
-
-	public void setEvent(KeyTriggerEvent event) {
-		this.event = event;
 	}
 
 }

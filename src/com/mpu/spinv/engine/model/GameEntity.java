@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import com.mpu.spinv.engine.ControlsManager;
-import com.mpu.spinv.engine.triggers.KeyTrigger;
+import com.mpu.spinv.engine.triggers.KeyTriggerEvent;
 import com.mpu.spinv.utils.AdvList;
 import com.mpu.spinv.utils.Constants;
 
@@ -97,42 +97,6 @@ public class GameEntity extends GameObject {
 				g.drawRect(x, y, width, height);
 			}
 		}
-	}
-
-	/**
-	 * Binds a key press, key released or key typed to an event.
-	 * 
-	 * Then, when this key is activated by the {@link ControlsManager} class, the
-	 * event is fired.
-	 * 
-	 * @param trigger
-	 *            The key and the resulting event to be fired.
-	 */
-	public void on(KeyTrigger trigger) {
-		keyTriggers.add(trigger);
-	}
-
-	/**
-	 * Whenever the object collides with an object that is not mapped into the
-	 * collision with events, this method will be fired.
-	 * 
-	 * @param event
-	 *            the event to be fired once the object has collided.
-	 */
-	public void onCollision(Event event) {
-		onCollisionEvent = event;
-	}
-
-	/**
-	 * Maps an event to a key of a {@link State} game entity.
-	 * 
-	 * @param key
-	 *            the identifier of the entity.
-	 * @param event
-	 *            the event to be fired once the object touches the mapped entity.
-	 */
-	public void onCollisionWith(String key, Event event) {
-		onCollisionWithEvents.add(key, event);
 	}
 
 	/**
@@ -252,22 +216,12 @@ public class GameEntity extends GameObject {
 		this.detectCollision = detectCollision;
 	}
 
-	public boolean isCantMoveCollided() {
-		return cantMoveCollided;
-	}
-
-	public void setCantMoveCollided(boolean cantMoveCollided) {
-		this.cantMoveCollided = cantMoveCollided;
-	}
-
 	public boolean isCollided() {
 		return collided;
 	}
 
 	public void setCollided(boolean collided) {
 		this.collided = collided;
-		if (collided)
-			onCollisionEvent.run();
 	}
 
 }

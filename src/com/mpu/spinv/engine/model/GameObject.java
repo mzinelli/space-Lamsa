@@ -5,8 +5,9 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mpu.spinv.engine.triggers.KeyTrigger;
-import com.mpu.spinv.utils.AdvList;
+import com.mpu.spinv.engine.ControlsManager;
+import com.mpu.spinv.engine.triggers.CollisionEvent;
+import com.mpu.spinv.engine.triggers.KeyTriggerEvent;
 import com.mpu.spinv.utils.Constants;
 
 /**
@@ -53,27 +54,17 @@ public abstract class GameObject {
 	 * This will be true as long as the object is collided with another one.
 	 */
 	protected boolean collided;
-
-	/**
-	 * If true, the object will not move to a place where it will become collided.
-	 */
-	protected boolean cantMoveCollided;
-
-	/**
-	 * An event to be fired once the object has collided.
-	 */
-	protected Event onCollisionEvent;
-
-	/**
-	 * A list mapping events to keys. So the state can compare the id of the
-	 * collided objects.
-	 */
-	protected AdvList<Event> onCollisionWithEvents;
 	
 	/**
 	 * A list of the key triggers of the object.
 	 */
-	protected List<KeyTrigger> keyTriggers;
+	protected List<KeyTriggerEvent> keyTriggers;
+	
+	/**
+	 * A list mapping events to keys. So the state can compare the id of the
+	 * collided objects.
+	 */
+	protected List<CollisionEvent> collisionEvents;
 	
 	public abstract void draw(Graphics g);
 	
@@ -85,18 +76,14 @@ public abstract class GameObject {
 		this.visible = visible;
 		
 		// Default params
-		this.keyTriggers = new ArrayList<KeyTrigger>();
-		this.onCollisionWithEvents = new AdvList<Event>();
+		this.keyTriggers = new ArrayList<KeyTriggerEvent>();
+		this.collisionEvents = new ArrayList<CollisionEvent>();
 		this.dx = 0;
 		this.dy = 0;
 		this.screenBound = false;
-		this.onCollisionEvent = null;
 	}
 
-	public void update() {
-		if (collided && cantMoveCollided)
-			return;
-		
+	public void update() {		
 		x += dx;
 		y += dy;
 		
@@ -113,7 +100,26 @@ public abstract class GameObject {
 		}
 	}
 	
+	// Collision Manager methods
+	
+	public void on(CollisionEvent collisionEvent) {
+		collisionEvents.add(collisionEvent);
+	}
+	
 	// Controls Manager methods
+	
+	/**
+	 * Binds a key press, key released or key typed to an event.
+	 * 
+	 * Then, when this key is activated by the {@link ControlsManager} class, the
+	 * event is fired.
+	 * 
+	 * @param trigger
+	 *            The key and the resulting event to be fired.
+	 */
+	public void on(KeyTriggerEvent trigger) {
+		keyTriggers.add(trigger);
+	}
 	
 	public boolean hasKeyTriggers() {
 		return keyTriggers.size() > 0;
@@ -122,21 +128,21 @@ public abstract class GameObject {
 	public void keyPressed(KeyEvent e) {
 		if (keyTriggers.size() > 0)
 			keyTriggers.forEach(kt -> {
-				kt.update(e, KeyTrigger.KEY_PRESSED);
+				kt.update(e, KeyTriggerEvent.KEY_PRESSED);
 			});
 	}
 	
 	public void keyReleased(KeyEvent e) {
 		if (keyTriggers.size() > 0)
 			keyTriggers.forEach(kt -> {
-				kt.update(e, KeyTrigger.KEY_RELEASED);
+				kt.update(e, KeyTriggerEvent.KEY_RELEASED);
 			});
 	}
 
 	public void keyTyped(KeyEvent e) {
 		if (keyTriggers.size() > 0)
 			keyTriggers.forEach(kt -> {
-				kt.update(e, KeyTrigger.KEY_TYPED);
+				kt.update(e, KeyTriggerEvent.KEY_TYPED);
 			});
 	}
 	
