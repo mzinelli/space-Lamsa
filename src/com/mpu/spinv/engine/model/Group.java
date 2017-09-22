@@ -73,7 +73,13 @@ public class Group extends GameObject {
 		this.gridRows = 0;
 		this.gridCols = 0;
 	}
+	
+	@Override
+	public boolean isGroup() {
+		return true;
+	}
 
+	@Override
 	public void update() {
 		int previousX = x, previousY = y;
 
@@ -94,6 +100,7 @@ public class Group extends GameObject {
 		});
 	}
 
+	@Override
 	public void draw(Graphics g) {
 		if (visible) {
 			gameEntities.forEach(go -> {

@@ -79,7 +79,13 @@ public class GameEntity extends GameObject {
 		// Setting the default animation
 		addAnimation("default", animation);
 	}
+	
+	@Override
+	public boolean isGroup() {
+		return false;
+	}
 
+	@Override
 	public void update() {
 		super.update();
 
@@ -87,6 +93,7 @@ public class GameEntity extends GameObject {
 			animation.update();
 	}
 
+	@Override
 	public void draw(Graphics g) {
 		if (visible && (animation != null || staticSprite != null)) {
 			g.drawImage((staticSprite == null ? animation.getSprite() : staticSprite.getSprite()), x, y, null);

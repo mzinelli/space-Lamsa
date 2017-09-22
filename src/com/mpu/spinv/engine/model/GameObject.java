@@ -204,6 +204,8 @@ public abstract class GameObject {
 	}
 
 	// Getters and Setters
+	
+	public abstract boolean isGroup();
 
 	public boolean isVisible() {
 		return visible;
