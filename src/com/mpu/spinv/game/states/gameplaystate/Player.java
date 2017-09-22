@@ -97,7 +97,7 @@ public class Player extends GameEntity {
 			if (t == KeyTriggerEvent.KEY_RELEASED) {
 				Shot shot = new Shot(x + getWidth() / 2, y);
 				shots.add(shot);
-				addChildren(shot);
+				addChild(shot);
 			}
 		}));
 	}
@@ -111,11 +111,11 @@ public class Player extends GameEntity {
 			
 			if (shot.getY() + shot.getHeight() < 0) {
 				shots.remove(i);
-				removeChildren(i);
+				removeChild(i);
 				continue;
 			} else if(shot.shouldDestroy) {
 				shots.remove(i);
-				removeChildren(i);
+				removeChild(i);
 				continue;
 			}
 			

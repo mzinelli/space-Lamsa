@@ -116,11 +116,11 @@ public abstract class GameObject {
 		return children;
 	}
 	
-	public void addChildren(GameObject obj) {
+	public void addChild(GameObject obj) {
 		children.add(obj);
 	}
 	
-	public void removeChildren(int i) {
+	public void removeChild(int i) {
 		children.remove(i);
 	}
 
