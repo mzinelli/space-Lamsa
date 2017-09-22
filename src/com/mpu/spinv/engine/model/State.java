@@ -11,7 +11,7 @@ import com.mpu.spinv.utils.AdvList;
 public class State {
 
 	private final AdvList<GameObject> gameObjects;
-
+	
 	private String spriteSheetUrl;
 
 	private boolean saveResources;
@@ -54,7 +54,10 @@ public class State {
 						return;
 					
 					if (CollisionHandler.hasCollided(v, target)) {
-						v.collided(ce.getCollisionTarget(), gameObjects.get(ce.getCollisionTarget()));
+						if (target.isGroup()) {
+							// use Group#returnCollided(v);
+						} else
+							v.collided(ce.getCollisionTarget(), gameObjects.get(ce.getCollisionTarget()));
 						gameObjects.get(ce.getCollisionTarget()).collided(k, v);
 					}
 				});

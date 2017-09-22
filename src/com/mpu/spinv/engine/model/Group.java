@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mpu.spinv.engine.CollisionHandler;
 import com.mpu.spinv.utils.Constants;
 
 /**
@@ -112,6 +113,17 @@ public class Group extends GameObject {
 				g.drawRect(x, y, width, height);
 			}
 		}
+	}
+	
+	public List<GameObject> returnCollided(GameObject go) {
+		List<GameObject> collidedObjs = new ArrayList<GameObject>();
+		
+		gameEntities.forEach(ge -> {
+			if (CollisionHandler.hasCollided(go, ge))
+				collidedObjs.add(ge);
+		});
+		
+		return collidedObjs.size() > 0 ? collidedObjs : null;
 	}
 
 	/**
