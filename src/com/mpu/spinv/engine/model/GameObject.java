@@ -45,12 +45,6 @@ public abstract class GameObject {
 	protected boolean screenBound;
 
 	/**
-	 * A flag to determine if the game entity should pass through the state
-	 * collision detection or not.
-	 */
-	protected boolean detectCollision;
-
-	/**
 	 * This will be true as long as the object is collided with another one.
 	 */
 	protected boolean collided;
@@ -245,14 +239,6 @@ public abstract class GameObject {
 
 	public void setY(int y) {
 		this.y = y;
-	}
-
-	public boolean isDetectCollision() {
-		return detectCollision;
-	}
-
-	public void setDetectCollision(boolean detectCollision) {
-		this.detectCollision = detectCollision;
 	}
 
 }
