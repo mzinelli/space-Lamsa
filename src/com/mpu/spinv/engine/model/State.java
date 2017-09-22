@@ -48,7 +48,12 @@ public class State {
 			if (v.hasCollisionEvents()) {
 				List<CollisionEvent> collisionEvents = v.getCollisionEvents();
 				collisionEvents.forEach(ce -> {
-					if (CollisionHandler.hasCollided(v, gameObjects.get(ce.getCollisionTarget()))) {
+					GameObject target = gameObjects.get(ce.getCollisionTarget());
+					
+					if (!target.isVisible())
+						return;
+					
+					if (CollisionHandler.hasCollided(v, target)) {
 						v.collided(ce.getCollisionTarget(), gameObjects.get(ce.getCollisionTarget()));
 						gameObjects.get(ce.getCollisionTarget()).collided(k, v);
 					}
@@ -60,7 +65,12 @@ public class State {
 					if (c.hasCollisionEvents()) {
 						List<CollisionEvent> collisionEvents = c.getCollisionEvents();
 						collisionEvents.forEach(ce -> {
-							if (CollisionHandler.hasCollided(c, gameObjects.get(ce.getCollisionTarget()))) {
+							GameObject target = gameObjects.get(ce.getCollisionTarget());
+							
+							if (!target.isVisible())
+								return;
+							
+							if (CollisionHandler.hasCollided(c, target)) {
 								c.collided(ce.getCollisionTarget(), gameObjects.get(ce.getCollisionTarget()));
 							}
 						});
