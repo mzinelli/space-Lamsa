@@ -17,33 +17,33 @@ import com.mpu.spinv.utils.Constants;
  * @date 2017-09-14
  */
 public abstract class GameObject {
-	
+
 	/**
 	 * The x and y position of the object in the screen.
 	 */
 	protected int x, y;
-	
+
 	/**
 	 * The direction to update x and y axis.
 	 */
 	protected int dx, dy;
-	
+
 	/**
 	 * The width and height of the game object.
 	 */
 	protected int width, height;
-	
+
 	/**
 	 * Attribute used for checking. Mainly for drawing or not the object accordingly
 	 * to it's visibility status.
 	 */
 	protected boolean visible;
-	
+
 	/**
 	 * If true, the object cannot be moved out of the screen.
 	 */
 	protected boolean screenBound;
-	
+
 	/**
 	 * A flag to determine if the game entity should pass through the state
 	 * collision detection or not.
@@ -54,39 +54,45 @@ public abstract class GameObject {
 	 * This will be true as long as the object is collided with another one.
 	 */
 	protected boolean collided;
-	
+
 	/**
 	 * A list of the key triggers of the object.
 	 */
 	protected List<KeyTriggerEvent> keyTriggers;
-	
+
 	/**
 	 * A list mapping events to keys. So the state can compare the id of the
 	 * collided objects.
 	 */
 	protected List<CollisionEvent> collisionEvents;
 	
+	/**
+	 * The object's children, if it has any.
+	 */
+	protected List<GameObject> children;
+
 	public abstract void draw(Graphics g);
-	
+
 	public GameObject(int x, int y, int width, int height, boolean visible) {
-		this.x = x; 
+		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
 		this.visible = visible;
-		
+
 		// Default params
 		this.keyTriggers = new ArrayList<KeyTriggerEvent>();
 		this.collisionEvents = new ArrayList<CollisionEvent>();
+		this.children = new ArrayList<GameObject>();
 		this.dx = 0;
 		this.dy = 0;
 		this.screenBound = false;
 	}
 
-	public void update() {		
+	public void update() {
 		x += dx;
 		y += dy;
-		
+
 		if (screenBound) {
 			if (x < 0)
 				x = 0;
@@ -100,14 +106,65 @@ public abstract class GameObject {
 		}
 	}
 	
-	// Collision Manager methods
+	// Children management
 	
+	public boolean hasChildren() {
+		return children.size() > 0;
+	}
+	
+	public List<GameObject> getChildren() {
+		return children;
+	}
+	
+	public void addChildren(GameObject obj) {
+		children.add(obj);
+	}
+	
+	public void removeChildren(int i) {
+		children.remove(i);
+	}
+
+	// Collision Manager methods
+
+	public List<CollisionEvent> getCollisionEvents() {
+		return collisionEvents;
+	}
+
+	public boolean hasCollisionEvents() {
+		return collisionEvents.size() > 0;
+	}
+
+	/**
+	 * Adds a new {@link CollisionEvent} to the Object's collision events list.
+	 * 
+	 * @param collisionEvent
+	 *            The new collision event to add.
+	 */
 	public void on(CollisionEvent collisionEvent) {
 		collisionEvents.add(collisionEvent);
 	}
-	
+
+	/**
+	 * The {@link State} will run this method once the object has collided with
+	 * another object that is detecting collision.
+	 * 
+	 * @param key
+	 *            the key identifier of the object collided with.
+	 * @param obj
+	 *            a reference to the object collided with.
+	 */
+	public void collided(String key, GameObject obj) {
+		if (collided != true)
+			collisionEvents.forEach(c -> c.collided(key, obj));
+		collided = true;
+	}
+
+	public void setNotCollided() {
+		collided = false;
+	}
+
 	// Controls Manager methods
-	
+
 	/**
 	 * Binds a key press, key released or key typed to an event.
 	 * 
@@ -120,18 +177,18 @@ public abstract class GameObject {
 	public void on(KeyTriggerEvent trigger) {
 		keyTriggers.add(trigger);
 	}
-	
+
 	public boolean hasKeyTriggers() {
 		return keyTriggers.size() > 0;
 	}
-	
+
 	public void keyPressed(KeyEvent e) {
 		if (keyTriggers.size() > 0)
 			keyTriggers.forEach(kt -> {
 				kt.update(e, KeyTriggerEvent.KEY_PRESSED);
 			});
 	}
-	
+
 	public void keyReleased(KeyEvent e) {
 		if (keyTriggers.size() > 0)
 			keyTriggers.forEach(kt -> {
@@ -145,9 +202,9 @@ public abstract class GameObject {
 				kt.update(e, KeyTriggerEvent.KEY_TYPED);
 			});
 	}
-	
+
 	// Getters and Setters
-	
+
 	public boolean isVisible() {
 		return visible;
 	}
@@ -155,7 +212,7 @@ public abstract class GameObject {
 	public void setVisible(boolean visible) {
 		this.visible = visible;
 	}
-	
+
 	public boolean isScreenBound() {
 		return screenBound;
 	}
@@ -163,7 +220,7 @@ public abstract class GameObject {
 	public void setScreenBound(boolean screenBound) {
 		this.screenBound = screenBound;
 	}
-	
+
 	public int getWidth() {
 		return width;
 	}
@@ -175,7 +232,7 @@ public abstract class GameObject {
 	public int getX() {
 		return x;
 	}
-	
+
 	public void setX(int x) {
 		this.x = x;
 	}
@@ -183,11 +240,17 @@ public abstract class GameObject {
 	public int getY() {
 		return y;
 	}
-	
+
 	public void setY(int y) {
 		this.y = y;
 	}
-	
+
+	public boolean isDetectCollision() {
+		return detectCollision;
+	}
+
+	public void setDetectCollision(boolean detectCollision) {
+		this.detectCollision = detectCollision;
+	}
+
 }
-
-

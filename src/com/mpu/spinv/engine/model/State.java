@@ -2,8 +2,10 @@ package com.mpu.spinv.engine.model;
 
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
+import java.util.List;
 
+import com.mpu.spinv.engine.CollisionHandler;
+import com.mpu.spinv.engine.triggers.CollisionEvent;
 import com.mpu.spinv.utils.AdvList;
 
 public class State {
@@ -24,6 +26,7 @@ public class State {
 	 */
 	public void update() {
 		gameObjects.forEach((k, v) -> v.update());
+		collisionCheckup();
 	}
 
 	/**
@@ -34,6 +37,36 @@ public class State {
 	public void draw(Graphics g) {
 		gameObjects.forEach((k, v) -> {
 			v.draw(g);
+		});
+	}
+
+	/**
+	 * Iterates through all the state elements and check the collisions.
+	 */
+	protected void collisionCheckup() {
+		gameObjects.forEach((k, v) -> {
+			if (v.hasCollisionEvents()) {
+				List<CollisionEvent> collisionEvents = v.getCollisionEvents();
+				collisionEvents.forEach(ce -> {
+					if (CollisionHandler.hasCollided(v, gameObjects.get(ce.getCollisionTarget()))) {
+						v.collided(ce.getCollisionTarget(), gameObjects.get(ce.getCollisionTarget()));
+						gameObjects.get(ce.getCollisionTarget()).collided(k, v);
+					}
+				});
+			}
+			
+			if (v.hasChildren()) {
+				v.getChildren().forEach(c -> {
+					if (c.hasCollisionEvents()) {
+						List<CollisionEvent> collisionEvents = c.getCollisionEvents();
+						collisionEvents.forEach(ce -> {
+							if (CollisionHandler.hasCollided(c, gameObjects.get(ce.getCollisionTarget()))) {
+								c.collided(ce.getCollisionTarget(), gameObjects.get(ce.getCollisionTarget()));
+							}
+						});
+					}
+				});
+			}
 		});
 	}
 

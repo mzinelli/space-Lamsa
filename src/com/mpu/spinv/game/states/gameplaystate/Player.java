@@ -8,6 +8,7 @@ import java.util.List;
 import com.mpu.spinv.engine.StateMachine;
 import com.mpu.spinv.engine.model.GameEntity;
 import com.mpu.spinv.engine.model.Sprite;
+import com.mpu.spinv.engine.triggers.CollisionEvent;
 import com.mpu.spinv.engine.triggers.KeyTriggerEvent;
 import com.mpu.spinv.utils.Constants;
 
@@ -94,7 +95,9 @@ public class Player extends GameEntity {
 		// Shoot
 		on(new KeyTriggerEvent(KeyEvent.VK_SPACE, (k, t) -> {
 			if (t == KeyTriggerEvent.KEY_RELEASED) {
-				shots.add(new Shot(x + getWidth() / 2, y));
+				Shot shot = new Shot(x + getWidth() / 2, y);
+				shots.add(shot);
+				addChildren(shot);
 			}
 		}));
 	}
@@ -102,11 +105,19 @@ public class Player extends GameEntity {
 	@Override
 	public void update() {
 		super.update();
+		
 		for (int i = shots.size()-1; i >= 0; i--) {
 			Shot shot = shots.get(i);
 			
-			if (shot.getY() + shot.getHeight() < 0)
+			if (shot.getY() + shot.getHeight() < 0) {
 				shots.remove(i);
+				removeChildren(i);
+				continue;
+			} else if(shot.shouldDestroy) {
+				shots.remove(i);
+				removeChildren(i);
+				continue;
+			}
 			
 			shot.update();
 		}
@@ -135,6 +146,8 @@ public class Player extends GameEntity {
 		 */
 		private Sprite sprite;
 		
+		public boolean shouldDestroy = false;
+		
 		public Shot(int x, int y) {
 			super(x - SHOT_WIDTH /2, y, INITIAL_VISIBILITY);
 			
@@ -143,6 +156,11 @@ public class Player extends GameEntity {
 			setStaticSprite(sprite);
 			
 			dy = -SHOT_VELOCITY;
+			
+			on(new CollisionEvent("alien-group", (go, i) -> {
+				go.setVisible(false);
+				shouldDestroy = true;
+			}));
 		}
 		
 	}
