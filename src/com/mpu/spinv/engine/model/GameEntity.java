@@ -3,8 +3,6 @@ package com.mpu.spinv.engine.model;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import com.mpu.spinv.engine.ControlsManager;
-import com.mpu.spinv.engine.triggers.KeyTriggerEvent;
 import com.mpu.spinv.utils.AdvList;
 import com.mpu.spinv.utils.Constants;
 
@@ -206,22 +204,6 @@ public class GameEntity extends GameObject {
 		this.staticSprite = staticSprite;
 		this.width = staticSprite.getWidth();
 		this.height = staticSprite.getHeight();
-	}
-
-	public boolean isDetectCollision() {
-		return detectCollision;
-	}
-
-	public void setDetectCollision(boolean detectCollision) {
-		this.detectCollision = detectCollision;
-	}
-
-	public boolean isCollided() {
-		return collided;
-	}
-
-	public void setCollided(boolean collided) {
-		this.collided = collided;
 	}
 
 }

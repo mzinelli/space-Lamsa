@@ -95,13 +95,15 @@ public class Group extends GameObject {
 	}
 
 	public void draw(Graphics g) {
-		gameEntities.forEach(go -> {
-			go.draw(g);
-		});
-
-		if (Constants.SHOW_ENTITIES_BORDERS) {
-			g.setColor(Color.GREEN);
-			g.drawRect(x, y, width, height);
+		if (visible) {
+			gameEntities.forEach(go -> {
+				go.draw(g);
+			});
+	
+			if (Constants.SHOW_ENTITIES_BORDERS) {
+				g.setColor(Color.GREEN);
+				g.drawRect(x, y, width, height);
+			}
 		}
 	}
 
