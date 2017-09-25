@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 import com.mpu.spinv.engine.model.SpriteSheet;
 import com.mpu.spinv.engine.model.State;
 import com.mpu.spinv.game.states.GameplayState;
+import com.mpu.spinv.game.states.Splash;
 import com.mpu.spinv.utils.AdvList;
 
 public class StateMachine {
@@ -23,6 +24,7 @@ public class StateMachine {
 
 		spriteSheet = new SpriteSheet();
 
+		addState("splash", new Splash());
 		addState("gameplay", new GameplayState());
 	}
 
@@ -86,7 +88,8 @@ public class StateMachine {
 			activeState = states.get(key);
 
 			// Sets the active spritesheet.
-			spriteSheet.setSpriteSheetImage(StateMachine.class.getResource(activeState.getSpriteSheetUrl()));
+			if (activeState.getSpriteSheetUrl() != null)
+				spriteSheet.setSpriteSheetImage(StateMachine.class.getResource(activeState.getSpriteSheetUrl()));
 
 			activeState.loadResources();
 		}

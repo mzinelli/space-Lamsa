@@ -1,6 +1,7 @@
 package com.mpu.spinv.game.states.gameplaystate;
 
 import com.mpu.spinv.engine.StateMachine;
+import com.mpu.spinv.engine.model.Animation;
 import com.mpu.spinv.engine.model.GameEntity;
 import com.mpu.spinv.engine.model.Group;
 import com.mpu.spinv.engine.model.Sprite;
@@ -49,16 +50,23 @@ public class AlienGroup extends Group {
 		 * The alien's sprite.
 		 */
 		private Sprite sprite;
+		private Animation destroyAnimation;
 		
 		public Alien() {
 			// Pass 0 and 0 to x and y params because the {@link Group} will reset it anyway
 			super(0, 0, INITIAL_VISIBILITY);
 			
 			sprite = new Sprite(StateMachine.spriteSheet.getSprite(423, 729, 93, 83));
+			//destroyAnimation = new Animation();
 			
 			setStaticSprite(sprite);
 			resizeSprite(WIDTH, HEIGHT);
-		} 
+		}
+		
+		@Override
+		public void update() {
+			super.update();
+		}
 	
 	}
 
