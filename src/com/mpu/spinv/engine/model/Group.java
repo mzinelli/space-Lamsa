@@ -123,7 +123,7 @@ public class Group extends GameObject {
 				collidedObjs.add(ge);
 		});
 		
-		return collidedObjs.size() > 0 ? collidedObjs : null;
+		return collidedObjs;
 	}
 
 	/**

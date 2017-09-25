@@ -55,7 +55,13 @@ public class State {
 					
 					if (CollisionHandler.hasCollided(v, target)) {
 						if (target.isGroup()) {
-							// use Group#returnCollided(v);
+							Group gTarget = (Group) target;
+							List<GameObject> collidedObjs = gTarget.returnCollided(v);
+							collidedObjs.forEach(co -> {
+								if (!co.isVisible())
+									return;
+								v.collided(ce.getCollisionTarget(), co);
+							});
 						} else
 							v.collided(ce.getCollisionTarget(), gameObjects.get(ce.getCollisionTarget()));
 						gameObjects.get(ce.getCollisionTarget()).collided(k, v);
@@ -74,7 +80,15 @@ public class State {
 								return;
 							
 							if (CollisionHandler.hasCollided(c, target)) {
-								c.collided(ce.getCollisionTarget(), gameObjects.get(ce.getCollisionTarget()));
+								if (target.isGroup()) {
+									Group gTarget = (Group) target;
+									gTarget.returnCollided(c).forEach(co -> {
+										if (!co.isVisible())
+											return;
+										c.collided(ce.getCollisionTarget(), co);
+									});
+								} else
+									c.collided(ce.getCollisionTarget(), gameObjects.get(ce.getCollisionTarget()));
 							}
 						});
 					}
