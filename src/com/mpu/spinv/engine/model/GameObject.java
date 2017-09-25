@@ -105,6 +105,11 @@ public abstract class GameObject {
 				y = Constants.WINDOW_HEIGHT - height - 30;
 		}
 	}
+	
+	public void die() {
+		visible = false;
+		dead = true;
+	}
 
 	// Children management
 

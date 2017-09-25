@@ -163,8 +163,9 @@ public class Player extends GameEntity {
 			dy = -SHOT_VELOCITY;
 			
 			on(new CollisionEvent("alien-group", (go, i) -> {
-				go.setVisible(false);
-				dead = true;
+				go.die();
+				die();
+				
 				score.increment(Constants.ALIEN_SCORE);
 			}));
 		}
