@@ -120,7 +120,7 @@ public class Player extends GameEntity {
 				shots.remove(i);
 				removeChild(i);
 				continue;
-			} else if(shot.shouldDestroy) {
+			} else if(shot.isDead()) {
 				shots.remove(i);
 				removeChild(i);
 				continue;
@@ -153,8 +153,6 @@ public class Player extends GameEntity {
 		 */
 		private Sprite sprite;
 		
-		public boolean shouldDestroy = false;
-		
 		public Shot(int x, int y) {
 			super(x - SHOT_WIDTH /2, y, INITIAL_VISIBILITY);
 			
@@ -166,7 +164,7 @@ public class Player extends GameEntity {
 			
 			on(new CollisionEvent("alien-group", (go, i) -> {
 				go.setVisible(false);
-				shouldDestroy = true;
+				dead = true;
 				score.increment(Constants.ALIEN_SCORE);
 			}));
 		}

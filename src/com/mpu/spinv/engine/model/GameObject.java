@@ -50,6 +50,12 @@ public abstract class GameObject {
 	protected boolean collided;
 
 	/**
+	 * Declares if the object is dead or not. If this is set to true, the object
+	 * will be removed to any list that it is present.
+	 */
+	protected boolean dead;
+
+	/**
 	 * A list of the key triggers of the object.
 	 */
 	protected List<KeyTriggerEvent> keyTriggers;
@@ -59,7 +65,7 @@ public abstract class GameObject {
 	 * collided objects.
 	 */
 	protected List<CollisionEvent> collisionEvents;
-	
+
 	/**
 	 * The object's children, if it has any.
 	 */
@@ -99,21 +105,21 @@ public abstract class GameObject {
 				y = Constants.WINDOW_HEIGHT - height - 30;
 		}
 	}
-	
+
 	// Children management
-	
+
 	public boolean hasChildren() {
 		return children.size() > 0;
 	}
-	
+
 	public List<GameObject> getChildren() {
 		return children;
 	}
-	
+
 	public void addChild(GameObject obj) {
 		children.add(obj);
 	}
-	
+
 	public void removeChild(int i) {
 		children.remove(i);
 	}
@@ -198,7 +204,7 @@ public abstract class GameObject {
 	}
 
 	// Getters and Setters
-	
+
 	public abstract boolean isGroup();
 
 	public boolean isVisible() {
@@ -239,6 +245,10 @@ public abstract class GameObject {
 
 	public void setY(int y) {
 		this.y = y;
+	}
+
+	public boolean isDead() {
+		return dead;
 	}
 
 }
