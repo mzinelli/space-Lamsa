@@ -43,9 +43,16 @@ public class Player extends GameEntity {
 	 * A list of the shots on screen.
 	 */
 	private List<Shot> shots;
+	
+	/**
+	 * A reference to the score class.
+	 */
+	private Score score;
 
-	public Player() {
+	public Player(Score score) {
 		super(INITIAL_X, INITIAL_Y, INITIAL_VISIBILITY);
+		
+		this.score = score;
 		
 		sprite = new Sprite(StateMachine.spriteSheet.getSprite(224, 832, 99, 75));
 		shots = new ArrayList<Shot>();
@@ -160,6 +167,7 @@ public class Player extends GameEntity {
 			on(new CollisionEvent("alien-group", (go, i) -> {
 				go.setVisible(false);
 				shouldDestroy = true;
+				score.increment(Constants.ALIEN_SCORE);
 			}));
 		}
 		

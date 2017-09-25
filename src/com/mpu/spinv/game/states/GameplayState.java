@@ -41,7 +41,7 @@ public class GameplayState extends State {
 		background = new Background();
 		lifebar = new LifeBar();
 		score = new Score();
-		player = new Player();
+		player = new Player(score);
 		alienGroup = new AlienGroup();
 
 		addResource("background", background);

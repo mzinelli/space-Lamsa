@@ -43,6 +43,7 @@ public class Score extends GameEntity {
 		if (width == 0 || _scoreChanged) {
 			width = g.getFontMetrics().stringWidth(SCORE_TEXT + score);
 			x = X - width;
+			_scoreChanged = false;
 		}
 		if (height == 0) {
 			height = g.getFontMetrics().getHeight();
@@ -55,8 +56,13 @@ public class Score extends GameEntity {
 	
 	// Getters and Setters
 	
-	public void setScore(int score) {
-		this.score = score;
+	public void increment(int n) {
+		score += n;
+		_scoreChanged = true;
+	}
+	
+	public void decrement(int n) {
+		score -= n;
 		_scoreChanged = true;
 	}
 	
