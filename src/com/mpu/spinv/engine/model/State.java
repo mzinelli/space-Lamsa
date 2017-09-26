@@ -50,7 +50,7 @@ public class State {
 				collisionEvents.forEach(ce -> {
 					GameObject target = gameObjects.get(ce.getCollisionTarget());
 					
-					if (!target.isVisible())
+					if (!target.isVisible() || !target.isListenCollision())
 						return;
 					
 					if (CollisionHandler.hasCollided(v, target)) {
@@ -58,7 +58,7 @@ public class State {
 							Group gTarget = (Group) target;
 							List<GameObject> collidedObjs = gTarget.returnCollided(v);
 							collidedObjs.forEach(co -> {
-								if (!co.isVisible())
+								if (!co.isVisible() || !co.isListenCollision())
 									return;
 								v.collided(ce.getCollisionTarget(), co);
 							});
@@ -76,14 +76,14 @@ public class State {
 						collisionEvents.forEach(ce -> {
 							GameObject target = gameObjects.get(ce.getCollisionTarget());
 							
-							if (!target.isVisible())
+							if (!target.isVisible() || !target.isListenCollision())
 								return;
 							
 							if (CollisionHandler.hasCollided(c, target)) {
 								if (target.isGroup()) {
 									Group gTarget = (Group) target;
 									gTarget.returnCollided(c).forEach(co -> {
-										if (!co.isVisible())
+										if (!co.isVisible() || !co.isListenCollision())
 											return;
 										c.collided(ce.getCollisionTarget(), co);
 									});

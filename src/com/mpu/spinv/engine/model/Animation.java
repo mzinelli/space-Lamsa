@@ -159,7 +159,6 @@ public class Animation {
 						currentFrame += direction * 2;
 					} else if (loopType == Animation.NO_LOOP) {
 						stopped = true;
-						currentFrame--;
 					}
 				}
 			}

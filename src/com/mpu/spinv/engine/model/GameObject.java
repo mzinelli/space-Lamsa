@@ -48,6 +48,11 @@ public abstract class GameObject {
 	 * This will be true as long as the object is collided with another one.
 	 */
 	protected boolean collided;
+	
+	/**
+	 * If the object should listen to collision calls.
+	 */
+	protected boolean listenCollision;
 
 	/**
 	 * Declares if the object is dead or not. If this is set to true, the object
@@ -87,6 +92,7 @@ public abstract class GameObject {
 		this.dx = 0;
 		this.dy = 0;
 		this.screenBound = false;
+		this.listenCollision = true;
 	}
 
 	public void update() {
@@ -254,6 +260,14 @@ public abstract class GameObject {
 
 	public boolean isDead() {
 		return dead;
+	}
+
+	public boolean isListenCollision() {
+		return listenCollision;
+	}
+
+	public void setListenCollision(boolean listenCollision) {
+		this.listenCollision = listenCollision;
 	}
 
 }

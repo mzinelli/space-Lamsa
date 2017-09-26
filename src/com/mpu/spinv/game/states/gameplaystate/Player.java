@@ -163,7 +163,6 @@ public class Player extends GameEntity {
 			dy = -SHOT_VELOCITY;
 			
 			on(new CollisionEvent("alien-group", (go, i) -> {
-				System.out.println("colidiu");
 				if (!go.isDead() ) {
 					go.die();
 					die();

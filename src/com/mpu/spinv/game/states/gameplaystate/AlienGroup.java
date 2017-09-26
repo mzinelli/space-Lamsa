@@ -82,14 +82,14 @@ public class AlienGroup extends Group {
 		public void update() {
 			super.update();
 			
-			if (dead && getActiveAnimation().hasEnded()) {
+			if (!listenCollision && getActiveAnimation().hasEnded()) {
 				super.die();
 			}
 		}
 		
 		@Override
 		public void die() {
-			dead = true;
+			listenCollision = false;
 			setAnimation("death");
 			startAnimation();
 		}
