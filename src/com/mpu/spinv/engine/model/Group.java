@@ -82,8 +82,6 @@ public class Group extends GameObject {
 
 	@Override
 	public void update() {
-		System.out.println(gameEntities.size());
-		
 		// Checks for dead objects within the group
 		for (int i = gameEntities.size()-1; i >= 0; i--) {
 			if (gameEntities.get(i).isDead()) {

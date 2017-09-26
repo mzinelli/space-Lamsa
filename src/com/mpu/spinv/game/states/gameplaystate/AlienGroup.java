@@ -34,6 +34,13 @@ public class AlienGroup extends Group {
 		
 		centerBothAxis();
 	}
+	
+	@Override
+	public void update() {
+		super.update();
+		
+		System.out.println("width: " + width + "|height: " + height);
+	}
 
 	private class Alien extends GameEntity {
 		
