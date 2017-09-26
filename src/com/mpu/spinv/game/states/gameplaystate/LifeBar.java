@@ -60,7 +60,7 @@ public class LifeBar extends Group {
 			// Pass 0 and 0 to x and y params because the {@link Group} will reset it anyway
 			super(0, 0, INITIAL_VISIBILITY);
 			
-			sprite = new Sprite(StateMachine.spriteSheet.getSprite(775, 301, 32, 25));
+			sprite = new Sprite(StateMachine.spriteSheet.getSprite(775, 397, 32, 25));
 			
 			setStaticSprite(sprite);
 			setScreenBound(true);

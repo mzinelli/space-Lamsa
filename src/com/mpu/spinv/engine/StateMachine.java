@@ -24,7 +24,7 @@ public class StateMachine {
 
 		spriteSheet = new SpriteSheet();
 
-		addState("splash", new Splash());
+		// addState("splash", new Splash());
 		addState("gameplay", new GameplayState());
 	}
 

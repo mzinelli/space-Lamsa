@@ -52,7 +52,7 @@ public class GameEntity extends GameObject {
 		// Default params
 		this.animations = new AdvList<Animation>();
 		this.animation = null;
-		this.actAnimation = "";
+		this.actAnimation = null;
 		this.staticSprite = null;
 	}
 
@@ -64,7 +64,7 @@ public class GameEntity extends GameObject {
 		// Default params
 		this.animations = new AdvList<Animation>();
 		this.animation = null;
-		this.actAnimation = "";
+		this.actAnimation = null;
 	}
 
 	public GameEntity(int x, int y, Animation animation, boolean visible) {
@@ -73,7 +73,7 @@ public class GameEntity extends GameObject {
 		// Default params
 		this.animations = new AdvList<Animation>();
 		this.animation = null;
-		this.actAnimation = "";
+		this.actAnimation = null;
 		this.staticSprite = null;
 
 		// Setting the default animation
@@ -89,14 +89,14 @@ public class GameEntity extends GameObject {
 	public void update() {
 		super.update();
 
-		if (!actAnimation.equals(""))
+		if (actAnimation != null)
 			animation.update();
 	}
 
 	@Override
 	public void draw(Graphics g) {
 		if (visible && (animation != null || staticSprite != null)) {
-			g.drawImage((staticSprite == null ? animation.getSprite() : staticSprite.getSprite()), x, y, null);
+			g.drawImage((actAnimation == null ? staticSprite.getSprite() : animation.getSprite()), x, y, null);
 			if (Constants.SHOW_ENTITIES_BORDERS) {
 				g.setColor(Color.GREEN);
 				g.drawRect(x, y, width, height);
@@ -115,7 +115,7 @@ public class GameEntity extends GameObject {
 	public void addAnimation(String key, Animation animation) {
 		if (!key.equals("")) {
 			animations.add(key, animation);
-			if (this.actAnimation.equals("")) {
+			if (actAnimation == null) {
 				this.actAnimation = key;
 				this.animation = animation;
 			}
@@ -129,12 +129,12 @@ public class GameEntity extends GameObject {
 	 *            the identifier of the animation to be set.
 	 */
 	public void setAnimation(String key) {
-		if (animations.containsKey(key)) {
+		if (key == null) {
+			actAnimation = null;
+			animation = null;
+		} else if (animations.containsKey(key)) {
 			actAnimation = key;
 			animation = animations.get(key);
-		} else if (key.equals("")) {
-			actAnimation = key;
-			animation = null;
 		}
 	}
 
@@ -153,7 +153,7 @@ public class GameEntity extends GameObject {
 			animations.remove(key);
 			if (actAnimation.equals(key)) {
 				this.animation = null;
-				this.actAnimation = "";
+				this.actAnimation = null;
 			}
 		}
 		return animation;
@@ -201,6 +201,10 @@ public class GameEntity extends GameObject {
 
 	public String getAnimationKey() {
 		return actAnimation;
+	}
+	
+	public Animation getActiveAnimation() {
+		return animation;
 	}
 
 	public Sprite getStaticSprite() {

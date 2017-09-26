@@ -56,9 +56,24 @@ public class AlienGroup extends Group {
 			// Pass 0 and 0 to x and y params because the {@link Group} will reset it anyway
 			super(0, 0, INITIAL_VISIBILITY);
 			
-			sprite = new Sprite(StateMachine.spriteSheet.getSprite(423, 729, 93, 83));
-			//destroyAnimation = new Animation();
+			destroyAnimation = new Animation(new Sprite[] {
+					new Sprite(StateMachine.spriteSheet.getSprite(0, 0, 96, 96)),
+					new Sprite(StateMachine.spriteSheet.getSprite(96, 0, 96, 96)),
+					new Sprite(StateMachine.spriteSheet.getSprite(192, 0, 96, 96)),
+					new Sprite(StateMachine.spriteSheet.getSprite(288, 0, 96, 96)),
+					new Sprite(StateMachine.spriteSheet.getSprite(384, 0, 96, 96)),
+					new Sprite(StateMachine.spriteSheet.getSprite(480, 0, 96, 96)),
+					new Sprite(StateMachine.spriteSheet.getSprite(576, 0, 96, 96)),
+					new Sprite(StateMachine.spriteSheet.getSprite(672, 0, 96, 96)),
+					new Sprite(StateMachine.spriteSheet.getSprite(768, 0, 96, 96)),
+					new Sprite(StateMachine.spriteSheet.getSprite(864, 0, 96, 96)),
+					new Sprite(StateMachine.spriteSheet.getSprite(960, 0, 96, 96)),
+					new Sprite(StateMachine.spriteSheet.getSprite(1056, 0, 96, 96)),
+			}, 3, Animation.NO_LOOP, true);
+			addAnimation("death", destroyAnimation);
+			setAnimation(null);
 			
+			sprite = new Sprite(StateMachine.spriteSheet.getSprite(423, 825, 93, 83));
 			setStaticSprite(sprite);
 			resizeSprite(WIDTH, HEIGHT);
 		}
@@ -66,6 +81,17 @@ public class AlienGroup extends Group {
 		@Override
 		public void update() {
 			super.update();
+			
+			if (dead && getActiveAnimation().hasEnded()) {
+				super.die();
+			}
+		}
+		
+		@Override
+		public void die() {
+			dead = true;
+			setAnimation("death");
+			startAnimation();
 		}
 	
 	}

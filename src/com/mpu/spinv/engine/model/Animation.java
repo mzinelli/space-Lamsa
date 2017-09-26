@@ -133,6 +133,12 @@ public class Animation {
 		if (frames.length > 0)
 			currentFrame = direction > 0 ? 0 : frames.length - 1;
 	}
+	
+	public boolean hasEnded() {
+		if (loopType == Animation.NO_LOOP && currentFrame >= frames.length)
+			return true;
+		return false;
+	}
 
 	/**
 	 * Updates the animation.
@@ -151,8 +157,10 @@ public class Animation {
 					else if (loopType == Animation.ALTERNATIVE_LOOP) {
 						direction = -direction;
 						currentFrame += direction * 2;
-					} else if (loopType == Animation.NO_LOOP)
+					} else if (loopType == Animation.NO_LOOP) {
 						stopped = true;
+						currentFrame--;
+					}
 				}
 			}
 		}
@@ -171,7 +179,7 @@ public class Animation {
 	public void setLoopType(int loopType) {
 		if (loopType != Animation.NORMAL_LOOP || loopType != Animation.ALTERNATIVE_LOOP
 				|| loopType != Animation.NO_LOOP) {
-			System.out.println("Erro: Tipo de loop nï¿½o suportado. Use as constantes da classe Animation.");
+			System.out.println("Erro: Tipo de loop não suportado. Use as constantes da classe Animation.");
 			System.exit(0);
 		}
 		this.loopType = loopType;

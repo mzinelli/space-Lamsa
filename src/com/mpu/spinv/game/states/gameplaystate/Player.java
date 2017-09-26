@@ -54,7 +54,7 @@ public class Player extends GameEntity {
 		
 		this.score = score;
 		
-		sprite = new Sprite(StateMachine.spriteSheet.getSprite(224, 832, 99, 75));
+		sprite = new Sprite(StateMachine.spriteSheet.getSprite(224, 928, 99, 75));
 		shots = new ArrayList<Shot>();
 
 		// Setting the player image.
@@ -156,17 +156,20 @@ public class Player extends GameEntity {
 		public Shot(int x, int y) {
 			super(x - SHOT_WIDTH /2, y, INITIAL_VISIBILITY);
 			
-			sprite = new Sprite(StateMachine.spriteSheet.getSprite(858, 230, SHOT_WIDTH, SHOT_HEIGHT));
+			sprite = new Sprite(StateMachine.spriteSheet.getSprite(858, 326, SHOT_WIDTH, SHOT_HEIGHT));
 			
 			setStaticSprite(sprite);
 			
 			dy = -SHOT_VELOCITY;
 			
 			on(new CollisionEvent("alien-group", (go, i) -> {
-				go.die();
-				die();
-				
-				score.increment(Constants.ALIEN_SCORE);
+				System.out.println("colidiu");
+				if (!go.isDead() ) {
+					go.die();
+					die();
+					
+					score.increment(Constants.ALIEN_SCORE);
+				}
 			}));
 		}
 		
