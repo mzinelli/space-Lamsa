@@ -17,7 +17,7 @@ public class LifeBar extends Group {
 
 	private static final int MAX_LIFES = 3;
 
-	private static final int X = 5;
+	private static final int X = 10;
 	private static final int Y = 10;
 
 	// -------------------------------------------
