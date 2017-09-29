@@ -36,7 +36,7 @@ public class Core extends JPanel implements Runnable {
 	 */
 	private void initGame() {
 		stateMachine = new StateMachine();
-		
+
 		controlsManager = new ControlsManager(stateMachine);
 		addKeyListener(controlsManager);
 
@@ -80,7 +80,7 @@ public class Core extends JPanel implements Runnable {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			
+
 			if (diff > 0)
 				System.out.println("Time diff: " + diff);
 
