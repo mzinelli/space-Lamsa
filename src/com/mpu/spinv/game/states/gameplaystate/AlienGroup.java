@@ -5,6 +5,7 @@ import com.mpu.spinv.engine.model.Animation;
 import com.mpu.spinv.engine.model.GameEntity;
 import com.mpu.spinv.engine.model.Group;
 import com.mpu.spinv.engine.model.Sprite;
+import com.mpu.spinv.utils.Constants;
 
 /**
  * AlienGroup.java
@@ -21,6 +22,8 @@ public class AlienGroup extends Group {
 	
 	private static final int TOTAL_ALIENS = 10;
 	
+	private static final int VELOCITY = 1;
+	
 	// -------------------------------------------
 	
 	public AlienGroup() {
@@ -32,14 +35,18 @@ public class AlienGroup extends Group {
 		for (int i = 0; i < TOTAL_ALIENS; i++)
 			add(new Alien());
 		
-		centerBothAxis();
+		setVelocity(VELOCITY, VELOCITY);
+		moveRight(true);
 	}
 	
 	@Override
 	public void update() {
 		super.update();
 		
-		System.out.println("width: " + width + "|height: " + height);
+		if (x + width > Constants.WINDOW_WIDTH - 4 - 10)
+			moveLeft(true);
+		else if (x < 10)
+			moveRight(true);
 	}
 
 	private class Alien extends GameEntity {
