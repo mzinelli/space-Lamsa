@@ -26,7 +26,12 @@ public abstract class GameObject {
 	/**
 	 * The direction to update x and y axis.
 	 */
-	protected int dx, dy;
+	private int dx, dy;
+
+	/**
+	 * The velocity the object moves on both axis.
+	 */
+	private int velocityX, velocityY;
 
 	/**
 	 * The width and height of the game object.
@@ -48,7 +53,7 @@ public abstract class GameObject {
 	 * This will be true as long as the object is collided with another one.
 	 */
 	protected boolean collided;
-	
+
 	/**
 	 * If the object should listen to collision calls.
 	 */
@@ -91,6 +96,8 @@ public abstract class GameObject {
 		this.children = new ArrayList<GameObject>();
 		this.dx = 0;
 		this.dy = 0;
+		this.velocityX = 0;
+		this.velocityY = 0;
 		this.screenBound = false;
 		this.listenCollision = true;
 	}
@@ -111,10 +118,44 @@ public abstract class GameObject {
 				y = Constants.WINDOW_HEIGHT - height - 30;
 		}
 	}
-	
+
 	public void die() {
 		visible = false;
 		dead = true;
+	}
+
+	// Movement management
+
+	/**
+	 * Makes the GameObject move up, the velocity will be determined by
+	 * {@link GameObject#velocityY}
+	 */
+	public void moveUp(boolean should) {
+		dy = should ? -velocityY : 0;
+	}
+	
+	/**
+	 * Makes the GameObject move down, the velocity will be determined by
+	 * {@link GameObject#velocityY}
+	 */
+	public void moveDown(boolean should) {
+		dy = should ? velocityY : 0;
+	}
+	
+	/**
+	 * Makes the GameObject move right, the velocity will be determined by
+	 * {@link GameObject#velocityX}
+	 */
+	public void moveRight(boolean should) {
+		dx = should ? velocityX : 0;
+	}
+	
+	/**
+	 * Makes the GameObject move left, the velocity will be determined by
+	 * {@link GameObject#velocityX}
+	 */
+	public void moveLeft(boolean should) {
+		dx = should ? -velocityX : 0;
 	}
 
 	// Children management
@@ -268,6 +309,27 @@ public abstract class GameObject {
 
 	public void setListenCollision(boolean listenCollision) {
 		this.listenCollision = listenCollision;
+	}
+
+	public int getVelocityX() {
+		return velocityX;
+	}
+
+	public void setVelocityX(int velocityX) {
+		this.velocityX = velocityX;
+	}
+
+	public int getVelocityY() {
+		return velocityY;
+	}
+
+	public void setVelocityY(int velocityY) {
+		this.velocityY = velocityY;
+	}
+
+	public void setVelocity(int velocityX, int velocityY) {
+		this.velocityX = velocityX;
+		this.velocityY = velocityY;
 	}
 
 }

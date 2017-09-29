@@ -62,6 +62,7 @@ public class Player extends GameEntity {
 		resizeSprite(WIDTH, HEIGHT);
 		
 		setScreenBound(true);
+		setVelocity(VELOCITY, VELOCITY);
 
 		/**
 		 * Setting the player movements triggers.
@@ -70,33 +71,33 @@ public class Player extends GameEntity {
 		// Moving up
 		on(new KeyTriggerEvent(KeyEvent.VK_UP, (k, t) -> {
 			if (t == KeyTriggerEvent.KEY_PRESSED)
-				dy = -VELOCITY;
+				moveUp(true);
 			else if (t == KeyTriggerEvent.KEY_RELEASED)
-				dy = 0;
+				moveUp(false);
 		}));
 
 		// Moving down
 		on(new KeyTriggerEvent(KeyEvent.VK_DOWN, (k, t) -> {
 			if (t == KeyTriggerEvent.KEY_PRESSED)
-				dy = VELOCITY;
+				moveDown(true);
 			else if (t == KeyTriggerEvent.KEY_RELEASED)
-				dy = 0;
+				moveDown(false);
 		}));
 
 		// Moving right
 		on(new KeyTriggerEvent(KeyEvent.VK_RIGHT, (k, t) -> {
 			if (t == KeyTriggerEvent.KEY_PRESSED)
-				dx = VELOCITY;
+				moveRight(true);
 			else if (t == KeyTriggerEvent.KEY_RELEASED)
-				dx = 0;
+				moveRight(false);
 		}));
 
 		// Moving left
 		on(new KeyTriggerEvent(KeyEvent.VK_LEFT, (k, t) -> {
 			if (t == KeyTriggerEvent.KEY_PRESSED)
-				dx = -VELOCITY;
+				moveLeft(true);
 			else if (t == KeyTriggerEvent.KEY_RELEASED)
-				dx = 0;
+				moveLeft(false);
 		}));
 		
 		// Shoot
@@ -160,7 +161,8 @@ public class Player extends GameEntity {
 			
 			setStaticSprite(sprite);
 			
-			dy = -SHOT_VELOCITY;
+			setVelocityY(SHOT_VELOCITY);
+			moveUp(true);
 			
 			on(new CollisionEvent("alien-group", (go, i) -> {
 				if (!go.isDead() ) {
