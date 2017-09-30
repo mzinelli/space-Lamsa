@@ -46,7 +46,7 @@ public class Score extends GameText {
 	
 	public void increment(int n) {
 		score += n;
-		setText(SCORE_TEXT + score);
+		setText(SCORE_TEXT.substring(0, SCORE_TEXT.length() - Integer.toString(score).length()) + score);
 	}
 	
 	public void decrement(int n) {
