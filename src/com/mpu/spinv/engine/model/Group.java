@@ -328,14 +328,10 @@ public class Group extends GameObject {
 	/**
 	 * A shorthand for setting up all the elements spacing.
 	 * 
-	 * @param top
-	 *            the margin from the top.
-	 * @param right
-	 *            the margin from the right.
-	 * @param bottom
-	 *            the margin from the bottom.
-	 * @param left
-	 *            the margin from the left.
+	 * @param horizontal
+	 *            The horizontal spacing between each element of the group.
+	 * @param vertical
+	 *            The vertical spacing between each element of the group.
 	 */
 	public void setSpacing(int horizontal, int vertical) {
 		this.spacingHorizontal = horizontal;
