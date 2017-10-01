@@ -1,5 +1,7 @@
 package com.mpu.spinv.game.states;
 
+import com.mpu.spinv.engine.StateMachine;
+import com.mpu.spinv.engine.model.SpriteSheet;
 import com.mpu.spinv.engine.model.State;
 import com.mpu.spinv.game.states.gameplaystate.AlienGroup;
 import com.mpu.spinv.game.states.gameplaystate.Background;
@@ -24,24 +26,26 @@ public class GameplayState extends State {
 	public final String SPRITESHEET_URL = "/resources/img/spritesheet.png";
 
 	// -------------------------------------------
-	
+
 	private Background background;
-	
+
 	private LifeBar lifebar;
 	private Score score;
 	private HelpText helpText;
 	private SoundIcon soundIcon;
-	
+
 	private Player player;
 	private AlienGroup alienGroup;
 
 	public GameplayState() {
 		super(SAVE_RESOURCES);
-		setSpriteSheetUrl(SPRITESHEET_URL);
+		init();
 	}
 
 	@Override
-	public void loadResources() {
+	public void init() {
+		StateMachine.spriteSheet.setSpriteSheetImage(GameplayState.class.getResource(SPRITESHEET_URL));
+		
 		background = new Background();
 		lifebar = new LifeBar();
 		score = new Score();
@@ -49,7 +53,10 @@ public class GameplayState extends State {
 		alienGroup = new AlienGroup();
 		helpText = new HelpText();
 		soundIcon = new SoundIcon();
+	}
 
+	@Override
+	public void loadResources() {
 		addResource("background", background);
 		addResource("player", player);
 		addResource("alien-group", alienGroup);

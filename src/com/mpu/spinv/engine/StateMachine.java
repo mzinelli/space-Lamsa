@@ -85,13 +85,16 @@ public class StateMachine {
 	 */
 	public static void setActiveState(String key) {
 		if (states.containsKey(key)) {
+			if (activeState != null && !activeState.isSaveResources()) {
+				activeState.killResources();
+			}
+			
 			actStateId = key;
 			activeState = states.get(key);
 
-			// Sets the active spritesheet.
-			if (activeState.getSpriteSheetUrl() != null)
-				spriteSheet.setSpriteSheetImage(StateMachine.class.getResource(activeState.getSpriteSheetUrl()));
-
+			if (!activeState.isSaveResources())
+				activeState.init();
+			
 			activeState.loadResources();
 		}
 	}
