@@ -79,7 +79,7 @@ public class GameEntity extends GameObject {
 		// Setting the default animation
 		addAnimation("default", animation);
 	}
-	
+
 	@Override
 	public boolean isGroup() {
 		return false;
@@ -202,7 +202,7 @@ public class GameEntity extends GameObject {
 	public String getAnimationKey() {
 		return actAnimation;
 	}
-	
+
 	public Animation getActiveAnimation() {
 		return animation;
 	}
@@ -215,6 +215,26 @@ public class GameEntity extends GameObject {
 		this.staticSprite = staticSprite;
 		this.width = staticSprite.getWidth();
 		this.height = staticSprite.getHeight();
+	}
+
+	/**
+	 * Unsafe method to set GameEntity's width.
+	 * 
+	 * @param width
+	 *            The new width to be set.
+	 */
+	protected void setWidth(int width) {
+		this.width = width;
+	}
+	
+	/**
+	 * Unsafe method to set GameEntity's height.
+	 * 
+	 * @param height
+	 *            The new height to be set.
+	 */
+	protected void setHeight(int height) {
+		this.height = height;
 	}
 
 }
