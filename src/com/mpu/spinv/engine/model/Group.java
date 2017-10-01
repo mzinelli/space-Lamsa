@@ -419,6 +419,12 @@ public class Group extends GameObject {
 	public List<GameEntity> getGameEntities() {
 		return gameEntities;
 	}
+	
+	public GameEntity get(int i) {
+		if (i < 0 || i >= gameEntities.size())
+			return null;
+		return gameEntities.get(i);
+	}
 
 	public int getGridRows() {
 		return gridRows;
