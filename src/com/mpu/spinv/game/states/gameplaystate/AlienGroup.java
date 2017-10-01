@@ -1,13 +1,10 @@
 package com.mpu.spinv.game.states.gameplaystate;
 
-import java.awt.event.KeyEvent;
-
 import com.mpu.spinv.engine.StateMachine;
 import com.mpu.spinv.engine.model.Animation;
 import com.mpu.spinv.engine.model.GameEntity;
 import com.mpu.spinv.engine.model.Group;
 import com.mpu.spinv.engine.model.Sprite;
-import com.mpu.spinv.engine.triggers.KeyTriggerEvent;
 import com.mpu.spinv.utils.Constants;
 
 /**

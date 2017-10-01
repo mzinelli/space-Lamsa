@@ -103,6 +103,7 @@ public class GameText extends GameObject {
 
 	public void setText(String text) {
 		this.text = text;
+		_changed = true;
 	}
 
 	public Color getColor() {
