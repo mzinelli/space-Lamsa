@@ -5,15 +5,15 @@ import java.awt.event.KeyEvent;
 
 import com.mpu.spinv.engine.model.SpriteSheet;
 import com.mpu.spinv.engine.model.State;
+import com.mpu.spinv.game.states.GameMenu;
 import com.mpu.spinv.game.states.GameplayState;
-import com.mpu.spinv.game.states.Splash;
 import com.mpu.spinv.utils.AdvList;
 
 public class StateMachine {
 
-	private final AdvList<State> states;
+	private static AdvList<State> states;
 	public static State activeState;
-	private String actStateId;
+	private static String actStateId;
 
 	public static SpriteSheet spriteSheet;
 
@@ -26,6 +26,7 @@ public class StateMachine {
 
 		// addState("splash", new Splash());
 		addState("gameplay", new GameplayState());
+		addState("game-menu", new GameMenu());
 	}
 
 	public void update() {
@@ -70,7 +71,7 @@ public class StateMachine {
 			states.remove(key);
 			if (actStateId.equals(key)) {
 				activeState = null;
-				this.actStateId = "";
+				StateMachine.actStateId = "";
 			}
 		}
 		return state;
@@ -82,7 +83,7 @@ public class StateMachine {
 	 * @param key
 	 *            The state's key identifier.
 	 */
-	public void setActiveState(String key) {
+	public static void setActiveState(String key) {
 		if (states.containsKey(key)) {
 			actStateId = key;
 			activeState = states.get(key);

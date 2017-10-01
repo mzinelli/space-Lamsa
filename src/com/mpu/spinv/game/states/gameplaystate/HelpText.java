@@ -2,8 +2,11 @@ package com.mpu.spinv.game.states.gameplaystate;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
 
+import com.mpu.spinv.engine.StateMachine;
 import com.mpu.spinv.engine.model.GameText;
+import com.mpu.spinv.engine.triggers.KeyTriggerEvent;
 import com.mpu.spinv.utils.Constants;
 
 public class HelpText extends GameText {
@@ -25,6 +28,12 @@ public class HelpText extends GameText {
 
 	public HelpText() {
 		super(X, Y, INITIAL_VISIBILITY, TEXT, TEXT_COLOR);
+		
+		on(new KeyTriggerEvent(KeyEvent.VK_ESCAPE, (k, t) -> {
+			if (t == KeyTriggerEvent.KEY_RELEASED) {
+				StateMachine.setActiveState("game-menu");
+			}
+		}));
 	}
 	
 	@Override
