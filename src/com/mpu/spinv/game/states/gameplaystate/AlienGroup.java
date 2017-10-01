@@ -1,10 +1,13 @@
 package com.mpu.spinv.game.states.gameplaystate;
 
+import java.awt.event.KeyEvent;
+
 import com.mpu.spinv.engine.StateMachine;
 import com.mpu.spinv.engine.model.Animation;
 import com.mpu.spinv.engine.model.GameEntity;
 import com.mpu.spinv.engine.model.Group;
 import com.mpu.spinv.engine.model.Sprite;
+import com.mpu.spinv.engine.triggers.KeyTriggerEvent;
 import com.mpu.spinv.utils.Constants;
 
 /**
@@ -35,8 +38,18 @@ public class AlienGroup extends Group {
 		for (int i = 0; i < TOTAL_ALIENS; i++)
 			add(new Alien());
 		
+		centerBothAxis();
+		
 		setVelocity(VELOCITY, VELOCITY);
 		moveRight(true);
+		
+		/* Debug code to add more aliens
+		on(new KeyTriggerEvent(KeyEvent.VK_F5, (k, t) -> {
+			if (t == KeyTriggerEvent.KEY_RELEASED)
+				for (int i = 0; i < TOTAL_ALIENS; i++)
+					add(new Alien());
+		}));
+		*/
 	}
 	
 	@Override

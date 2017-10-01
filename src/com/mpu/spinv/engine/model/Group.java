@@ -138,14 +138,20 @@ public class Group extends GameObject {
 	 */
 	@Override
 	public boolean hasKeyTriggers() {
+		boolean groupKeyTriggers = super.hasKeyTriggers();
+		if (groupKeyTriggers)
+			return true;
+		
 		for (int i = 0; i < gameEntities.size(); i++)
 			if (gameEntities.get(i).hasKeyTriggers())
 				return true;
+		
 		return false;
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+		super.keyPressed(e);
 		gameEntities.forEach(g -> {
 			if (g.hasKeyTriggers())
 				g.keyPressed(e);
@@ -154,6 +160,7 @@ public class Group extends GameObject {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
+		super.keyReleased(e);
 		gameEntities.forEach(g -> {
 			if (g.hasKeyTriggers())
 				g.keyReleased(e);
@@ -162,6 +169,7 @@ public class Group extends GameObject {
 
 	@Override
 	public void keyTyped(KeyEvent e) {
+		super.keyTyped(e);
 		gameEntities.forEach(g -> {
 			if (g.hasKeyTriggers())
 				g.keyTyped(e);
