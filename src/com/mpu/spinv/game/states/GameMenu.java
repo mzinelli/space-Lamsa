@@ -1,5 +1,6 @@
 package com.mpu.spinv.game.states;
 
+import com.mpu.spinv.engine.StateMachine;
 import com.mpu.spinv.engine.model.State;
 import com.mpu.spinv.game.states.gamemenu.Background;
 import com.mpu.spinv.game.states.gamemenu.Menu;
@@ -26,12 +27,13 @@ public class GameMenu extends State {
 
 	public GameMenu() {
 		super(SAVE_RESOURCES);
-		setSpriteSheetUrl(SPRITESHEET_URL);
 		init();
 	}
 	
 	@Override
 	public void init() {
+		StateMachine.spriteSheet.setSpriteSheetImage(GameMenu.class.getResource(SPRITESHEET_URL));
+		
 		background = new Background();
 		menu = new Menu();
 	}
