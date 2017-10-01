@@ -12,8 +12,8 @@ public class MenuItem extends GameEntity {
 
 	// ---------------- Constants ----------------
 
-	public static final int WIDTH = 300;
-	public static final int HEIGHT = 40;
+	private static final int WIDTH = 300;
+	private static final int HEIGHT = 40;
 
 	// -------------------------------------------
 
