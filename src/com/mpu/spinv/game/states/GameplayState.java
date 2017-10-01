@@ -1,7 +1,6 @@
 package com.mpu.spinv.game.states;
 
 import com.mpu.spinv.engine.StateMachine;
-import com.mpu.spinv.engine.model.SpriteSheet;
 import com.mpu.spinv.engine.model.State;
 import com.mpu.spinv.game.states.gameplaystate.AlienGroup;
 import com.mpu.spinv.game.states.gameplaystate.Background;

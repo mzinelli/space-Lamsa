@@ -7,6 +7,7 @@ import java.awt.event.KeyEvent;
 import com.mpu.spinv.engine.model.Event;
 import com.mpu.spinv.engine.model.GameEntity;
 import com.mpu.spinv.engine.triggers.KeyTriggerEvent;
+import com.mpu.spinv.utils.Constants;
 
 public class MenuItem extends GameEntity {
 
@@ -57,6 +58,11 @@ public class MenuItem extends GameEntity {
 		g.setColor(Color.BLACK);
 		g.drawString(content, x + (width / 2 - g.getFontMetrics().stringWidth(content) / 2),
 				y + height / 2 + g.getFontMetrics().getHeight() / 4);
+		
+		if (Constants.SHOW_ENTITIES_BORDERS) {
+			g.setColor(Color.GREEN);
+			g.drawRect(x, y, width, height);
+		}
 	}
 
 	// Getters and Setters
