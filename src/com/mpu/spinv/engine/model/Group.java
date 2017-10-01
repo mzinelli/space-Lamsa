@@ -62,6 +62,12 @@ public class Group extends GameObject {
 	 */
 	private int gridCols;
 
+	/**
+	 * A flag to call {@link Group#resetSize()} if an entity from the Group has been
+	 * removed from the {@link Group#gameEntities} list.
+	 */
+	private boolean _entityDestroyed;
+
 	public Group(int x, int y, int layout) {
 		super(x, y, 0, 0, true);
 
@@ -73,8 +79,9 @@ public class Group extends GameObject {
 		this.spacingVertical = 0;
 		this.gridRows = 0;
 		this.gridCols = 0;
+		this._entityDestroyed = false;
 	}
-	
+
 	@Override
 	public boolean isGroup() {
 		return true;
@@ -83,12 +90,18 @@ public class Group extends GameObject {
 	@Override
 	public void update() {
 		// Checks for dead objects within the group
-		for (int i = gameEntities.size()-1; i >= 0; i--) {
+		for (int i = gameEntities.size() - 1; i >= 0; i--) {
 			if (gameEntities.get(i).isDead()) {
 				gameEntities.remove(i);
+				_entityDestroyed = true;
 			}
 		}
 		
+		if (_entityDestroyed) {
+			resetSize();
+			_entityDestroyed = false;
+		}
+
 		int previousX = x, previousY = y;
 
 		super.update();
@@ -96,13 +109,13 @@ public class Group extends GameObject {
 		if (previousX != x || previousY != y) {
 			int diffX = x - previousX;
 			int diffY = y - previousY;
-			
+
 			gameEntities.forEach(go -> {
 				go.setX(go.getX() + diffX);
 				go.setY(go.getY() + diffY);
 			});
 		}
-		
+
 		gameEntities.forEach(go -> {
 			go.update();
 		});
@@ -114,22 +127,22 @@ public class Group extends GameObject {
 			gameEntities.forEach(go -> {
 				go.draw(g);
 			});
-	
+
 			if (Constants.SHOW_ENTITIES_BORDERS) {
 				g.setColor(Color.GREEN);
 				g.drawRect(x, y, width, height);
 			}
 		}
 	}
-	
+
 	public List<GameObject> returnCollided(GameObject go) {
 		List<GameObject> collidedObjs = new ArrayList<GameObject>();
-		
+
 		gameEntities.forEach(ge -> {
 			if (CollisionHandler.hasCollided(go, ge))
 				collidedObjs.add(ge);
 		});
-		
+
 		return collidedObjs;
 	}
 
@@ -141,11 +154,11 @@ public class Group extends GameObject {
 		boolean groupKeyTriggers = super.hasKeyTriggers();
 		if (groupKeyTriggers)
 			return true;
-		
+
 		for (int i = 0; i < gameEntities.size(); i++)
 			if (gameEntities.get(i).hasKeyTriggers())
 				return true;
-		
+
 		return false;
 	}
 
@@ -248,6 +261,38 @@ public class Group extends GameObject {
 		x = Constants.WINDOW_WIDTH / 2 - width / 2 - 4;
 		y = Constants.WINDOW_HEIGHT / 2 - height / 2 - 30;
 		resetCoordinates();
+	}
+
+	private void resetSize() {
+		if (gameEntities.size() == 0)
+			return;
+
+		int minX = 0, maxX = 0, minY = 0, maxY = 0;
+
+		for (int i = 0; i < gameEntities.size(); i++) {
+			GameEntity g = gameEntities.get(i);
+			if (i == 0) {
+				minX = g.getX();
+				minY = g.getY();
+				maxX = g.getX() + g.getWidth();
+				maxY = g.getY() + g.getHeight();
+			} else {
+				if (g.getX() < minX)
+					minX = g.getX();
+				if (g.getY() < minY)
+					minY = g.getY();
+				if (g.getX() + g.getWidth() > maxX)
+					maxX = g.getX() + g.getWidth();
+				if (g.getY() + g.getHeight() > maxY)
+					maxY = g.getY() + g.getHeight();
+			}
+		}
+
+		// Resets position and size
+		x = minX;
+		y = minY;
+		width = maxX - minX;
+		height = maxY - minY;
 	}
 
 	private void resetCoordinates() {
