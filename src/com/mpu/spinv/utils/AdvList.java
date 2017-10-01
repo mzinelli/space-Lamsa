@@ -80,6 +80,7 @@ public class AdvList<T> {
 	 * Clears the list.
 	 */
 	public void clear() {
+		size = 0;
 		keyList.clear();
 		valuesList.clear();
 	}
