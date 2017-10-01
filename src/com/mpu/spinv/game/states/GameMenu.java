@@ -2,6 +2,7 @@ package com.mpu.spinv.game.states;
 
 import com.mpu.spinv.engine.model.State;
 import com.mpu.spinv.game.states.gamemenu.Background;
+import com.mpu.spinv.game.states.gamemenu.Menu;
 
 /**
  * GameMenu.java
@@ -20,6 +21,8 @@ public class GameMenu extends State {
 	// -------------------------------------------
 	
 	private Background background;
+	
+	private Menu menu;
 
 	public GameMenu() {
 		super(SAVE_RESOURCES);
@@ -29,8 +32,10 @@ public class GameMenu extends State {
 	@Override
 	public void loadResources() {
 		background = new Background();
+		menu = new Menu();
 		
 		addResource("background", background);
+		addResource("menu", menu);
 	}
 
 }
