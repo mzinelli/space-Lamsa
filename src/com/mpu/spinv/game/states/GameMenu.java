@@ -31,9 +31,6 @@ public class GameMenu extends State {
 	
 	@Override
 	public void loadResources() {
-		background = new Background();
-		menu = new Menu();
-		
 		addResource("background", background);
 		addResource("menu", menu);
 	}
