@@ -24,24 +24,25 @@ public class GameplayState extends State {
 	public final String SPRITESHEET_URL = "/resources/img/spritesheet.png";
 
 	// -------------------------------------------
-	
+
 	private Background background;
-	
+
 	private LifeBar lifebar;
 	private Score score;
 	private HelpText helpText;
 	private SoundIcon soundIcon;
-	
+
 	private Player player;
 	private AlienGroup alienGroup;
 
 	public GameplayState() {
 		super(SAVE_RESOURCES);
 		setSpriteSheetUrl(SPRITESHEET_URL);
+		init();
 	}
 
 	@Override
-	public void loadResources() {
+	public void init() {
 		background = new Background();
 		lifebar = new LifeBar();
 		score = new Score();
@@ -49,7 +50,10 @@ public class GameplayState extends State {
 		alienGroup = new AlienGroup();
 		helpText = new HelpText();
 		soundIcon = new SoundIcon();
+	}
 
+	@Override
+	public void loadResources() {
 		addResource("background", background);
 		addResource("player", player);
 		addResource("alien-group", alienGroup);

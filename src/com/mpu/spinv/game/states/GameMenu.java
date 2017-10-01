@@ -27,6 +27,13 @@ public class GameMenu extends State {
 	public GameMenu() {
 		super(SAVE_RESOURCES);
 		setSpriteSheetUrl(SPRITESHEET_URL);
+		init();
+	}
+	
+	@Override
+	public void init() {
+		background = new Background();
+		menu = new Menu();
 	}
 	
 	@Override

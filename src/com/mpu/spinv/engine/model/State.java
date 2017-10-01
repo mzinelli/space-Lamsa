@@ -8,10 +8,10 @@ import com.mpu.spinv.engine.CollisionHandler;
 import com.mpu.spinv.engine.triggers.CollisionEvent;
 import com.mpu.spinv.utils.AdvList;
 
-public class State {
+public abstract class State {
 
 	private final AdvList<GameObject> gameObjects;
-	
+
 	private String spriteSheetUrl;
 
 	private boolean saveResources;
@@ -49,10 +49,10 @@ public class State {
 				List<CollisionEvent> collisionEvents = v.getCollisionEvents();
 				collisionEvents.forEach(ce -> {
 					GameObject target = gameObjects.get(ce.getCollisionTarget());
-					
+
 					if (!target.isVisible() || !target.isListenCollision())
 						return;
-					
+
 					if (CollisionHandler.hasCollided(v, target)) {
 						if (target.isGroup()) {
 							Group gTarget = (Group) target;
@@ -68,17 +68,17 @@ public class State {
 					}
 				});
 			}
-			
+
 			if (v.hasChildren()) {
 				v.getChildren().forEach(c -> {
 					if (c.hasCollisionEvents()) {
 						List<CollisionEvent> collisionEvents = c.getCollisionEvents();
 						collisionEvents.forEach(ce -> {
 							GameObject target = gameObjects.get(ce.getCollisionTarget());
-							
+
 							if (!target.isVisible() || !target.isListenCollision())
 								return;
-							
+
 							if (CollisionHandler.hasCollided(c, target)) {
 								if (target.isGroup()) {
 									Group gTarget = (Group) target;
@@ -98,13 +98,19 @@ public class State {
 	}
 
 	/**
+	 * This method should initiate all the GameObject's from the State. This should
+	 * be invoked in the State constructor and it will be called by the StateMachine
+	 * every time the state with {@link State#saveResources} is set to false.
+	 */
+	public abstract void init();
+
+	/**
 	 * This method will be called just before playing the actual state on screen. It
 	 * will load all resources needed by the state.
 	 * 
 	 * Must be extended in each state in order to function correctly.
 	 */
-	public void loadResources() {
-	}
+	public abstract void loadResources();
 
 	/**
 	 * Kills the resources loaded by {@link State#loadResources()}, if allowed.
