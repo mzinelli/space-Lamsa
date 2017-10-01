@@ -7,6 +7,7 @@ import com.mpu.spinv.game.states.gameplaystate.HelpText;
 import com.mpu.spinv.game.states.gameplaystate.LifeBar;
 import com.mpu.spinv.game.states.gameplaystate.Player;
 import com.mpu.spinv.game.states.gameplaystate.Score;
+import com.mpu.spinv.game.states.gameplaystate.SoundIcon;
 
 /**
  * GameplayState.java
@@ -29,6 +30,7 @@ public class GameplayState extends State {
 	private LifeBar lifebar;
 	private Score score;
 	private HelpText helpText;
+	private SoundIcon soundIcon;
 	
 	private Player player;
 	private AlienGroup alienGroup;
@@ -46,6 +48,7 @@ public class GameplayState extends State {
 		player = new Player(score);
 		alienGroup = new AlienGroup();
 		helpText = new HelpText();
+		soundIcon = new SoundIcon();
 
 		addResource("background", background);
 		addResource("player", player);
@@ -53,6 +56,7 @@ public class GameplayState extends State {
 		addResource("lifebar", lifebar);
 		addResource("score", score);
 		addResource("help-text", helpText);
+		addResource("sound-icon", soundIcon);
 	}
 
 }

@@ -16,7 +16,7 @@ public class HelpText extends GameText {
 	private static final boolean INITIAL_VISIBILITY = true;
 
 	private static final String TEXT = "ESC - MENU" + "\n" +
-									   "F1     - HELP";
+									   "F1     - MUTE";
 	private static final Color TEXT_COLOR = Color.WHITE;
 
 	// -------------------------------------------
