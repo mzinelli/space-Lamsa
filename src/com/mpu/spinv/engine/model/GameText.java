@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 
+import com.mpu.spinv.utils.Constants;
+
 /**
  * GameText.java
  * 
@@ -28,11 +30,12 @@ public class GameText extends GameObject {
 	 * GameObject will be altered.
 	 */
 	private boolean _changed;
-
-	public GameText(int x, int y, boolean visible) {
-		this(x, y, visible, "");
-	}
-
+	
+	/**
+	 * If the text has more than one line, each line will be stored in this array for painting.
+	 */
+	private String[] lines;
+	
 	public GameText(int x, int y, boolean visible, String text) {
 		super(x, y, 0, 0, visible);
 		this.text = text;
@@ -40,6 +43,15 @@ public class GameText extends GameObject {
 		// Default params
 		_changed = true;
 		color = Color.BLACK;
+	}
+
+	public GameText(int x, int y, boolean visible) {
+		this(x, y, visible, "");
+	}
+	
+	public GameText(int x, int y, boolean visible, String text, Color color) {
+		this(x, y, visible, text);
+		this.color = color;
 	}
 
 	@Override
@@ -53,14 +65,34 @@ public class GameText extends GameObject {
 
 	@Override
 	public void draw(Graphics g) {
+		FontMetrics fMet = g.getFontMetrics();
+		int fontHeight = fMet.getHeight();
+		
 		if (_changed) {
-			width = g.getFontMetrics().stringWidth(text);
-			height = g.getFontMetrics().getHeight();
+			lines = text.split("\n");
+			
+			if (lines.length > 1) {
+				int hWidth = 0;
+				for (int i = 0; i < lines.length; i++)
+					if (fMet.stringWidth(lines[i]) > hWidth)
+						hWidth = fMet.stringWidth(lines[i]);
+				width = hWidth;
+			} else {
+				width = fMet.stringWidth(text);
+			}
+			
+			height = fMet.getHeight() * lines.length;
 			_changed = false;
 		}
-
+		
 		g.setColor(color);
-		g.drawString(text, x, y + height);
+		for (int i = 1; i <= lines.length; i++)
+			g.drawString(lines[i-1], x, y + fontHeight*i);
+		
+		if (Constants.SHOW_ENTITIES_BORDERS) {
+			g.setColor(Color.GREEN);
+			g.drawRect(x, y, width, height);
+		}
 	}
 
 	// Getters and Setters
