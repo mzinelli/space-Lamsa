@@ -167,6 +167,12 @@ public abstract class GameObject {
 	public List<GameObject> getChildren() {
 		return children;
 	}
+	
+	public GameObject getChild(int i) {
+		if (children.size() == 0 || i < 0 || i > children.size() - 1)
+			return null;
+		return children.get(i);
+	}
 
 	public void addChild(GameObject obj) {
 		children.add(obj);

@@ -2,11 +2,10 @@ package com.mpu.spinv.game.states.gameplaystate;
 
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.mpu.spinv.engine.StateMachine;
 import com.mpu.spinv.engine.model.GameEntity;
+import com.mpu.spinv.engine.model.GameObject;
 import com.mpu.spinv.engine.model.Sprite;
 import com.mpu.spinv.engine.triggers.CollisionEvent;
 import com.mpu.spinv.engine.triggers.KeyTriggerEvent;
@@ -40,11 +39,6 @@ public class Player extends GameEntity {
 	private Sprite sprite;
 	
 	/**
-	 * A list of the shots on screen.
-	 */
-	private List<Shot> shots;
-	
-	/**
 	 * A reference to the score class.
 	 */
 	private Score score;
@@ -55,7 +49,6 @@ public class Player extends GameEntity {
 		this.score = score;
 		
 		sprite = new Sprite(StateMachine.spriteSheet.getSprite(224, 928, 99, 75));
-		shots = new ArrayList<Shot>();
 
 		// Setting the player image.
 		setStaticSprite(sprite);		
@@ -104,7 +97,6 @@ public class Player extends GameEntity {
 		on(new KeyTriggerEvent(KeyEvent.VK_SPACE, (k, t) -> {
 			if (t == KeyTriggerEvent.KEY_RELEASED) {
 				Shot shot = new Shot(x + getWidth() / 2, y);
-				shots.add(shot);
 				addChild(shot);
 			}
 		}));
@@ -114,15 +106,13 @@ public class Player extends GameEntity {
 	public void update() {
 		super.update();
 		
-		for (int i = shots.size()-1; i >= 0; i--) {
-			Shot shot = shots.get(i);
+		for (int i = getChildren().size()-1; i >= 0; i--) {
+			GameObject shot = getChild(i);
 			
 			if (shot.getY() + shot.getHeight() < 0) {
-				shots.remove(i);
 				removeChild(i);
 				continue;
 			} else if(shot.isDead()) {
-				shots.remove(i);
 				removeChild(i);
 				continue;
 			}
@@ -133,7 +123,6 @@ public class Player extends GameEntity {
 	
 	@Override
 	public void draw(Graphics g) {
-		shots.forEach(shot -> shot.draw(g));
 		super.draw(g);
 	}
 	
