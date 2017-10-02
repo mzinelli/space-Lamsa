@@ -1,14 +1,11 @@
 package com.mpu.spinv.game.states.gamemenu;
 
+import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.TexturePaint;
 import java.awt.event.KeyEvent;
 
 import com.mpu.spinv.engine.StateMachine;
 import com.mpu.spinv.engine.model.GameEntity;
-import com.mpu.spinv.engine.model.Sprite;
 import com.mpu.spinv.engine.triggers.KeyTriggerEvent;
 import com.mpu.spinv.utils.Constants;
 
@@ -29,14 +26,12 @@ public class Background extends GameEntity {
 
 	// -------------------------------------------
 	
-	private TexturePaint pattern;
-	private Sprite sprite;
+	private Color color;
 	
 	public Background() {
 		super(INITIAL_X, INITIAL_Y, INITIAL_VISIBILITY);
 		
-		sprite = new Sprite(StateMachine.spriteSheet.getSprite(874, 97, 56, 56));
-		pattern = new TexturePaint(sprite.getSprite(), new Rectangle(INITIAL_X, INITIAL_Y, sprite.getWidth(), sprite.getHeight()));
+		color = new Color(0, 0, 0, 210);
 		
 		on(new KeyTriggerEvent(KeyEvent.VK_ESCAPE, (k, t) -> {
 			if (t == KeyTriggerEvent.KEY_RELEASED)
@@ -46,9 +41,8 @@ public class Background extends GameEntity {
 	
 	@Override
 	public void draw(Graphics g) {
-		Graphics2D g2d = (Graphics2D) g;
-		g2d.setPaint(pattern);
-		g2d.fill(new Rectangle(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
+		g.setColor(color);
+		g.fillRect(x, y, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
 	}
 
 }

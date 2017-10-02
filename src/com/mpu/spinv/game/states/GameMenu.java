@@ -1,5 +1,7 @@
 package com.mpu.spinv.game.states;
 
+import java.awt.Graphics;
+
 import com.mpu.spinv.engine.StateMachine;
 import com.mpu.spinv.engine.model.State;
 import com.mpu.spinv.game.states.gamemenu.Background;
@@ -21,12 +23,15 @@ public class GameMenu extends State {
 
 	// -------------------------------------------
 	
+	private State parent;
+	
 	private Background background;
 	
 	private Menu menu;
 
-	public GameMenu() {
+	public GameMenu(State parent) {
 		super(SAVE_RESOURCES);
+		this.parent = parent;
 		init();
 	}
 	
@@ -42,6 +47,12 @@ public class GameMenu extends State {
 	public void loadResources() {
 		addResource("background", background);
 		addResource("menu", menu);
+	}
+	
+	@Override
+	public void draw(Graphics g) {
+		parent.draw(g);
+		super.draw(g);
 	}
 
 }

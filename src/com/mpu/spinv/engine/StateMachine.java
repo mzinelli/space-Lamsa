@@ -16,6 +16,8 @@ public class StateMachine {
 	private static String actStateId;
 
 	public static SpriteSheet spriteSheet;
+	
+	private GameplayState gameplayState;
 
 	public StateMachine() {
 		states = new AdvList<State>();
@@ -23,10 +25,12 @@ public class StateMachine {
 		activeState = null;
 
 		spriteSheet = new SpriteSheet();
+		
+		gameplayState = new GameplayState();
 
 		// addState("splash", new Splash());
-		addState("gameplay", new GameplayState());
-		addState("game-menu", new GameMenu());
+		addState("gameplay", gameplayState);
+		addState("game-menu", new GameMenu(gameplayState));
 	}
 
 	public void update() {
