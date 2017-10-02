@@ -31,7 +31,7 @@ public class Group extends GameObject {
 
 	/**
 	 * Every element of the Group will be displayed in a grid of N rows by N
-	 * columns. You must execute
+	 * columns.
 	 */
 	public static final int LAYOUT_GRID = 2;
 
@@ -53,11 +53,6 @@ public class Group extends GameObject {
 	private int layout;
 
 	/**
-	 * The number of rows the {@link Group#LAYOUT_GRID} will display.
-	 */
-	private int gridRows;
-
-	/**
 	 * The number of columns the {@link Group#LAYOUT_GRID} will display.
 	 */
 	private int gridCols;
@@ -77,7 +72,6 @@ public class Group extends GameObject {
 		this.gameEntities = new ArrayList<GameEntity>();
 		this.spacingHorizontal = 0;
 		this.spacingVertical = 0;
-		this.gridRows = 0;
 		this.gridCols = 0;
 		this._entityDestroyed = false;
 	}
@@ -196,8 +190,28 @@ public class Group extends GameObject {
 	 *            the GameEntity to be added.
 	 */
 	public void add(GameEntity go) {
+		int listSize = gameEntities.size();
+		GameEntity lastElem = listSize > 0 ? gameEntities.get(listSize - 1) : null;
+		
+		if (layout == Group.LAYOUT_HORIZONTAL) {
+			go.setX(lastElem != null ? lastElem.getX() + lastElem.getWidth() + spacingHorizontal : x);
+			go.setY(y);
+		} else if (layout == Group.LAYOUT_VERTICAL) {
+			go.setX(x);
+			go.setY(lastElem != null ? lastElem.getY() + lastElem.getHeight() + spacingVertical : y);
+		} else if (layout == Group.LAYOUT_GRID) {
+			int maxY = getMaxY();
+			if ((listSize + 1) % gridCols == 0) {
+				go.setX(x);
+				go.setY(maxY + spacingVertical);
+			} else {
+				go.setX(lastElem != null ? lastElem.getX() + lastElem.getWidth() + spacingHorizontal : x);
+				go.setY(lastElem != null ? lastElem.getY() : y);
+			}
+		}
+		
 		gameEntities.add(go);
-		resetCoordinates();
+		resetSize();
 	}
 
 	/**
@@ -230,9 +244,8 @@ public class Group extends GameObject {
 	 * @param cols
 	 *            how many columns should the grid have.
 	 */
-	public void setGridSize(int rows, int cols) {
-		if (layout == Group.LAYOUT_GRID && rows > 1 && cols > 1) {
-			gridRows = rows;
+	public void setGridSize(int cols) {
+		if (layout == Group.LAYOUT_GRID && cols > 1) {
 			gridCols = cols;
 			resetCoordinates();
 		}
@@ -298,72 +311,46 @@ public class Group extends GameObject {
 	private void resetCoordinates() {
 		if (gameEntities.size() == 0)
 			return;
-
-		boolean isGrid = (layout == Group.LAYOUT_GRID);
-
-		int highestWidth = 0, highestHeight = 0;
-		int pivotX = x, pivotY = y;
-
-		int highestColWidth = 0;
-
-		width = 0;
-		height = 0;
-
+		
+		int maxY = y;
+		
 		for (int i = 0; i < gameEntities.size(); i++) {
-			if (isGrid && i % gridCols == 0 && i > 0) {
-				pivotY += highestHeight + (i > 0 ? spacingVertical : 0);
-			}
-
-			GameEntity actElem = gameEntities.get(i);
-			int actWidth = actElem.getWidth();
-			int actHeight = actElem.getHeight();
-
-			if (i == 0 || (isGrid && i % gridCols == 0 && i > 0)) {
-				actElem.x = pivotX;
-				actElem.y = pivotY;
-
-				highestWidth = actWidth;
-				highestHeight = actHeight;
-			} else {
-				GameEntity lastElem = gameEntities.get(i - 1);
-				actElem.x = lastElem.x
-						+ ((layout == Group.LAYOUT_HORIZONTAL || isGrid) ? lastElem.getWidth() + spacingHorizontal : 0);
-				actElem.y = lastElem.y + (layout == Group.LAYOUT_VERTICAL ? lastElem.getHeight() + spacingVertical : 0);
-
-				if (actWidth > highestWidth)
-					highestWidth = actWidth;
-				if (actHeight > highestHeight)
-					highestHeight = actHeight;
-			}
-
-			if (layout == Group.LAYOUT_HORIZONTAL)
-				width += actWidth + (i > 0 ? spacingHorizontal : 0);
-			else if (layout == Group.LAYOUT_VERTICAL)
-				height += actHeight + spacingVertical;
-			else if (layout == Group.LAYOUT_GRID) {
-				width += actWidth + (i > 0 ? spacingHorizontal : 0);
-				if (i % gridCols == 0) {
-					height += highestHeight + spacingVertical;
-					if (highestColWidth == 0)
-						highestColWidth = width;
-					else
-						highestColWidth = (width > highestColWidth) ? width : highestColWidth;
-					width = 0;
+			GameEntity elem = gameEntities.get(i);
+			GameEntity lastElem = i > 0 ? gameEntities.get(i-1) : null;
+			
+			if (lastElem != null && lastElem.getY() + lastElem.getHeight() > maxY)
+				maxY = lastElem.getY() + lastElem.getHeight();
+			
+			if (layout == Group.LAYOUT_HORIZONTAL) {
+				elem.setX(lastElem != null ? lastElem.getX() + lastElem.getWidth() + spacingHorizontal : x);
+				elem.setY(y);
+			} else if (layout == Group.LAYOUT_VERTICAL) {
+				elem.setX(x);
+				elem.setY(lastElem != null ? lastElem.getY() + lastElem.getHeight() + spacingVertical : y);
+			} else if (layout == Group.LAYOUT_GRID) {
+				if (i > 0 && i % gridCols == 0) {
+					elem.setX(x);
+					elem.setY(maxY + spacingVertical);
+				} else {
+					elem.setX(lastElem != null ? lastElem.getX() + lastElem.getWidth() + spacingHorizontal : x);
+					elem.setY(lastElem != null ? lastElem.getY() : y);
 				}
 			}
-
 		}
-
-		if (isGrid) {
-			width = highestColWidth - spacingHorizontal;
-			height -= spacingVertical;
+		
+		resetSize();
+	}
+	
+	private int getMaxY() {
+		int maxY = y;
+		
+		for (int i = 0; i < gameEntities.size(); i++) {
+			GameEntity g = gameEntities.get(i);
+			if (g.getY() + g.getHeight() > maxY)
+				maxY = g.getY() + g.getHeight();
 		}
-
-		if (width == 0 && layout == Group.LAYOUT_VERTICAL)
-			width = highestWidth;
-
-		if (height == 0 && layout == Group.LAYOUT_HORIZONTAL)
-			height = highestHeight;
+		
+		return maxY;
 	}
 
 	// Getters and Setters
@@ -424,10 +411,6 @@ public class Group extends GameObject {
 		if (i < 0 || i >= gameEntities.size())
 			return null;
 		return gameEntities.get(i);
-	}
-
-	public int getGridRows() {
-		return gridRows;
 	}
 
 	public int getGridCols() {

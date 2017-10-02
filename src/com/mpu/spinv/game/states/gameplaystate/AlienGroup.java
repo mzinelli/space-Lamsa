@@ -29,7 +29,7 @@ public class AlienGroup extends Group {
 	public AlienGroup() {
 		super(X, Y, Group.LAYOUT_GRID);
 		
-		setGridSize(2, 5);
+		setGridSize(5);
 		setSpacing(10, 10);
 		
 		for (int i = 0; i < TOTAL_ALIENS; i++)
