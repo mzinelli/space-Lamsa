@@ -201,7 +201,7 @@ public class Group extends GameObject {
 			go.setY(lastElem != null ? lastElem.getY() + lastElem.getHeight() + spacingVertical : y);
 		} else if (layout == Group.LAYOUT_GRID) {
 			int maxY = getMaxY();
-			if (listSize % gridCols == 0) {
+			if ((listSize + 1) % gridCols == 0) {
 				go.setX(x);
 				go.setY(maxY + spacingVertical);
 			} else {
@@ -311,55 +311,34 @@ public class Group extends GameObject {
 	private void resetCoordinates() {
 		if (gameEntities.size() == 0)
 			return;
-
-		boolean isGrid = (layout == Group.LAYOUT_GRID);
-
-		int pivotX = x, pivotY = y;
-
-		width = 0;
-		height = 0;
-		int minX = 0, maxX = 0, minY = 0, maxY = 0;
-
+		
+		int maxY = y;
+		
 		for (int i = 0; i < gameEntities.size(); i++) {
-			if (isGrid)
-				System.out.println(i);
-			if (isGrid && i % gridCols == 0 && i > 0) {
-				System.out.println(maxY + " " + i);
-				pivotY += maxY + spacingVertical;
-			}
-
-			GameEntity actElem = gameEntities.get(i);
-
-			if (i == 0 || (isGrid && i % gridCols == 0 && i > 0)) {
-				actElem.x = pivotX;
-				actElem.y = pivotY;
-				
-				if (i == 0) {
-					minX = actElem.getX();
-					minY = actElem.getY();
-					maxX = actElem.getX() + actElem.getWidth();
-					maxY = actElem.getY() + actElem.getHeight();
+			GameEntity elem = gameEntities.get(i);
+			GameEntity lastElem = i > 0 ? gameEntities.get(i-1) : null;
+			
+			if (lastElem != null && lastElem.getY() + lastElem.getHeight() > maxY)
+				maxY = lastElem.getY() + lastElem.getHeight();
+			
+			if (layout == Group.LAYOUT_HORIZONTAL) {
+				elem.setX(lastElem != null ? lastElem.getX() + lastElem.getWidth() + spacingHorizontal : x);
+				elem.setY(y);
+			} else if (layout == Group.LAYOUT_VERTICAL) {
+				elem.setX(x);
+				elem.setY(lastElem != null ? lastElem.getY() + lastElem.getHeight() + spacingVertical : y);
+			} else if (layout == Group.LAYOUT_GRID) {
+				if (i > 0 && i % gridCols == 0) {
+					elem.setX(x);
+					elem.setY(maxY + spacingVertical);
+				} else {
+					elem.setX(lastElem != null ? lastElem.getX() + lastElem.getWidth() + spacingHorizontal : x);
+					elem.setY(lastElem != null ? lastElem.getY() : y);
 				}
-			} else {
-				GameEntity lastElem = gameEntities.get(i - 1);
-				actElem.x = lastElem.x
-						+ ((layout == Group.LAYOUT_HORIZONTAL || isGrid) ? lastElem.getWidth() + spacingHorizontal : 0);
-				actElem.y = lastElem.y + (layout == Group.LAYOUT_VERTICAL ? lastElem.getHeight() + spacingVertical : 0);
-				
-				if (actElem.getX() < minX)
-					minX = actElem.getX();
-				if (actElem.getX() + actElem.getWidth() > maxX)
-					maxX = actElem.getX() + actElem.getWidth();
-				if (actElem.getY() < minY)
-					minY = actElem.getY();
-				if (actElem.getY() + actElem.getHeight() > maxY)
-					maxY = actElem.getY() + actElem.getHeight();
 			}
 		}
 		
-		width = maxX - minX;
-		height = maxY - maxY;
-		
+		resetSize();
 	}
 	
 	private int getMaxY() {

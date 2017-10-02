@@ -35,7 +35,7 @@ public class AlienGroup extends Group {
 		for (int i = 0; i < TOTAL_ALIENS; i++)
 			add(new Alien());
 		
-		//centerBothAxis();
+		centerBothAxis();
 		
 		setVelocity(VELOCITY, VELOCITY);
 		moveRight(true);
