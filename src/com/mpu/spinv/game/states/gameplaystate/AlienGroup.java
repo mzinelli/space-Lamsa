@@ -30,6 +30,8 @@ public class AlienGroup extends Group {
 	
 	// -------------------------------------------
 	
+	private int ticks = 0;
+	
 	public AlienGroup() {
 		super(X, Y, Group.LAYOUT_GRID);
 		
@@ -39,7 +41,7 @@ public class AlienGroup extends Group {
 		for (int i = 0; i < TOTAL_ALIENS; i++)
 			add(new Alien());
 		
-		centerBothAxis();
+		// centerBothAxis();
 		
 		setVelocity(VELOCITY, VELOCITY);
 		moveRight(true);
@@ -56,6 +58,14 @@ public class AlienGroup extends Group {
 	@Override
 	public void update() {
 		super.update();
+		
+		ticks++;
+		
+		if (ticks >= 30) {
+			ticks = 0;
+			Alien alien = (Alien) get(6);
+			alien.shoot();
+		}
 		
 		if (x + width > Constants.WINDOW_WIDTH - 4 - 10)
 			moveLeft(true);
@@ -123,6 +133,40 @@ public class AlienGroup extends Group {
 			listenCollision = false;
 			setAnimation("death");
 			startAnimation();
+		}
+		
+		public void shoot() {
+			addChild(new AlienShot(x + getWidth() / 2, y));
+		}
+		
+		private class AlienShot extends GameEntity {
+			
+			// ---------------- Constants ----------------
+			
+			private static final int SHOT_VELOCITY = 9;
+			private static final boolean INITIAL_VISIBILITY = true;
+			
+			private static final int SHOT_WIDTH = 9;
+			private static final int SHOT_HEIGHT = 54;
+			
+			// -------------------------------------------
+			
+			/**
+			 * The shot's sprite.
+			 */
+			Sprite sprite;
+			
+			public AlienShot(int x, int y) {
+				super(x - SHOT_WIDTH /2, y, INITIAL_VISIBILITY);
+				
+				sprite = new Sprite(StateMachine.spriteSheet.getSprite(856, 517, SHOT_WIDTH, SHOT_HEIGHT));
+				
+				setStaticSprite(sprite);
+				
+				setVelocityY(SHOT_VELOCITY);
+				moveDown(true);
+			}
+			
 		}
 	
 	}

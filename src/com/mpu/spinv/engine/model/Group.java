@@ -201,7 +201,7 @@ public class Group extends GameObject {
 			go.setY(lastElem != null ? lastElem.getY() + lastElem.getHeight() + spacingVertical : y);
 		} else if (layout == Group.LAYOUT_GRID) {
 			int maxY = getMaxY();
-			if ((listSize + 1) % gridCols == 0) {
+			if (listSize % gridCols == 0) {
 				go.setX(x);
 				go.setY(maxY + spacingVertical);
 			} else {
