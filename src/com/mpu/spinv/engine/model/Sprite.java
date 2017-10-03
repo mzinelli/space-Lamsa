@@ -45,7 +45,7 @@ public class Sprite {
 	public Sprite(BufferedImage sprite, int width, int height) {
 		this.sprite = sprite;
 		resizeSprite(width, height);
-		setSprite(sprite);
+		setSprite(this.sprite);
 	}
 
 	/**
