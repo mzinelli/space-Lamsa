@@ -50,9 +50,10 @@ public class LifeBar extends Group {
 	 * Decreases the player life by one.
 	 */
 	public void decreaseLife() {
-		if (life > 0)
-		life--;
-		getGameEntities().remove(getGameEntities().size()-1);
+		if (life > 0) {
+			life--;
+			getGameEntities().remove(getGameEntities().size()-1);
+		}
 	}
 
 	private class LifeIcon extends GameEntity {

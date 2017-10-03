@@ -47,50 +47,24 @@ public abstract class State {
 		gameObjects.forEach((k, v) -> {
 			if (v.hasCollisionEvents()) {
 				List<CollisionEvent> collisionEvents = v.getCollisionEvents();
+				
 				collisionEvents.forEach(ce -> {
+					GameObject owner = ce.getOwner();
 					GameObject target = gameObjects.get(ce.getCollisionTarget());
-
+					
 					if (!target.isVisible() || !target.isListenCollision())
 						return;
-
-					if (CollisionHandler.hasCollided(v, target)) {
+					
+					
+					if (CollisionHandler.hasCollided(owner, target)) {
 						if (target.isGroup()) {
 							Group gTarget = (Group) target;
-							List<GameObject> collidedObjs = gTarget.returnCollided(v);
+							List<GameObject> collidedObjs = gTarget.returnCollided(owner);
 							collidedObjs.forEach(co -> {
-								if (!co.isVisible() || !co.isListenCollision())
-									return;
-								v.collided(ce.getCollisionTarget(), co);
+								owner.collided(ce.getCollisionTarget(), co);
 							});
 						} else
-							v.collided(ce.getCollisionTarget(), gameObjects.get(ce.getCollisionTarget()));
-						gameObjects.get(ce.getCollisionTarget()).collided(k, v);
-					}
-				});
-			}
-
-			if (v.hasChildren()) {
-				v.getChildren().forEach(c -> {
-					if (c.hasCollisionEvents()) {
-						List<CollisionEvent> collisionEvents = c.getCollisionEvents();
-						collisionEvents.forEach(ce -> {
-							GameObject target = gameObjects.get(ce.getCollisionTarget());
-
-							if (!target.isVisible() || !target.isListenCollision())
-								return;
-
-							if (CollisionHandler.hasCollided(c, target)) {
-								if (target.isGroup()) {
-									Group gTarget = (Group) target;
-									gTarget.returnCollided(c).forEach(co -> {
-										if (!co.isVisible() || !co.isListenCollision())
-											return;
-										c.collided(ce.getCollisionTarget(), co);
-									});
-								} else
-									c.collided(ce.getCollisionTarget(), gameObjects.get(ce.getCollisionTarget()));
-							}
-						});
+							owner.collided(ce.getCollisionTarget(), gameObjects.get(ce.getCollisionTarget()));
 					}
 				});
 			}

@@ -10,6 +10,11 @@ import com.mpu.spinv.engine.model.GameObject;
  * @date 2017-09-21
  */
 public class CollisionEvent {
+	
+	/**
+	 * The owner of the CollisionEvent
+	 */
+	private GameObject owner;
 
 	/**
 	 * The key identifier of the object to collide with, in order to execute the
@@ -57,6 +62,14 @@ public class CollisionEvent {
 
 	public void setEvent(Event<GameObject> event) {
 		this.event = event;
+	}
+
+	public GameObject getOwner() {
+		return owner;
+	}
+
+	public void setOwner(GameObject owner) {
+		this.owner = owner;
 	}
 
 }

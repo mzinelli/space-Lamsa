@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mpu.spinv.engine.CollisionHandler;
+import com.mpu.spinv.engine.triggers.CollisionEvent;
 import com.mpu.spinv.utils.Constants;
 
 /**
@@ -133,11 +134,41 @@ public class Group extends GameObject {
 		List<GameObject> collidedObjs = new ArrayList<GameObject>();
 
 		gameEntities.forEach(ge -> {
+			if (!ge.isListenCollision() || !ge.isVisible() || ge.isDead()) {
+				return;
+			}
+			
 			if (CollisionHandler.hasCollided(go, ge))
 				collidedObjs.add(ge);
 		});
 
 		return collidedObjs;
+	}
+	
+	@Override
+	public boolean hasCollisionEvents() {
+		if (collisionEvents.size() > 0)
+			return true;
+		
+		for (int i = 0; i < gameEntities.size(); i++)
+			if (gameEntities.get(i).hasCollisionEvents())
+				return true;
+		
+		return false;
+	}
+	
+	@Override
+	public List<CollisionEvent> getCollisionEvents() {
+		List<CollisionEvent> colEvents = new ArrayList<CollisionEvent>();
+		
+		collisionEvents.forEach(c -> colEvents.add(c));
+		
+		gameEntities.forEach(g -> {
+			if (g.hasCollisionEvents())
+				g.getCollisionEvents().forEach(c -> colEvents.add(c));
+		});
+		
+		return colEvents;
 	}
 
 	/**

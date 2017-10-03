@@ -50,11 +50,6 @@ public abstract class GameObject {
 	protected boolean screenBound;
 
 	/**
-	 * This will be true as long as the object is collided with another one.
-	 */
-	protected boolean collided;
-
-	/**
 	 * If the object should listen to collision calls.
 	 */
 	protected boolean listenCollision;
@@ -86,6 +81,12 @@ public abstract class GameObject {
 	 */
 	private boolean _drawChildrenFirst;
 
+	/**
+	 * If this flag is set to true, the GameObject will only update it's coordinates
+	 * if he's visible.
+	 */
+	private boolean _moveOnlyIfVisible;
+
 	public abstract void draw(Graphics g);
 
 	public GameObject(int x, int y, int width, int height, boolean visible) {
@@ -106,26 +107,29 @@ public abstract class GameObject {
 		this.screenBound = false;
 		this.listenCollision = true;
 		this._drawChildrenFirst = false;
+		this._moveOnlyIfVisible = false;
 	}
 
 	public void update() {
-		x += dx;
-		y += dy;
-
-		if (screenBound) {
-			if (x < 0)
-				x = 0;
-			else if (x + width > Constants.WINDOW_WIDTH - 4)
-				x = Constants.WINDOW_WIDTH - width - 4;
-
-			if (y < 0)
-				y = 0;
-			else if (y + height > Constants.WINDOW_HEIGHT - 30)
-				y = Constants.WINDOW_HEIGHT - height - 30;
+		if (!_moveOnlyIfVisible || visible) {
+			x += dx;
+			y += dy;
+	
+			if (screenBound) {
+				if (x < 0)
+					x = 0;
+				else if (x + width > Constants.WINDOW_WIDTH - 4)
+					x = Constants.WINDOW_WIDTH - width - 4;
+	
+				if (y < 0)
+					y = 0;
+				else if (y + height > Constants.WINDOW_HEIGHT - 30)
+					y = Constants.WINDOW_HEIGHT - height - 30;
+			}
 		}
 
 		if (hasChildren()) {
-			getChildren().forEach(go -> go.update());
+			children.forEach(go -> go.update());
 		}
 
 	}
@@ -196,11 +200,28 @@ public abstract class GameObject {
 	// Collision Manager methods
 
 	public List<CollisionEvent> getCollisionEvents() {
-		return collisionEvents;
+		List<CollisionEvent> colEvents = new ArrayList<CollisionEvent>();
+
+		collisionEvents.forEach(c -> colEvents.add(c));
+
+		children.forEach(ch -> {
+			if (ch.hasCollisionEvents())
+				ch.getCollisionEvents().forEach(c -> colEvents.add(c));
+		});
+
+		return colEvents;
 	}
 
 	public boolean hasCollisionEvents() {
-		return collisionEvents.size() > 0;
+		if (collisionEvents.size() > 0)
+			return true;
+
+		if (hasChildren())
+			for (int i = 0; i < children.size(); i++)
+				if (children.get(i).hasCollisionEvents())
+					return true;
+
+		return false;
 	}
 
 	/**
@@ -210,6 +231,7 @@ public abstract class GameObject {
 	 *            The new collision event to add.
 	 */
 	public void on(CollisionEvent collisionEvent) {
+		collisionEvent.setOwner(this);
 		collisionEvents.add(collisionEvent);
 	}
 
@@ -223,13 +245,7 @@ public abstract class GameObject {
 	 *            a reference to the object collided with.
 	 */
 	public void collided(String key, GameObject obj) {
-		if (collided != true)
-			collisionEvents.forEach(c -> c.collided(key, obj));
-		collided = true;
-	}
-
-	public void setNotCollided() {
-		collided = false;
+		collisionEvents.forEach(c -> c.collided(key, obj));
 	}
 
 	// Controls Manager methods
@@ -276,10 +292,18 @@ public abstract class GameObject {
 
 	public abstract boolean isGroup();
 	
+	public void moveOnlyIfVisible(boolean opt) {
+		_moveOnlyIfVisible = opt;
+	}
+	
+	public boolean moveOnlyIfVisible() {
+		return _moveOnlyIfVisible;
+	}
+
 	public void drawChildrenFirst(boolean draw) {
 		_drawChildrenFirst = draw;
 	}
-	
+
 	public boolean drawChildrenFirst() {
 		return _drawChildrenFirst;
 	}

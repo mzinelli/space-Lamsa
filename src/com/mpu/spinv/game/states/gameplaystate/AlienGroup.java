@@ -1,5 +1,6 @@
 package com.mpu.spinv.game.states.gameplaystate;
 
+import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -7,6 +8,7 @@ import java.util.Random;
 import com.mpu.spinv.engine.StateMachine;
 import com.mpu.spinv.engine.model.Animation;
 import com.mpu.spinv.engine.model.GameEntity;
+import com.mpu.spinv.engine.model.GameObject;
 import com.mpu.spinv.engine.model.Group;
 import com.mpu.spinv.engine.model.Sprite;
 import com.mpu.spinv.engine.triggers.CollisionEvent;
@@ -32,6 +34,7 @@ public class AlienGroup extends Group {
 	// -------------------------------------------
 	
 	private LifeBar playerLifebar;
+	private AlienShot shot;
 	
 	private int ticks = 0;
 	
@@ -39,6 +42,7 @@ public class AlienGroup extends Group {
 		super(X, Y, Group.LAYOUT_GRID);
 		
 		this.playerLifebar = playerLifebar;
+		this.shot = new AlienShot(0, 0);
 		
 		setGridSize(5);
 		setSpacing(10, 10);
@@ -63,6 +67,7 @@ public class AlienGroup extends Group {
 	@Override
 	public void update() {
 		boolean _entityDestroyed = false;
+		
 		List<GameEntity> als = getGameEntities();
 		for (int i = 0; i < als.size(); i++)
 			if (als.get(i).isDead()) {
@@ -83,9 +88,11 @@ public class AlienGroup extends Group {
 			Random random = new Random();
 			List<GameEntity> aliens = getAbleToShootAliens();
 			
-			if (aliens.size() > 0) {
+			if (aliens.size() > 0 && !shot.isVisible()) {
 				Alien alien = (Alien) aliens.get(random.nextInt(aliens.size()));
-				alien.shoot();
+				shot.setX(alien.getX() + shot.getWidth() / 2);
+				shot.setY(alien.getY() + 14);
+				shot.setVisible(true);
 			}
 		}
 		
@@ -93,6 +100,31 @@ public class AlienGroup extends Group {
 			moveLeft(true);
 		else if (x < 10)
 			moveRight(true);
+		
+		shot.update();
+		
+		if (shot.getY() > Constants.WINDOW_HEIGHT - 30) {
+			shot.setVisible(false);
+		}
+	}
+	
+	@Override
+	public void draw(Graphics g) {
+		shot.draw(g);
+		super.draw(g);
+	}
+	
+	@Override
+	public List<CollisionEvent> getCollisionEvents() {
+		List<CollisionEvent> colEvents = super.getCollisionEvents();
+		colEvents.add(shot.getCollisionEvents().get(0));
+		
+		return colEvents;
+	}
+	
+	@Override
+	public boolean hasCollisionEvents() {
+		return shot.isListenCollision();
 	}
 	
 	private List<GameEntity> getAbleToShootAliens() {
@@ -154,8 +186,6 @@ public class AlienGroup extends Group {
 			sprite = new Sprite(StateMachine.spriteSheet.getSprite(423, 825, 93, 83));
 			setStaticSprite(sprite);
 			resizeSprite(WIDTH, HEIGHT);
-			
-			drawChildrenFirst(true);
 		}
 		
 		@Override
@@ -169,52 +199,85 @@ public class AlienGroup extends Group {
 		
 		@Override
 		public void die() {
-			listenCollision = false;
+			setListenCollision(false);
 			setAnimation("death");
 			startAnimation();
 		}
+	
+	}
+	
+	private class AlienShot extends GameEntity {
 		
-		public void shoot() {
-			addChild(new AlienShot(x + getWidth() / 2, y));
+		// ---------------- Constants ----------------
+		
+		private static final int SHOT_VELOCITY = 9;
+		private static final boolean INITIAL_VISIBILITY = false;
+		
+		private static final int SHOT_WIDTH = 9;
+		private static final int SHOT_HEIGHT = 54;
+		
+		// -------------------------------------------
+		
+		/**
+		 * The shot's sprite.
+		 */
+		private Sprite sprite;
+		
+		private Animation hitAnimation;
+		
+		public AlienShot(int x, int y) {
+			super(x - SHOT_WIDTH /2, y + 14, INITIAL_VISIBILITY);
+			
+			hitAnimation = new Animation(new Sprite[] {
+					new Sprite(StateMachine.spriteSheet.getSprite(0, 0, 96, 96), 40, 40),
+					new Sprite(StateMachine.spriteSheet.getSprite(96, 0, 96, 96), 40, 40),
+					new Sprite(StateMachine.spriteSheet.getSprite(192, 0, 96, 96), 40, 40),
+					new Sprite(StateMachine.spriteSheet.getSprite(288, 0, 96, 96), 40, 40),
+					new Sprite(StateMachine.spriteSheet.getSprite(384, 0, 96, 96), 40, 40),
+					new Sprite(StateMachine.spriteSheet.getSprite(480, 0, 96, 96), 40, 40),
+					new Sprite(StateMachine.spriteSheet.getSprite(576, 0, 96, 96), 40, 40),
+					new Sprite(StateMachine.spriteSheet.getSprite(672, 0, 96, 96), 40, 40),
+					new Sprite(StateMachine.spriteSheet.getSprite(768, 0, 96, 96), 40, 40),
+					new Sprite(StateMachine.spriteSheet.getSprite(864, 0, 96, 96), 40, 40),
+					new Sprite(StateMachine.spriteSheet.getSprite(960, 0, 96, 96), 40, 40),
+					new Sprite(StateMachine.spriteSheet.getSprite(1056, 0, 96, 96), 40, 40),
+			}, 3, Animation.NO_LOOP, true);
+			addAnimation("hit", hitAnimation);
+			setAnimation(null);
+			
+			sprite = new Sprite(StateMachine.spriteSheet.getSprite(856, 517, SHOT_WIDTH, SHOT_HEIGHT));
+			setStaticSprite(sprite);
+			
+			setVelocityY(SHOT_VELOCITY);
+			moveOnlyIfVisible(true);
+			
+			moveDown(true);
+			
+			on(new CollisionEvent("player", (go, i) -> {
+				setListenCollision(false);
+				setAnimation("hit");
+				startAnimation();
+				playerLifebar.decreaseLife();
+				
+				moveDown(false);
+			}));
 		}
 		
-		private class AlienShot extends GameEntity {
+		@Override
+		public void update() {
+			super.update();
 			
-			// ---------------- Constants ----------------
-			
-			private static final int SHOT_VELOCITY = 9;
-			private static final boolean INITIAL_VISIBILITY = true;
-			
-			private static final int SHOT_WIDTH = 9;
-			private static final int SHOT_HEIGHT = 54;
-			
-			// -------------------------------------------
-			
-			/**
-			 * The shot's sprite.
-			 */
-			Sprite sprite;
-			
-			public AlienShot(int x, int y) {
-				super(x - SHOT_WIDTH /2, y + 14, INITIAL_VISIBILITY);
-				
-				sprite = new Sprite(StateMachine.spriteSheet.getSprite(856, 517, SHOT_WIDTH, SHOT_HEIGHT));
-				
+			if (!isListenCollision() && getActiveAnimation().hasEnded()) {
+				getActiveAnimation().reset();
+				setAnimation(null);
 				setStaticSprite(sprite);
 				
-				setVelocityY(SHOT_VELOCITY);
+				setVisible(false);
 				moveDown(true);
-				
-				
-				
-				on(new CollisionEvent("player", (go, i) -> {
-					System.out.println("entrou");
-					playerLifebar.decreaseLife();
-				}));
+				setListenCollision(true);
 			}
-			
 		}
-	
+		
 	}
 
 }

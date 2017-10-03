@@ -33,6 +33,22 @@ public class Sprite {
 	}
 
 	/**
+	 * Sprite's class constructor with resize.
+	 * 
+	 * @param sprite
+	 *            An image of the sprite to be drawn on screen.
+	 * @param width
+	 *            The width of the sprite.
+	 * @param height
+	 *            The height of the sprite.
+	 */
+	public Sprite(BufferedImage sprite, int width, int height) {
+		this.sprite = sprite;
+		resizeSprite(width, height);
+		setSprite(sprite);
+	}
+
+	/**
 	 * Resizes the sprite to a given width and height.
 	 * 
 	 * @param width
