@@ -117,6 +117,11 @@ public abstract class GameObject {
 			else if (y + height > Constants.WINDOW_HEIGHT - 30)
 				y = Constants.WINDOW_HEIGHT - height - 30;
 		}
+		
+		if (hasChildren()) {
+			getChildren().forEach(go -> go.update());
+		}
+		
 	}
 
 	public void die() {

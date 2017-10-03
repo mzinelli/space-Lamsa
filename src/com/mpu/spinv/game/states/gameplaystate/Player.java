@@ -116,8 +116,6 @@ public class Player extends GameEntity {
 				removeChild(i);
 				continue;
 			}
-			
-			shot.update();
 		}
 	}
 	
