@@ -63,7 +63,10 @@ public class AlienGroup extends Group {
 		
 		if (ticks >= 30) {
 			ticks = 0;
-			Alien alien = (Alien) get(6);
+			
+			Random random = new Random();
+			List<GameEntity> aliens = getFrontRowAliens();
+			Alien alien = (Alien) get(random.nextInt(getGameEntities().size()));
 			alien.shoot();
 		}
 		
@@ -73,6 +76,13 @@ public class AlienGroup extends Group {
 			moveRight(true);
 	}
 	
+	private List<GameEntity> getFrontRowAliens() {
+		List<GameEntity> entities = new ArrayList<GameEntity>();
+		
+		
+		
+		return entities;
+	}
 
 	private class Alien extends GameEntity {
 		
