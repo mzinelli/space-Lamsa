@@ -49,7 +49,7 @@ public class GameplayState extends State {
 		lifebar = new LifeBar();
 		score = new Score();
 		player = new Player(score);
-		alienGroup = new AlienGroup();
+		alienGroup = new AlienGroup(lifebar);
 		helpText = new HelpText();
 		soundIcon = new SoundIcon();
 	}

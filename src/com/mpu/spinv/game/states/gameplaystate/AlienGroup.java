@@ -9,6 +9,7 @@ import com.mpu.spinv.engine.model.Animation;
 import com.mpu.spinv.engine.model.GameEntity;
 import com.mpu.spinv.engine.model.Group;
 import com.mpu.spinv.engine.model.Sprite;
+import com.mpu.spinv.engine.triggers.CollisionEvent;
 import com.mpu.spinv.utils.Constants;
 
 /**
@@ -30,10 +31,14 @@ public class AlienGroup extends Group {
 	
 	// -------------------------------------------
 	
+	private LifeBar playerLifebar;
+	
 	private int ticks = 0;
 	
-	public AlienGroup() {
+	public AlienGroup(LifeBar playerLifebar) {
 		super(X, Y, Group.LAYOUT_GRID);
+		
+		this.playerLifebar = playerLifebar;
 		
 		setGridSize(5);
 		setSpacing(10, 10);
@@ -199,6 +204,13 @@ public class AlienGroup extends Group {
 				
 				setVelocityY(SHOT_VELOCITY);
 				moveDown(true);
+				
+				
+				
+				on(new CollisionEvent("player", (go, i) -> {
+					System.out.println("entrou");
+					playerLifebar.decreaseLife();
+				}));
 			}
 			
 		}
