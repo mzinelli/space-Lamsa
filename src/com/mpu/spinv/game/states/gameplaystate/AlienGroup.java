@@ -30,6 +30,8 @@ public class AlienGroup extends Group {
 	
 	// -------------------------------------------
 	
+	private int ticks = 0;
+	
 	public AlienGroup() {
 		super(X, Y, Group.LAYOUT_GRID);
 		
@@ -39,7 +41,7 @@ public class AlienGroup extends Group {
 		for (int i = 0; i < TOTAL_ALIENS; i++)
 			add(new Alien());
 		
-		centerBothAxis();
+		// centerBothAxis();
 		
 		setVelocity(VELOCITY, VELOCITY);
 		moveRight(true);
@@ -55,7 +57,32 @@ public class AlienGroup extends Group {
 	
 	@Override
 	public void update() {
+		boolean _entityDestroyed = false;
+		List<GameEntity> als = getGameEntities();
+		for (int i = 0; i < als.size(); i++)
+			if (als.get(i).isDead()) {
+				_entityDestroyed = true;
+				break;
+			}
+		
 		super.update();
+		
+		if (_entityDestroyed)
+			resetCoordinates();
+		
+		ticks++;
+		
+		if (ticks >= 30 && getGameEntities().size() > 0) {
+			ticks = 0;
+			
+			Random random = new Random();
+			List<GameEntity> aliens = getAbleToShootAliens();
+			
+			if (aliens.size() > 0) {
+				Alien alien = (Alien) aliens.get(random.nextInt(aliens.size()));
+				alien.shoot();
+			}
+		}
 		
 		if (x + width > Constants.WINDOW_WIDTH - 4 - 10)
 			moveLeft(true);
@@ -63,6 +90,23 @@ public class AlienGroup extends Group {
 			moveRight(true);
 	}
 	
+	private List<GameEntity> getAbleToShootAliens() {
+		List<GameEntity> entitiesAble = new ArrayList<GameEntity>();
+		List<GameEntity> als = getGameEntities();
+		int counter = 0;
+		
+		for (int i = als.size() - 1; i>= 0; i--) {
+			if (als.get(i).isListenCollision()) { // If the alien is not playing death animation.
+				entitiesAble.add(als.get(i));
+				counter++;
+			}
+			
+			if (counter == getGridCols())
+				break;
+		}
+		
+		return entitiesAble;
+	}
 
 	private class Alien extends GameEntity {
 		
@@ -123,6 +167,40 @@ public class AlienGroup extends Group {
 			listenCollision = false;
 			setAnimation("death");
 			startAnimation();
+		}
+		
+		public void shoot() {
+			addChild(new AlienShot(x + getWidth() / 2, y));
+		}
+		
+		private class AlienShot extends GameEntity {
+			
+			// ---------------- Constants ----------------
+			
+			private static final int SHOT_VELOCITY = 9;
+			private static final boolean INITIAL_VISIBILITY = true;
+			
+			private static final int SHOT_WIDTH = 9;
+			private static final int SHOT_HEIGHT = 54;
+			
+			// -------------------------------------------
+			
+			/**
+			 * The shot's sprite.
+			 */
+			Sprite sprite;
+			
+			public AlienShot(int x, int y) {
+				super(x - SHOT_WIDTH /2, y + 14, INITIAL_VISIBILITY);
+				
+				sprite = new Sprite(StateMachine.spriteSheet.getSprite(856, 517, SHOT_WIDTH, SHOT_HEIGHT));
+				
+				setStaticSprite(sprite);
+				
+				setVelocityY(SHOT_VELOCITY);
+				moveDown(true);
+			}
+			
 		}
 	
 	}
