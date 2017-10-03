@@ -54,8 +54,10 @@ public class Player extends GameEntity {
 		setStaticSprite(sprite);		
 		resizeSprite(WIDTH, HEIGHT);
 		
+		// Setting up some options
 		setScreenBound(true);
 		setVelocity(VELOCITY, VELOCITY);
+		drawChildrenFirst(true);
 
 		/**
 		 * Setting the player movements triggers.

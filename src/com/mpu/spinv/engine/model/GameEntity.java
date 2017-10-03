@@ -96,10 +96,16 @@ public class GameEntity extends GameObject {
 	@Override
 	public void draw(Graphics g) {
 		if (visible && (animation != null || staticSprite != null)) {
-			g.drawImage((actAnimation == null ? staticSprite.getSprite() : animation.getSprite()), x, y, null);
-			
-			if (hasChildren()) {
-				getChildren().forEach(go -> go.draw(g));
+			if (!drawChildrenFirst()) {
+				g.drawImage((actAnimation == null ? staticSprite.getSprite() : animation.getSprite()), x, y, null);	
+				if (hasChildren()) {
+					getChildren().forEach(go -> go.draw(g));
+				}
+			} else {
+				if (hasChildren()) {
+					getChildren().forEach(go -> go.draw(g));
+				}
+				g.drawImage((actAnimation == null ? staticSprite.getSprite() : animation.getSprite()), x, y, null);
 			}
 			
 			if (Constants.SHOW_ENTITIES_BORDERS) {

@@ -1,5 +1,9 @@
 package com.mpu.spinv.game.states.gameplaystate;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import com.mpu.spinv.engine.StateMachine;
 import com.mpu.spinv.engine.model.Animation;
 import com.mpu.spinv.engine.model.GameEntity;
@@ -58,6 +62,7 @@ public class AlienGroup extends Group {
 		else if (x < 10)
 			moveRight(true);
 	}
+	
 
 	private class Alien extends GameEntity {
 		
@@ -100,6 +105,8 @@ public class AlienGroup extends Group {
 			sprite = new Sprite(StateMachine.spriteSheet.getSprite(423, 825, 93, 83));
 			setStaticSprite(sprite);
 			resizeSprite(WIDTH, HEIGHT);
+			
+			drawChildrenFirst(true);
 		}
 		
 		@Override

@@ -81,6 +81,11 @@ public abstract class GameObject {
 	 */
 	protected List<GameObject> children;
 
+	/**
+	 * If this flag is set to true, the GameObject's children will be drawn first.
+	 */
+	private boolean _drawChildrenFirst;
+
 	public abstract void draw(Graphics g);
 
 	public GameObject(int x, int y, int width, int height, boolean visible) {
@@ -100,6 +105,7 @@ public abstract class GameObject {
 		this.velocityY = 0;
 		this.screenBound = false;
 		this.listenCollision = true;
+		this._drawChildrenFirst = false;
 	}
 
 	public void update() {
@@ -117,11 +123,11 @@ public abstract class GameObject {
 			else if (y + height > Constants.WINDOW_HEIGHT - 30)
 				y = Constants.WINDOW_HEIGHT - height - 30;
 		}
-		
+
 		if (hasChildren()) {
 			getChildren().forEach(go -> go.update());
 		}
-		
+
 	}
 
 	public void die() {
@@ -138,7 +144,7 @@ public abstract class GameObject {
 	public void moveUp(boolean should) {
 		dy = should ? -velocityY : 0;
 	}
-	
+
 	/**
 	 * Makes the GameObject move down, the velocity will be determined by
 	 * {@link GameObject#velocityY}
@@ -146,7 +152,7 @@ public abstract class GameObject {
 	public void moveDown(boolean should) {
 		dy = should ? velocityY : 0;
 	}
-	
+
 	/**
 	 * Makes the GameObject move right, the velocity will be determined by
 	 * {@link GameObject#velocityX}
@@ -154,7 +160,7 @@ public abstract class GameObject {
 	public void moveRight(boolean should) {
 		dx = should ? velocityX : 0;
 	}
-	
+
 	/**
 	 * Makes the GameObject move left, the velocity will be determined by
 	 * {@link GameObject#velocityX}
@@ -172,7 +178,7 @@ public abstract class GameObject {
 	public List<GameObject> getChildren() {
 		return children;
 	}
-	
+
 	public GameObject getChild(int i) {
 		if (children.size() == 0 || i < 0 || i > children.size() - 1)
 			return null;
@@ -269,6 +275,14 @@ public abstract class GameObject {
 	// Getters and Setters
 
 	public abstract boolean isGroup();
+	
+	public void drawChildrenFirst(boolean draw) {
+		_drawChildrenFirst = draw;
+	}
+	
+	public boolean drawChildrenFirst() {
+		return _drawChildrenFirst;
+	}
 
 	public boolean isVisible() {
 		return visible;
