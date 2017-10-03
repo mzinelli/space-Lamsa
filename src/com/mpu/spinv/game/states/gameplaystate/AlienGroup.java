@@ -57,17 +57,31 @@ public class AlienGroup extends Group {
 	
 	@Override
 	public void update() {
+		boolean _entityDestroyed = false;
+		List<GameEntity> als = getGameEntities();
+		for (int i = 0; i < als.size(); i++)
+			if (als.get(i).isDead()) {
+				_entityDestroyed = true;
+				break;
+			}
+		
 		super.update();
+		
+		if (_entityDestroyed)
+			resetCoordinates();
 		
 		ticks++;
 		
-		if (ticks >= 30) {
+		if (ticks >= 30 && getGameEntities().size() > 0) {
 			ticks = 0;
 			
 			Random random = new Random();
-			List<GameEntity> aliens = getFrontRowAliens();
-			Alien alien = (Alien) get(random.nextInt(getGameEntities().size()));
-			alien.shoot();
+			List<GameEntity> aliens = getAbleToShootAliens();
+			
+			if (aliens.size() > 0) {
+				Alien alien = (Alien) aliens.get(random.nextInt(aliens.size()));
+				alien.shoot();
+			}
 		}
 		
 		if (x + width > Constants.WINDOW_WIDTH - 4 - 10)
@@ -76,12 +90,22 @@ public class AlienGroup extends Group {
 			moveRight(true);
 	}
 	
-	private List<GameEntity> getFrontRowAliens() {
-		List<GameEntity> entities = new ArrayList<GameEntity>();
+	private List<GameEntity> getAbleToShootAliens() {
+		List<GameEntity> entitiesAble = new ArrayList<GameEntity>();
+		List<GameEntity> als = getGameEntities();
+		int counter = 0;
 		
+		for (int i = als.size() - 1; i>= 0; i--) {
+			if (als.get(i).isListenCollision()) { // If the alien is not playing death animation.
+				entitiesAble.add(als.get(i));
+				counter++;
+			}
+			
+			if (counter == getGridCols())
+				break;
+		}
 		
-		
-		return entities;
+		return entitiesAble;
 	}
 
 	private class Alien extends GameEntity {
@@ -167,7 +191,7 @@ public class AlienGroup extends Group {
 			Sprite sprite;
 			
 			public AlienShot(int x, int y) {
-				super(x - SHOT_WIDTH /2, y, INITIAL_VISIBILITY);
+				super(x - SHOT_WIDTH /2, y + 14, INITIAL_VISIBILITY);
 				
 				sprite = new Sprite(StateMachine.spriteSheet.getSprite(856, 517, SHOT_WIDTH, SHOT_HEIGHT));
 				

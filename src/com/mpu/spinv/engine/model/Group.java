@@ -308,7 +308,7 @@ public class Group extends GameObject {
 		height = maxY - minY;
 	}
 
-	private void resetCoordinates() {
+	protected void resetCoordinates() {
 		if (gameEntities.size() == 0)
 			return;
 		
