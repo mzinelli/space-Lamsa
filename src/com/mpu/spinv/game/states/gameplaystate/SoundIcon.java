@@ -44,7 +44,14 @@ public class SoundIcon extends GameEntity {
 		on(new KeyTriggerEvent(KeyEvent.VK_F1, (k, t) -> {
 			if (t == KeyTriggerEvent.KEY_RELEASED) {
 				mute = !mute;
-				setStaticSprite(mute ? offSprite : onSprite);
+				setStaticSprite(offSprite);
+			}
+		}));
+		
+		on(new KeyTriggerEvent(KeyEvent.VK_F2, (k, t) -> {
+			if (t == KeyTriggerEvent.KEY_RELEASED) {
+				mute = !mute;
+				setStaticSprite(onSprite);
 			}
 		}));
 	}
