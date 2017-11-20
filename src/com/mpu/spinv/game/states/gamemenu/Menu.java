@@ -5,6 +5,7 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import com.mpu.spinv.Core;
@@ -28,7 +29,7 @@ public class Menu extends Group {
 
 	private static final int X = 0;
 	private static final int Y = 0;
-	
+
 	private static final int LAYOUT = Group.LAYOUT_VERTICAL;
 
 	// -------------------------------------------
@@ -37,43 +38,52 @@ public class Menu extends Group {
 
 	public Menu() {
 		super(X, Y, LAYOUT);
-		
+
 		setSpacingVertical(10);
-		
+
 		add(new MenuItem(0, 0, "CONTINUAR", (i, j) -> {
 			StateMachine.setActiveState("gameplay");
 		}, true));
-		
+
 		add(new MenuItem(0, 0, "AJUDA", (i, j) -> {
 			// TODO
 			JFrame f = new JFrame("Help");
-			 f.setVisible(true);
-			 f.setResizable(false);
-			 f.setLocationRelativeTo(null);
-			 f.setSize(600,300);
-			 
-			 layout = new BorderLayout(0,0);
-			 f.setLayout(layout);
-			
-			 JLabel jl = new JLabel();
-			 JLabel j2 = new JLabel();
-			 JLabel j3 = new JLabel();
-			 jl.setText("HAHAHAH TESTE!");
-			 j2.setText("TESTE 2");
-			 j3.setText("Use as setas para deslocamento.");
-			 
-			 f.add(jl, BorderLayout.CENTER);
-			 f.add(j2, BorderLayout.SOUTH);
-			 f.add(j3, BorderLayout.SOUTH);
-			 
+			f.setVisible(true);
+			f.setResizable(false);
+			f.setLocationRelativeTo(null);
+			f.setSize(600, 300);
+
+			layout = new BorderLayout(0, 0);
+			f.setLayout(layout);
+
+			JLabel jl = new JLabel();
+			JLabel j2 = new JLabel();
+			JLabel j3 = new JLabel();
+			jl.setText("HAHAHAH TESTE!");
+			j2.setText("TESTE 2");
+			j3.setText("Use as setas para deslocamento.");
+
+			f.add(jl, BorderLayout.CENTER);
+			f.add(j2, BorderLayout.SOUTH);
+			f.add(j3, BorderLayout.SOUTH);
+
 		}));
-		
+
 		add(new MenuItem(0, 0, "SAIR", (i, j) -> {
-			System.exit(0);
+			int confirm = JOptionPane.showConfirmDialog(null, "Você deseja sair do jogo? =(", null,
+					JOptionPane.OK_CANCEL_OPTION);
+
+			if (confirm == JOptionPane.YES_OPTION) {
+				// verifica se o usuário clicou no botão YES
+				System.exit(0);
+			} else {
+				StateMachine.setActiveState("gameplay");
+			}
+			// System.exit(0);
 		}));
-		
+
 		centerBothAxis();
-		
+
 		on(new KeyTriggerEvent(KeyEvent.VK_UP, (k, t) -> {
 			if (t == KeyTriggerEvent.KEY_RELEASED && i > 0) {
 				MenuItem sel = (MenuItem) get(i);
@@ -83,7 +93,7 @@ public class Menu extends Group {
 				sel.setSelected(true);
 			}
 		}));
-		
+
 		on(new KeyTriggerEvent(KeyEvent.VK_DOWN, (k, t) -> {
 			if (t == KeyTriggerEvent.KEY_RELEASED && i < getGameEntities().size() - 1) {
 				MenuItem sel = (MenuItem) get(i);
