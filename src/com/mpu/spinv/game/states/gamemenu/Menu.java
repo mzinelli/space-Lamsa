@@ -16,6 +16,11 @@ import com.mpu.spinv.game.menu.MenuItem;
 import com.mpu.spinv.utils.Constants;
 
 import javafx.scene.layout.Border;
+import jplay.Animation;
+import jplay.GameImage;
+import jplay.Keyboard;
+import jplay.Mouse;
+import jplay.Window;
 
 /**
  * Menu.java
@@ -24,6 +29,10 @@ import javafx.scene.layout.Border;
  * @date 2017-09-30
  */
 public class Menu extends Group {
+
+	private static GameImage background = new GameImage(
+			"C://Users//Miguel//Documents//space-Something//src//resources//img//ajuda.jpg");
+	private static Animation btSair = new Animation("C://Users//Miguel//Documents//space-Something//src//resources//img//btSair.png", 1);
 
 	// ---------------- Constants ----------------
 
@@ -46,26 +55,34 @@ public class Menu extends Group {
 		}, true));
 
 		add(new MenuItem(0, 0, "AJUDA", (i, j) -> {
-			// TODO
-			JFrame f = new JFrame("Help");
-			f.setVisible(true);
-			f.setResizable(false);
-			f.setLocationRelativeTo(null);
-			f.setSize(600, 300);
+			 
+			JOptionPane.showMessageDialog(null,
+			 " Para jogar utilize:\n" + "\nSetas Direcionais: \n <- Esquerda \n-> Direita \n" +"Barra de Espaço - Atirar",
+			 "Ajuda",
+			 JOptionPane.INFORMATION_MESSAGE);
 
-			layout = new BorderLayout(0, 0);
-			f.setLayout(layout);
-
-			JLabel jl = new JLabel();
-			JLabel j2 = new JLabel();
-			JLabel j3 = new JLabel();
-			jl.setText("HAHAHAH TESTE!");
-			j2.setText("TESTE 2");
-			j3.setText("Use as setas para deslocamento.");
-
-			f.add(jl, BorderLayout.CENTER);
-			f.add(j2, BorderLayout.SOUTH);
-			f.add(j3, BorderLayout.SOUTH);
+//			Window janela = new Window(1280, 720);
+//			Mouse mouse = janela.getMouse();
+//			boolean executando = true;
+//
+//			btSair.x = 800;
+//			btSair.y = 470;
+//			btSair.setLoop(true);
+//			btSair.stop();
+//
+//			while (executando) {
+//				// desenha o fundo
+//				background.draw();
+//				// cria botoes
+//
+//				btSair.draw();
+//				btSair.play();
+//				janela.update();
+//				
+//	            if (mouse.isLeftButtonPressed() && mouse.isOverObject(btSair)) {
+//					janela.exit();
+//				}
+//			}
 
 		}));
 
