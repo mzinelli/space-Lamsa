@@ -30,9 +30,6 @@ import jplay.Window;
  */
 public class Menu extends Group {
 
-	private static GameImage background = new GameImage(
-			"C://Users//Miguel//Documents//space-Something//src//resources//img//ajuda.jpg");
-	private static Animation btSair = new Animation("C://Users//Miguel//Documents//space-Something//src//resources//img//btSair.png", 1);
 
 	// ---------------- Constants ----------------
 
@@ -61,28 +58,6 @@ public class Menu extends Group {
 			 "Ajuda",
 			 JOptionPane.INFORMATION_MESSAGE);
 
-//			Window janela = new Window(1280, 720);
-//			Mouse mouse = janela.getMouse();
-//			boolean executando = true;
-//
-//			btSair.x = 800;
-//			btSair.y = 470;
-//			btSair.setLoop(true);
-//			btSair.stop();
-//
-//			while (executando) {
-//				// desenha o fundo
-//				background.draw();
-//				// cria botoes
-//
-//				btSair.draw();
-//				btSair.play();
-//				janela.update();
-//				
-//	            if (mouse.isLeftButtonPressed() && mouse.isOverObject(btSair)) {
-//					janela.exit();
-//				}
-//			}
 
 		}));
 

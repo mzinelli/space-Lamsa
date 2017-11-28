@@ -1,5 +1,6 @@
 package com.mpu.spinv.game.states.gameplaystate;
 
+import java.applet.Applet;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ public class Player extends GameEntity {
 
 	private Sound soundLevel;
 	private Sound soundShoot;
-	private ArrayList<Sound> songs;
+
 	private boolean soundsOn = true;
 
 	// -------------------------------------------
@@ -68,8 +69,6 @@ public class Player extends GameEntity {
 		setScreenBound(true);
 		setVelocity(VELOCITY, VELOCITY);
 		drawChildrenFirst(true);
-
-		songs = new ArrayList();
 
 		soundLevel = new Sound("C://Users//Miguel//Documents//space-Something//src//resources//song//mpf.wav");
 		soundShoot = new Sound("C://Users//Miguel//Documents//space-Something//src//resources//song//shoot.wav");

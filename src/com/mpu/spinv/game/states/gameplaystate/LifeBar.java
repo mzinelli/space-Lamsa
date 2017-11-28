@@ -35,6 +35,8 @@ public class LifeBar extends Group {
 		setSpacingHorizontal(5);
 		
 		initializeLifeIcons();
+		
+		
 	}
 
 	/**
@@ -54,6 +56,7 @@ public class LifeBar extends Group {
 			life--;
 			getGameEntities().remove(getGameEntities().size()-1);
 		}
+
 	}
 
 	private class LifeIcon extends GameEntity {
@@ -74,6 +77,7 @@ public class LifeBar extends Group {
 			
 			setStaticSprite(sprite);
 			setScreenBound(true);
+
 		}
 
 	}

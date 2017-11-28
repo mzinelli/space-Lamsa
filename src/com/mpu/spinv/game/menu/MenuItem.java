@@ -51,7 +51,7 @@ public class MenuItem extends GameEntity {
 	@Override
 	public void draw(Graphics g) {
 		// Draws container
-		g.setColor(selected ? Color.YELLOW : Color.BLUE);
+		g.setColor(selected ? Color.GRAY : Color.WHITE);
 		g.fillRect(x, y, width, height);
 
 		// Draws text
