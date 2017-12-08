@@ -18,8 +18,8 @@ public class SoundIcon extends GameEntity {
 
 	// ---------------- Constants ----------------
 	
-	private static final int WIDTH = 46;
-	private static final int HEIGHT = 46;
+	private static final int WIDTH = 50;
+	private static final int HEIGHT = 50;
 	
 	private static final int X = 10;
 	private static final int Y = Constants.WINDOW_HEIGHT - 30 - HEIGHT - 10;
@@ -36,8 +36,8 @@ public class SoundIcon extends GameEntity {
 	public SoundIcon() {
 		super(X, Y, INITIAL_VISIBILITY);
 		
-		onSprite = new Sprite(StateMachine.spriteSheet.getSprite(597, 1057, WIDTH, HEIGHT));
-		offSprite = new Sprite(StateMachine.spriteSheet.getSprite(581, 757, WIDTH, HEIGHT));
+		onSprite = new Sprite(StateMachine.spriteSheet.getSprite(868, 1015, WIDTH, HEIGHT));
+		offSprite = new Sprite(StateMachine.spriteSheet.getSprite(874, 1068, WIDTH, HEIGHT));
 		
 		setStaticSprite(onSprite);
 		
