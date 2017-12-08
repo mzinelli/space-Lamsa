@@ -30,6 +30,8 @@ public class MenuItem extends GameEntity {
 	private boolean selected;
 
 	public MenuItem(int x, int y, String content, Event<Integer> event, boolean selected) {
+			
+		
 		super(x, y, true);
 
 		this.content = content;
@@ -37,7 +39,7 @@ public class MenuItem extends GameEntity {
 
 		setWidth(WIDTH);
 		setHeight(HEIGHT);
-
+		
 		on(new KeyTriggerEvent(KeyEvent.VK_ENTER, (k, t) -> {
 			if (t == KeyTriggerEvent.KEY_RELEASED && this.selected)
 				event.run(0, 0);

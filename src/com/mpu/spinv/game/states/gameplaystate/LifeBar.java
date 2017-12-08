@@ -1,5 +1,7 @@
 package com.mpu.spinv.game.states.gameplaystate;
 
+import javax.swing.JOptionPane;
+
 import com.mpu.spinv.engine.StateMachine;
 import com.mpu.spinv.engine.model.GameEntity;
 import com.mpu.spinv.engine.model.Group;
@@ -56,9 +58,15 @@ public class LifeBar extends Group {
 			life--;
 			getGameEntities().remove(getGameEntities().size()-1);
 		}
-
+		
+		//players death
+		if(life <= 0){
+			JOptionPane.showMessageDialog(null, "ABORTAR MISSÃO!!!!: \n\nInfelizmente, a nave foi atingida e não conseguirá finalizar o objetivo de destruir os inimigos.");
+			System.exit(0);
+		}
+		
 	}
-
+		
 	private class LifeIcon extends GameEntity {
 
 		// ---------------- Constants ----------------
