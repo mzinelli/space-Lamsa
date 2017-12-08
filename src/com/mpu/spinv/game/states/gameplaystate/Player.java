@@ -29,7 +29,9 @@ public class Player extends GameEntity {
 	private static final int HEIGHT = 53;
 
 	private static final int INITIAL_X = Constants.WINDOW_WIDTH / 2 - WIDTH / 2;
-	private static final int INITIAL_Y = Constants.WINDOW_HEIGHT - HEIGHT - 40;
+	//= Constants.WINDOW_WIDTH / 2 - WIDTH / 2
+	//- WIDTH / 2
+	private static final int INITIAL_Y = 618;
 
 	private final int VELOCITY = 5;
 
