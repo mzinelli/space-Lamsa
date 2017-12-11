@@ -1,6 +1,7 @@
 package com.mpu.spinv.game.states.gameplaystate;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 
 import com.mpu.spinv.engine.model.GameText;
@@ -33,6 +34,7 @@ public class Score extends GameText {
 	
 	@Override
 	public void draw(Graphics g) {
+		g.setFont((new Font("Microsoft Sans Serif", Font.PLAIN, 18)));
 		super.draw(g);
 		
 		if (_firstTime) {

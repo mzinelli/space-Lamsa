@@ -1,6 +1,7 @@
 package com.mpu.spinv.game.menu;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 
@@ -55,7 +56,7 @@ public class MenuItem extends GameEntity {
 		// Draws container
 		g.setColor(selected ? Color.GRAY : Color.WHITE);
 		g.fillRect(x, y, width, height);
-
+		g.setFont((new Font("Microsoft Sans Serif", Font.PLAIN, 20)));
 		// Draws text
 		g.setColor(Color.BLACK);
 		g.drawString(content, x + (width / 2 - g.getFontMetrics().stringWidth(content) / 2),
