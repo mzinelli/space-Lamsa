@@ -41,6 +41,7 @@ public class Player extends GameEntity {
 
 	private Sound soundLevel;
 	private Sound soundShoot;
+	private Sound soundThird;
 
 	private boolean soundsOn = true;
 
@@ -72,10 +73,14 @@ public class Player extends GameEntity {
 		setVelocity(VELOCITY, VELOCITY);
 		drawChildrenFirst(true);
 
-		soundLevel = new Sound("C://Users//Miguel//Documents//space-Something//src//resources//song//mpf.wav");
+		soundLevel = new Sound("C://Users//Miguel//Documents//space-Something//src//resources//song//2.wav");
 		soundShoot = new Sound("C://Users//Miguel//Documents//space-Something//src//resources//song//shoot.wav");
+		soundThird = new Sound("C://Users//Miguel//Documents//space-Something//src//resources//song//1.wav");
 
 		soundLevel.play();
+		soundLevel.setRepeat(true);
+		soundThird.play();
+		soundThird.decreaseVolume(16.0f);
 		/**
 		 * Setting the player movements triggers.
 		 */
@@ -131,7 +136,7 @@ public class Player extends GameEntity {
 
 		on(new KeyTriggerEvent(KeyEvent.VK_F1, (k, t) -> {
 			if (t == KeyTriggerEvent.KEY_RELEASED) {
-
+				soundThird.stop();
 				soundLevel.stop();
 				shootSongStop();
 			}
@@ -140,7 +145,7 @@ public class Player extends GameEntity {
 		
 		on(new KeyTriggerEvent(KeyEvent.VK_F2, (k, t) -> {
 			if (t == KeyTriggerEvent.KEY_RELEASED && soundsOn == false) {
-
+				soundThird.play();
 				soundLevel.play();
 				soundsOn = true;
 			}
@@ -173,6 +178,7 @@ public class Player extends GameEntity {
 	public void shootSongPlay() {
 		soundShoot = new Sound("C://Users//Miguel//Documents//space-Something//src//resources//song//shoot.wav");
 		soundShoot.play();
+		soundShoot.decreaseVolume(19.0f);
 	}
 
 	public void shootSongStop() {
