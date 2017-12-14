@@ -60,9 +60,7 @@ public class Menu extends Group {
 			  String[] options = {"OK"};
 			  
 			  JOptionPane jOption = new JOptionPane();
-			 
-			  jOption.setFocusable(true);
-			  jOption.showOptionDialog(null, " Para jogar utilize:\n" + "\nSetas Direcionais: \n <- Esquerda \n-> Direita \n" +"Barra de Espaço - Atirar", "Ajuda", JOptionPane.INFORMATION_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, null);
+			  JOptionPane.showOptionDialog(null, " Para jogar utilize:\n" + "\nSetas Direcionais: \n <- Esquerda \n-> Direita \n" +"Barra de Espaço - Atirar", "Ajuda", JOptionPane.INFORMATION_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, null);
 			  
 			  
 		//	  int result = JOptionPane.showOptionDialog(null, " Para jogar utilize:\n" + "\nSetas Direcionais: \n <- Esquerda \n-> Direita \n" +"Barra de Espaço - Atirar", "Ajuda", JOptionPane.INFORMATION_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, null);
