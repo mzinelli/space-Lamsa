@@ -28,7 +28,7 @@ public class Launcher {
 
 	public Launcher() {
 
-		JFrame f = new JFrame("Space Lamsa");
+		JFrame f = new JFrame("Space Invaders");
 
 		// Transparent 16 x 16 pixel cursor image.
 		BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
