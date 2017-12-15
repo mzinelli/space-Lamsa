@@ -47,10 +47,16 @@ public class Player extends GameEntity {
 	 */
 	private Score score;
 
-	public Player(Score score) {
+	/**
+	 * A reference to the boss game entity.
+	 */
+	private Boss boss;
+
+	public Player(Score score, Boss boss) {
 		super(INITIAL_X, INITIAL_Y, INITIAL_VISIBILITY);
 
 		this.score = score;
+		this.boss = boss;
 
 		sprite = new Sprite(StateMachine.spriteSheet.getSprite(224, 928, 99, 75));
 
