@@ -23,7 +23,7 @@ public class Boss extends GameEntity {
 	private static final int HEIGHT = 162;
 	
 	private static final int INITIAL_X = Constants.WINDOW_WIDTH / 2 - WIDTH / 2;
-	private static final int INITIAL_Y = Constants.WINDOW_WIDTH / 2 - WIDTH / 2;
+	private static final int INITIAL_Y = 10;
 	
 	private final int VELOCITY = 5;
 	
@@ -46,15 +46,17 @@ public class Boss extends GameEntity {
 		setStaticSprite(new Sprite(image));
 		
 		// Boss setup
-		setScreenBound(false);
+		setScreenBound(true);
 		setVelocity(VELOCITY, VELOCITY);
+		moveOnlyIfVisible(true);
 	}
 	
 	public void decrementLife() {
 		if (life > 1)
 			life--;
 		else {
-			// Ends game
+			die();
+			System.out.println("Boss morreu");
 		}
 	}
 
