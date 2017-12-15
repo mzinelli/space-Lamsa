@@ -46,7 +46,7 @@ public class Player extends GameEntity {
 	 * A reference to the score class.
 	 */
 	private Score score;
-
+	
 	/**
 	 * A reference to the boss game entity.
 	 */
@@ -132,11 +132,6 @@ public class Player extends GameEntity {
 		}
 	}
 
-	@Override
-	public void draw(Graphics g) {
-		super.draw(g);
-	}
-
 	private class Shot extends GameEntity {
 
 		// ---------------- Constants ----------------
@@ -171,6 +166,10 @@ public class Player extends GameEntity {
 
 					score.increment(Constants.ALIEN_SCORE);
 				}
+			}));
+			
+			on(new CollisionEvent("boss", (go, i) -> {
+				boss.decrementLife();
 			}));
 		}
 
