@@ -169,7 +169,10 @@ public class Player extends GameEntity {
 			}));
 			
 			on(new CollisionEvent("boss", (go, i) -> {
-				boss.decrementLife();
+				if (!go.isDead()) {
+					boss.decrementLife();
+					die();
+				}
 			}));
 		}
 
