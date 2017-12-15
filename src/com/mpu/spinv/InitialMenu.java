@@ -29,6 +29,7 @@ public class InitialMenu {
 
 	public static void main(String[] args) {
 		new InitialMenu();
+		new Arduino();
 	}
 
 	public InitialMenu() {
