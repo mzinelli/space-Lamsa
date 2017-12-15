@@ -31,6 +31,8 @@ public class Boss extends GameEntity {
 	
 	// Entity features
 	
+	private final int SCORE_VALUE = 50;
+	
 	private int life = 10;
 	
 	/**
@@ -58,12 +60,17 @@ public class Boss extends GameEntity {
 		moveOnlyIfVisible(true);
 	}
 	
+	@Override
+	public void die() {
+		super.die();
+		score.increment(SCORE_VALUE);
+	}
+	
 	public void decrementLife() {
 		if (life > 1)
 			life--;
 		else {
 			die();
-			System.out.println("Boss morreu");
 		}
 	}
 
