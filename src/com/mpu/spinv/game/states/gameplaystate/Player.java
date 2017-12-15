@@ -1,19 +1,15 @@
 package com.mpu.spinv.game.states.gameplaystate;
 
-import java.applet.Applet;
-import java.awt.Graphics;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
 
 import com.mpu.spinv.engine.StateMachine;
+import com.mpu.spinv.engine.model.Animation;
 import com.mpu.spinv.engine.model.GameEntity;
 import com.mpu.spinv.engine.model.GameObject;
 import com.mpu.spinv.engine.model.Sprite;
 import com.mpu.spinv.engine.triggers.CollisionEvent;
 import com.mpu.spinv.engine.triggers.KeyTriggerEvent;
 import com.mpu.spinv.utils.Constants;
-
-import jplay.Sound;
 
 /**
  * Player.java
@@ -29,8 +25,8 @@ public class Player extends GameEntity {
 	private static final int HEIGHT = 53;
 
 	private static final int INITIAL_X = Constants.WINDOW_WIDTH / 2 - WIDTH / 2;
-	//= Constants.WINDOW_WIDTH / 2 - WIDTH / 2
-	//- WIDTH / 2
+	// = Constants.WINDOW_WIDTH / 2 - WIDTH / 2
+	// - WIDTH / 2
 	private static final int INITIAL_Y = 618;
 
 	private final int VELOCITY = 5;
@@ -46,7 +42,7 @@ public class Player extends GameEntity {
 	 * A reference to the score class.
 	 */
 	private Score score;
-	
+
 	/**
 	 * A reference to the boss game entity.
 	 */
@@ -68,7 +64,7 @@ public class Player extends GameEntity {
 		setScreenBound(true);
 		setVelocity(VELOCITY, VELOCITY);
 		drawChildrenFirst(true);
-		
+
 		/**
 		 * Setting the player movements triggers.
 		 */
@@ -149,11 +145,30 @@ public class Player extends GameEntity {
 		 */
 		private Sprite sprite;
 
+		private Animation bossHitAnimation;
+
 		public Shot(int x, int y) {
 			super(x - SHOT_WIDTH / 2, y, INITIAL_VISIBILITY);
 
+			// Collision with boss animation
+			bossHitAnimation = new Animation(
+					new Sprite[] { new Sprite(StateMachine.spriteSheet.getSprite(0, 0, 96, 96), 50, 50),
+							new Sprite(StateMachine.spriteSheet.getSprite(96, 0, 96, 96), 50, 50),
+							new Sprite(StateMachine.spriteSheet.getSprite(192, 0, 96, 96), 50, 50),
+							new Sprite(StateMachine.spriteSheet.getSprite(288, 0, 96, 96), 50, 50),
+							new Sprite(StateMachine.spriteSheet.getSprite(384, 0, 96, 96), 50, 50),
+							new Sprite(StateMachine.spriteSheet.getSprite(480, 0, 96, 96), 50, 50),
+							new Sprite(StateMachine.spriteSheet.getSprite(576, 0, 96, 96), 50, 50),
+							new Sprite(StateMachine.spriteSheet.getSprite(672, 0, 96, 96), 50, 50),
+							new Sprite(StateMachine.spriteSheet.getSprite(768, 0, 96, 96), 50, 50),
+							new Sprite(StateMachine.spriteSheet.getSprite(864, 0, 96, 96), 50, 50),
+							new Sprite(StateMachine.spriteSheet.getSprite(960, 0, 96, 96), 50, 50),
+							new Sprite(StateMachine.spriteSheet.getSprite(1056, 0, 96, 96), 50, 50), },
+					3, Animation.NO_LOOP, true);
+			addAnimation("boss-hit", bossHitAnimation);
+			setAnimation(null);
+			
 			sprite = new Sprite(StateMachine.spriteSheet.getSprite(858, 326, SHOT_WIDTH, SHOT_HEIGHT));
-
 			setStaticSprite(sprite);
 
 			setVelocityY(SHOT_VELOCITY);
@@ -167,13 +182,30 @@ public class Player extends GameEntity {
 					score.increment(Constants.ALIEN_SCORE);
 				}
 			}));
-			
+
 			on(new CollisionEvent("boss", (go, i) -> {
-				if (!go.isDead()) {
+				if (!go.isDead() && listenCollision) {
 					boss.decrementLife();
-					die();
+					moveUp(false);
+					die(true);
 				}
 			}));
+		}
+		
+		@Override
+		public void update() {
+			super.update();
+			
+			if (!listenCollision && getActiveAnimation().hasEnded())
+				die();
+		}
+		
+		private void die(boolean isBoss) {
+			if (isBoss) {
+				setListenCollision(false);
+				setAnimation("boss-hit");
+				startAnimation();
+			}
 		}
 
 	}
