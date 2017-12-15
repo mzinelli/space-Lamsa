@@ -1,14 +1,20 @@
 package com.mpu.spinv.game.states.gamemenu;
 
 import java.awt.BorderLayout;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import com.mpu.spinv.Core;
+import com.mpu.spinv.Launcher;
 import com.mpu.spinv.engine.StateMachine;
 import com.mpu.spinv.engine.model.Group;
 import com.mpu.spinv.engine.triggers.KeyTriggerEvent;
@@ -56,17 +62,51 @@ public class Menu extends Group {
 //			 " Para jogar utilize:\n" + "\nSetas Direcionais: \n <- Esquerda \n-> Direita \n" +"Barra de Espaço - Atirar",
 //			 "Ajuda",
 //			 JOptionPane.INFORMATION_MESSAGE);
-			
-			  String[] options = {"OK"};
-			  
-			  JOptionPane jOption = new JOptionPane();
+//			
+//			  String[] options = {"OK"};		  
+//			 JOptionPane.showOptionDialog(null, " Para jogar utilize:\n" + "\nSetas Direcionais: \n <- Esquerda \n-> Direita \n" +"Barra de Espaço - Atirar", "Ajuda", JOptionPane.INFORMATION_MESSAGE,JOptionPane.WARNING_MESSAGE, null, options, null);
+//		
+		
+				JLabel label = new JLabel(new ImageIcon(getClass().getResource("/resources/img/help.png")));
+
+				JFrame frame = new JFrame("Space Lamsa");
+				frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+				frame.setContentPane(label);
+				// frame.setLayout(new BorderLayout());
+				// JLabel text = new JLabel("Hello from the foreground");
+				// text.setForeground(Color.WHITE);
+				// text.setHorizontalAlignment(JLabel.CENTER);
+				// frame.add(text);
+				frame.pack();
+				frame.setLocationRelativeTo(null);
+				frame.setVisible(true);
+				frame.setResizable(false);
+				
+				JButton buttonExit = new JButton("Sair");
+				buttonExit.requestFocusInWindow(); 
+				
+				buttonExit.setBounds(900, 600, 300, 60);
+				buttonExit.setFont(new Font("Microsoft Sans Serif", Font.PLAIN, 30));
+				label.setLayout(null);
+				
+				buttonExit.addActionListener(new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+					
+						// TODO Auto-generated method stub
+						frame.setVisible(false);
+						StateMachine.setActiveState("gameplay");
+					}
+				});
+	
+
+
+				label.add(buttonExit);
 			 
-			  jOption.setFocusable(true);
-			  jOption.showOptionDialog(null, " Para jogar utilize:\n" + "\nSetas Direcionais: \n <- Esquerda \n-> Direita \n" +"Barra de Espaço - Atirar", "Ajuda", JOptionPane.INFORMATION_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, null);
-			  
-			  
-		//	  int result = JOptionPane.showOptionDialog(null, " Para jogar utilize:\n" + "\nSetas Direcionais: \n <- Esquerda \n-> Direita \n" +"Barra de Espaço - Atirar", "Ajuda", JOptionPane.INFORMATION_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, null);
-			  
+			 
+			 
+		
 		}));
 
 		add(new MenuItem(0, 0, "SAIR", (i, j) -> {
