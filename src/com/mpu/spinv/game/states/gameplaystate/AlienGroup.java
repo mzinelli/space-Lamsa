@@ -32,15 +32,17 @@ public class AlienGroup extends Group {
 
 	// -------------------------------------------
 
+	private Boss boss;
 	private LifeBar playerLifebar;
 	private AlienShot shot;
 
 	private int ticks = 0;
 
-	public AlienGroup(LifeBar playerLifebar) {
+	public AlienGroup(LifeBar playerLifebar, Boss boss) {
 		super(X, Y, Group.LAYOUT_GRID);
 
 		this.playerLifebar = playerLifebar;
+		this.boss = boss;
 		this.shot = new AlienShot(0, 0);
 
 		setGridSize(15);
