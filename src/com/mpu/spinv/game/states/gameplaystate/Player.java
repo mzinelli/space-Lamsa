@@ -37,16 +37,6 @@ public class Player extends GameEntity {
 
 	private static final boolean INITIAL_VISIBILITY = true;
 
-	// -------------------- Sounds Player --------------------------
-
-	private Sound soundLevel;
-	private Sound soundShoot;
-	private Sound soundThird;
-
-	private boolean soundsOn = true;
-
-	// -------------------------------------------
-
 	/**
 	 * The player sprite.
 	 */
@@ -72,15 +62,7 @@ public class Player extends GameEntity {
 		setScreenBound(true);
 		setVelocity(VELOCITY, VELOCITY);
 		drawChildrenFirst(true);
-
-		soundLevel = new Sound("C://Users//Miguel//Documents//space-Something//src//resources//song//2.wav");
-		soundShoot = new Sound("C://Users//Miguel//Documents//space-Something//src//resources//song//shoot.wav");
-		soundThird = new Sound("C://Users//Miguel//Documents//space-Something//src//resources//song//1.wav");
-
-		soundLevel.play();
-		soundLevel.setRepeat(true);
-		soundThird.play();
-		soundThird.decreaseVolume(16.0f);
+		
 		/**
 		 * Setting the player movements triggers.
 		 */
@@ -122,32 +104,6 @@ public class Player extends GameEntity {
 			if (t == KeyTriggerEvent.KEY_RELEASED) {
 				Shot shot = new Shot(x + getWidth() / 2, y);
 				addChild(shot);
-
-				if (soundsOn == true) {
-					shootSongPlay();
-
-				} else {
-					// shootSongStop();
-
-				}
-			}
-
-		}));
-
-		on(new KeyTriggerEvent(KeyEvent.VK_F1, (k, t) -> {
-			if (t == KeyTriggerEvent.KEY_RELEASED) {
-				soundThird.stop();
-				soundLevel.stop();
-				shootSongStop();
-			}
-
-		}));
-		
-		on(new KeyTriggerEvent(KeyEvent.VK_F2, (k, t) -> {
-			if (t == KeyTriggerEvent.KEY_RELEASED && soundsOn == false) {
-				soundThird.play();
-				soundLevel.play();
-				soundsOn = true;
 			}
 
 		}));
@@ -173,17 +129,6 @@ public class Player extends GameEntity {
 	@Override
 	public void draw(Graphics g) {
 		super.draw(g);
-	}
-
-	public void shootSongPlay() {
-		soundShoot = new Sound("C://Users//Miguel//Documents//space-Something//src//resources//song//shoot.wav");
-		soundShoot.play();
-		soundShoot.decreaseVolume(19.0f);
-	}
-
-	public void shootSongStop() {
-		soundShoot.stop();
-		soundsOn = false;
 	}
 
 	private class Shot extends GameEntity {
