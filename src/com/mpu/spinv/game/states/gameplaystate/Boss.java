@@ -33,8 +33,15 @@ public class Boss extends GameEntity {
 	
 	private int life = 10;
 	
-	public Boss() {
+	/**
+	 * A reference to the score object.
+	 */
+	private Score score;
+	
+	public Boss(Score score) {
 		super(INITIAL_X, INITIAL_Y, INITIAL_VISIBILITY);
+		
+		this.score = score;
 		
 		// Setting up the boss sprite
 		BufferedImage image = null;
