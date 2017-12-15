@@ -49,7 +49,7 @@ public class Excel {
 		cell = row.createCell(cellnum++);	
 		
 		try{
-			FileOutputStream out = new FileOutputStream("C:/Users/Miguel/Desktop/Teste.xls");
+			FileOutputStream out = new FileOutputStream("C:/Users/Miguel/Desktop/ResultadosJogoAltaUsabilidade.xls");
 			workbook.write(out);
 			out.close();
 			workbook.close();

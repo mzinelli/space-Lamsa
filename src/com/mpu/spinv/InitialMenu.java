@@ -45,7 +45,7 @@ public class InitialMenu {
 				try {
 					JLabel label = new JLabel(new ImageIcon(getClass().getResource("/resources/img/spaceLamsa.png")));
 
-					JFrame frame = new JFrame("Space Lamsa");
+					JFrame frame = new JFrame("Space Lamsa HU");
 					frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 					frame.setContentPane(label);
 					// frame.setLayout(new BorderLayout());
