@@ -57,9 +57,17 @@ public class AlienGroup extends Group {
 
 	@Override
 	public void update() {
+		if (isDead())
+			return;
+		
 		boolean _entityDestroyed = false;
-
 		List<GameEntity> als = getGameEntities();
+		
+		if (als.size() == 0) {
+			die();
+			boss.setVisible(true);
+		}
+		
 		for (int i = 0; i < als.size(); i++)
 			if (als.get(i).isDead()) {
 				_entityDestroyed = true;
