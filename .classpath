@@ -3,6 +3,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/imgscalr"/>
-	<classpathentry kind="lib" path="C:/Users/Miguel/Desktop/Jplay/dist/Jplay.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Miguel/Desktop/Bibliotecas para o Projeto/Jplay/dist/Jplay.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

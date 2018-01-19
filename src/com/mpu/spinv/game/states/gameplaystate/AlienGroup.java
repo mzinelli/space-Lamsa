@@ -13,6 +13,8 @@ import com.mpu.spinv.engine.model.Sprite;
 import com.mpu.spinv.engine.triggers.CollisionEvent;
 import com.mpu.spinv.utils.Constants;
 
+import jdk.nashorn.internal.ir.annotations.Ignore;
+
 /**
  * AlienGroup.java
  * 
@@ -35,6 +37,7 @@ public class AlienGroup extends Group {
 	private Boss boss;
 	private LifeBar playerLifebar;
 	private AlienShot shot;
+	public boolean esquerda = false;
 
 	private int ticks = 0;
 
@@ -44,7 +47,8 @@ public class AlienGroup extends Group {
 		this.playerLifebar = playerLifebar;
 		this.boss = boss;
 		this.shot = new AlienShot(0, 0);
-
+		
+	
 		setGridSize(15);
 		setSpacing(10, 10);
 
@@ -65,7 +69,32 @@ public class AlienGroup extends Group {
 		
 		if (als.size() == 0) {
 			die();
+			
 			boss.setVisible(true);
+			
+//			boss.moveRight(true);
+//			
+//			if (boss.getX() >= Constants.WINDOW_WIDTH) {
+//				boss.update();
+//				boss.moveLeft(true);
+//			}
+//			
+//			if (x + width > Constants.WINDOW_WIDTH)
+//				this.boss.moveLeft(true);//(true);//(true);
+//			else if (x < 10)
+//				this.boss.moveRight(true);
+			
+			
+	//		boss.moveRight(true);
+			
+			//esquerda = true;
+			
+		//	if (boss.getX()> Constants.WINDOW_WIDTH - 900) {
+		//		boss.moveRight(false);
+			//	boss.moveLeft(true);
+				
+			//}
+
 		}
 		
 		for (int i = 0; i < als.size(); i++)

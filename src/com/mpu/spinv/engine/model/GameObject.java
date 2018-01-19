@@ -163,8 +163,13 @@ public abstract class GameObject {
 	 */
 	public void moveRight(boolean should) {
 		dx = should ? velocityX : 0;
+		
 	}
-
+	
+	public void moveRight(int vel) {
+		dx = this.x + vel;
+		
+	}
 	/**
 	 * Makes the GameObject move left, the velocity will be determined by
 	 * {@link GameObject#velocityX}

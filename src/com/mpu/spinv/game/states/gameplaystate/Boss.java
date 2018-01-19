@@ -58,6 +58,20 @@ public class Boss extends GameEntity {
 		setScreenBound(true);
 		setVelocity(VELOCITY, VELOCITY);
 		moveOnlyIfVisible(true);
+		setX(500);
+		setY(20);
+		setVelocityX(1);
+
+		ir();
+	}
+	
+//		if (getX() >= Constants.WINDOW_WIDTH) {
+//			
+//			moveLeft(true);
+		//}
+	
+	public void ir(){
+		this.moveRight(1);
 	}
 	
 	@Override
