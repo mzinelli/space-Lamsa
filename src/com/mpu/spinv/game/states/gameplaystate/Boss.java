@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 
 import com.mpu.spinv.engine.model.GameEntity;
 import com.mpu.spinv.engine.model.Sprite;
@@ -83,6 +84,9 @@ public class Boss extends GameEntity {
 	public void die() {
 		super.die();
 		score.increment(SCORE_VALUE);
+		new JOptionPane();
+		JOptionPane.showMessageDialog(null, "Parabéns! Você conseguiu derrotar os inimigos e evitar a aniquilação da Terra. \nSua pontuação foi de: "+score.getScore()+" pontos");
+		System.exit(0);
 	}
 
 	public void decrementLife() {
