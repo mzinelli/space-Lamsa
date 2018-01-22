@@ -1,11 +1,19 @@
 package com.mpu.spinv.game.states.gameplaystate;
 
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
+import com.mpu.spinv.engine.StateMachine;
 import com.mpu.spinv.engine.model.GameEntity;
 import com.mpu.spinv.engine.model.Sprite;
 import com.mpu.spinv.utils.Constants;
@@ -19,7 +27,7 @@ import com.mpu.spinv.utils.Constants;
 public class Boss extends GameEntity {
 
 	// ---------------- Constants ----------------
-
+	boolean matou = false;
 	// ---------------------------------------------
 	private static final int WIDTH = 183;
 	private static final int HEIGHT = 162;
@@ -70,7 +78,6 @@ public class Boss extends GameEntity {
 	public void update() {
 
 		if (x + width > 900) {
-			System.out.println("Chegou aqui, deveria ir para a esquerda");
 			moveRight(false);
 			moveLeft(true);
 		} else if (x < 200) {
@@ -82,11 +89,51 @@ public class Boss extends GameEntity {
 
 	@Override
 	public void die() {
-		super.die();
+			JLabel label = new JLabel(new ImageIcon(getClass().getResource("/resources/img/final.jpg")));
+
+			JFrame frame = new JFrame("Space Lamsa");
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.setContentPane(label);
+			// frame.setLayout(new BorderLayout());
+			// JLabel text = new JLabel("Hello from the foreground");
+			// text.setForeground(Color.WHITE);
+			// text.setHorizontalAlignment(JLabel.CENTER);
+			// frame.add(text);
+			frame.pack();
+			frame.setLocationRelativeTo(null);
+			frame.setVisible(true);
+			frame.setResizable(false);
+			
+			JButton buttonExit = new JButton("Sair");
+//			/buttonExit.requestFocusInWindow(); 
+			buttonExit.setEnabled(false);
+			buttonExit.setBounds(400, 300, 300, 60);
+			buttonExit.setVisible(false);
+			buttonExit.setFont(new Font("Microsoft Sans Serif", Font.PLAIN, 30));
+			label.setLayout(null);
+			
+			buttonExit.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					
+					// TODO Auto-generated method stub
+					frame.setVisible(false);
+					StateMachine.setActiveState("gameplay");
+					System.exit(0);
+				}
+			});
+			label.add(buttonExit);
+//			new JOptionPane();
+//			JOptionPane.showMessageDialog(null, "Parabéns! Você conseguiu derrotar os inimigos e evitar a aniquilação da Terra. \nSua pontuação foi de: "+score.getScore()+" pontos");
+			
+		
+ 		super.die();
 		score.increment(SCORE_VALUE);
-		new JOptionPane();
-		JOptionPane.showMessageDialog(null, "Parabéns! Você conseguiu derrotar os inimigos e evitar a aniquilação da Terra. \nSua pontuação foi de: "+score.getScore()+" pontos");
-		System.exit(0);
+		
+		
+//		frame.setVisible(false);
+		
 	}
 
 	public void decrementLife() {
