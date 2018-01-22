@@ -67,11 +67,15 @@ public class Boss extends GameEntity {
 
 	@Override
 	public void update() {
-		moveLeft(true);
-		if (x + width > Constants.WINDOW_WIDTH - 4 - 10)
+
+		if (x + width > 900) {
+			System.out.println("Chegou aqui, deveria ir para a esquerda");
+			moveRight(false);
 			moveLeft(true);
-		else if (x < 10)
+		} else if (x < 200) {
+			moveLeft(false);
 			moveRight(true);
+		}
 		super.update();
 	}
 
