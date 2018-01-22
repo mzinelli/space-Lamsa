@@ -34,7 +34,7 @@ public class Boss extends GameEntity {
 
 	private final int SCORE_VALUE = 50;
 
-	private int life = 10;
+	private int life = 20;
 
 	/**
 	 * A reference to the score object.

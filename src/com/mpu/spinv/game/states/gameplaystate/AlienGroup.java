@@ -72,29 +72,6 @@ public class AlienGroup extends Group {
 			
 			boss.setVisible(true);
 			
-//			boss.moveRight(true);
-//			
-//			if (boss.getX() >= Constants.WINDOW_WIDTH) {
-//				boss.update();
-//				boss.moveLeft(true);
-//			}
-//			
-//			if (x + width > Constants.WINDOW_WIDTH)
-//				this.boss.moveLeft(true);//(true);//(true);
-//			else if (x < 10)
-//				this.boss.moveRight(true);
-			
-			
-	//		boss.moveRight(true);
-			
-			//esquerda = true;
-			
-		//	if (boss.getX()> Constants.WINDOW_WIDTH - 900) {
-		//		boss.moveRight(false);
-			//	boss.moveLeft(true);
-				
-			//}
-
 		}
 		
 		for (int i = 0; i < als.size(); i++)
