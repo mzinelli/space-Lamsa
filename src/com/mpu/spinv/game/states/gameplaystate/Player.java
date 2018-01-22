@@ -11,6 +11,8 @@ import com.mpu.spinv.engine.triggers.CollisionEvent;
 import com.mpu.spinv.engine.triggers.KeyTriggerEvent;
 import com.mpu.spinv.utils.Constants;
 
+import jplay.Sound;
+
 /**
  * Player.java
  * 
