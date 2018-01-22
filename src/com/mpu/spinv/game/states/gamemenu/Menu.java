@@ -67,7 +67,7 @@ public class Menu extends Group {
 //			 JOptionPane.showOptionDialog(null, " Para jogar utilize:\n" + "\nSetas Direcionais: \n <- Esquerda \n-> Direita \n" +"Barra de Espaço - Atirar", "Ajuda", JOptionPane.INFORMATION_MESSAGE,JOptionPane.WARNING_MESSAGE, null, options, null);
 //		
 		
-				JLabel label = new JLabel(new ImageIcon(getClass().getResource("/resources/img/help.png")));
+				JLabel label = new JLabel(new ImageIcon(getClass().getResource("/resources/img/ajuda.jpg")));
 
 				JFrame frame = new JFrame("Space Lamsa");
 				frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
